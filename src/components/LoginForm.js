@@ -148,10 +148,10 @@ const styles = {
 		marginTop: (Platform.OS === 'ios') ? 130 : 60
 	},
 	loginButtonTextStyle: {
-		fontFamily: 'Roboto'
+		// fontFamily: 'Roboto'
 	},
 	labelTextStyle: {
-		fontFamily: 'Roboto'
+		// fontFamily: 'Roboto'
 	}
 };
 
