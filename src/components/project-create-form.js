@@ -14,15 +14,15 @@ import {
 	Right
 } from 'native-base';
 import {Actions} from 'react-native-router-flux';
-import {taskUpdate, taskCreate} from '../actions';
-import TaskForm from './task-form';
+import {projectInfoUpdate, projectCreate} from '../actions';
+import ProjectForm from './project-form';
 
-class TaskCreateForm extends Component {
+class ProjectCreateForm extends Component {
 
 	// Handlers
 	handleCreateButton = () => {
 		const {name, count, priority} = this.props;
-		this.props.taskCreate({name, count, priority: priority || 'high'});
+		this.props.projectCreate({name, count, priority: priority || 'high'});
 	}
 
 	handleBackButton = () => {
@@ -30,12 +30,19 @@ class TaskCreateForm extends Component {
 	}
 
 	render() {
+		const {
+			containerStyle,
+			headerStyle,
+			buttonSuccessStyle,
+			backArrowStyle
+		} = styles;
+
 		return (
-			<Container style={styles.containerStyle}>
-				<Header style={styles.headerStyle}>
+			<Container style={containerStyle}>
+				<Header style={headerStyle}>
 					<Left>
 						<Button transparent onPress={this.handleBackButton}>
-							<Icon name="arrow-back" style={{color: (Platform.OS === 'android') ? 'white' : 'black'}}/>
+							<Icon name="arrow-back" style={backArrowStyle}/>
 						</Button>
 					</Left>
 					<Body>
@@ -44,9 +51,8 @@ class TaskCreateForm extends Component {
 					<Right/>
 				</Header>
 				<Content>
-					{/* Content */}
-					<TaskForm {...this.props}/>
-					<Button success style={styles.buttonStyle} onPress={this.handleCreateButton}>
+					<ProjectForm {...this.props}/>
+					<Button success style={buttonSuccessStyle} onPress={this.handleCreateButton}>
 						<Text>Submit</Text>
 					</Button>
 				</Content>
@@ -62,19 +68,22 @@ const styles = {
 	headerStyle: {
 		backgroundColor: 'rgba(231, 29, 54, 1)'
 	},
-	buttonStyle: {
+	buttonSuccessStyle: {
 		margin: 15,
 		alignSelf: 'center',
 		padding: 25
+	},
+	backArrowStyle: {
+		color: (Platform.OS === 'android') ? 'white' : 'black'
 	}
 };
 
-const mapStateToProps = ({taskForm}) => {
-	const {name, count, priority} = taskForm;
+const mapStateToProps = ({projectForm}) => {
+	const {name, count, priority} = projectForm;
 	return {name, count, priority};
 };
 
 export default connect(mapStateToProps, {
-	taskUpdate,
-	taskCreate
-})(TaskCreateForm);
+	projectInfoUpdate,
+	projectCreate
+})(ProjectCreateForm);

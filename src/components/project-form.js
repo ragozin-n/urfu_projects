@@ -8,24 +8,24 @@ import {
 	Label,
 	Text
 } from 'native-base';
-import {taskUpdate} from '../actions';
+import {projectInfoUpdate} from '../actions';
 
-class TaskForm extends Component {
+class ProjectForm extends Component {
 	// Handlers
 	handleNameInput = value => {
-		this.props.taskUpdate({prop: 'name', value});
+		this.props.projectInfoUpdate({prop: 'name', value});
 	}
 
 	handleCountInput = value => {
-		this.props.taskUpdate({prop: 'count', value});
+		this.props.projectInfoUpdate({prop: 'count', value});
 	}
 
 	handlePriorityInput = value => {
-		this.props.taskUpdate({prop: 'priority', value});
+		this.props.projectInfoUpdate({prop: 'priority', value});
 	}
 
 	render() {
-		const {labelStyle, sliderStyle} = styles;
+		const {labelStyle, sliderStyle, itemStyle, pickerStyle} = styles;
 
 		return (
 			<View>
@@ -37,7 +37,7 @@ class TaskForm extends Component {
 							onChangeText={value => this.handleCountInput(value)}
 						/>
 					</Item>
-					<Item style={{flexDirection: 'column', justifyContent: 'center'}}>
+					<Item style={itemStyle}>
 						<Text style={labelStyle}>{this.props.count}</Text>
 						<Slider
 							style={sliderStyle}
@@ -48,13 +48,10 @@ class TaskForm extends Component {
 							onValueChange={count => this.handleCountInput(count)}
 						/>
 					</Item>
-
-					<Item style={{flexDirection: 'column', justifyContent: 'center'}}>
-
+					<Item style={itemStyle}>
 						<Text style={labelStyle}>Choose priority: </Text>
-
 						<Picker
-							style={styles.pickerStyle}
+							style={pickerStyle}
 							onValueChange={priority => this.handlePriorityInput(priority)}
 							selectedValue={this.props.priority}
 						>
@@ -81,12 +78,16 @@ const styles = {
 	},
 	pickerStyle: {
 		width: '100%'
+	},
+	itemStyle: {
+		flexDirection: 'column',
+		justifyContent: 'center'
 	}
 };
 
-const mapStateToProps = ({taskForm}) => {
-	const {name, count, priority} = taskForm;
+const mapStateToProps = ({projectForm}) => {
+	const {name, count, priority} = projectForm;
 	return {name, count, priority};
 };
 
-export default connect(mapStateToProps, {taskUpdate})(TaskForm);
+export default connect(mapStateToProps, {projectInfoUpdate})(ProjectForm);

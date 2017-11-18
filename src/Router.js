@@ -1,9 +1,9 @@
 import React from 'react';
 import {Scene, Router} from 'react-native-router-flux';
 import LoginForm from './components/login-form';
-import TasksList from './components/tasks-list';
-import TaskCreateForm from './components/task-create-form';
-import TaskEditForm from './components/task-edit-form';
+import ProjectsList from './components/projects-list';
+import ProjectCreateForm from './components/project-create-form';
+import ProjectEditForm from './components/project-edit-form';
 
 const RouterComponent = () => {
 	return (
@@ -18,24 +18,24 @@ const RouterComponent = () => {
 
 				<Scene key="main">
 					<Scene
-						key="tasks"
+						key="projects"
 						type="reset"
-						component={TasksList}
+						component={ProjectsList}
 						panHandlers={null}
 						initial
 						hideNavBar
 					/>
 
 					<Scene
-						key="createTask"
-						component={TaskCreateForm}
+						key="createProject"
+						component={ProjectCreateForm}
 						panHandlers={null}
 						hideNavBar
 					/>
 
 					<Scene
-						key="editTask"
-						component={TaskEditForm}
+						key="editProject"
+						component={ProjectEditForm}
 						panHandlers={null}
 						hideNavBar
 					/>

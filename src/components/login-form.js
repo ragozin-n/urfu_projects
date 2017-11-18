@@ -16,7 +16,7 @@ import {
 	Easing,
 	Platform
 } from 'react-native';
-import { Font, AppLoading } from 'expo';
+import {Font, AppLoading} from 'expo';
 import {
 	emailChanged,
 	passwordChanged,

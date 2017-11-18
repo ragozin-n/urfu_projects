@@ -20,6 +20,7 @@ const loginUserSuccess = (dispatch, user) => {
 };
 
 const alertOnDevice = error => {
+	// ALERT ONPRESS EVENTS MAY HAVE LOGIC
 	Alert.alert(
 		'Oops!',
 		error.message,

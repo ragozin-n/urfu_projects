@@ -1,7 +1,7 @@
 import {
-	TASK_UPDATE,
-	TASK_CREATE,
-	TASK_SAVE_SUCCESS
+	PROJECT_INFO_UPDATE,
+	PROJECT_CREATE,
+	PROJECT_SAVE_SUCCESS
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -12,11 +12,11 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
 	switch (action.type) {
-		case TASK_UPDATE:
+		case PROJECT_INFO_UPDATE:
 			// ES6 key interpolation
 			return {...state, [action.payload.prop]: action.payload.value};
-		case TASK_SAVE_SUCCESS:
-		case TASK_CREATE:
+		case PROJECT_SAVE_SUCCESS:
+		case PROJECT_CREATE:
 			return INITIAL_STATE;
 		default:
 			return state;

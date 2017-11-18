@@ -14,42 +14,44 @@ import {
 } from 'native-base';
 import {connect} from 'react-redux';
 import _ from 'lodash';
-import {tasksFetch} from '../actions';
-import TaskListItem from './task-list-item';
+import {projectsFetch} from '../actions';
+import ProjectListItem from './project-list-item';
 
-class TasksList extends Component {
+class ProjectsList extends Component {
 
 	// Handlers
-	handleAddTaskEvent = () => {
-		Actions.createTask();
+	handleAddProjectEvent = () => {
+		Actions.createProject();
 	}
 
-	renderRow(task) {
-		return <TaskListItem task={task}/>;
+	renderRow(project) {
+		return <ProjectListItem project={project}/>;
 	}
 
 	// Lifecycle methods
 	componentWillMount() {
-		this.props.tasksFetch();
+		this.props.projectsFetch();
 	}
 
 	render() {
+		const {containerStyle, headerStyle, backArrowStyle} = styles;
+
 		return (
-			<Container style={styles.containerStyle}>
-				<Header style={styles.headerStyle}>
+			<Container style={containerStyle}>
+				<Header style={headerStyle}>
 					<Left/>
 					<Body>
 						<Title>Projects</Title>
 					</Body>
 					<Right>
-						<Button transparent onPress={this.handleAddTaskEvent}>
-							<Icon name="add" style={{color: (Platform.OS === 'android') ? 'white' : 'black'}}/>
+						<Button transparent onPress={this.handleAddProjectEvent}>
+							<Icon name="add" style={backArrowStyle}/>
 						</Button>
 					</Right>
 				</Header>
 				<Content>
 					<FlatList
-						data={this.props.tasks}
+						data={this.props.projects}
 						renderItem={({item}) => this.renderRow(item)}
 						keyExtractor={item => item.uid}
 					/>
@@ -65,15 +67,17 @@ const styles = {
 	},
 	containerStyle: {
 		backgroundColor: 'rgba(253, 255, 252, 1)'
+	},
+	backArrowStyle: {
+		color: (Platform.OS === 'android') ? 'white' : 'black'
 	}
 };
 
 const mapStateToProps = state => {
-	const tasks = _.map(state.tasks, (val, uid) => {
+	const projects = _.map(state.projects, (val, uid) => {
 		return {...val, uid};
 	});
-
-	return {tasks};
+	return {projects};
 };
 
-export default connect(mapStateToProps, {tasksFetch})(TasksList);
+export default connect(mapStateToProps, {projectsFetch})(ProjectsList);

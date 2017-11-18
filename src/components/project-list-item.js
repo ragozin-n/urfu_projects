@@ -11,9 +11,9 @@ import {
 	Button
 } from 'native-base';
 
-class TaskListItem extends Component {
+class ProjectListItem extends Component {
 	handleRowPress = () => {
-		Actions.editTask({task: this.props.task});
+		Actions.editProject({project: this.props.project});
 	}
 
 	handleApplyAction = name => {
@@ -26,10 +26,11 @@ class TaskListItem extends Component {
 	}
 
 	render() {
-		const {name} = this.props.task;
+		const {name} = this.props.project;
+		const {projectListItem} = styles;
 
 		return (
-			<ListItem avatar style={styles.taskListItem} onPress={this.handleRowPress}>
+			<ListItem avatar style={projectListItem} onPress={this.handleRowPress}>
 				<Left>
 					<Thumbnail source={require('../images/face.jpg')}/>
 				</Left>
@@ -49,7 +50,7 @@ class TaskListItem extends Component {
 }
 
 const styles = StyleSheet.create({
-	taskListItem: {
+	projectListItem: {
 		marginLeft: 0,
 		paddingLeft: 0,
 		paddingRight: 0,
@@ -58,4 +59,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default TaskListItem;
+export default ProjectListItem;
