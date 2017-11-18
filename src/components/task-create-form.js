@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
+import {Platform} from 'react-native';
 import {connect} from 'react-redux';
-import {taskUpdate, taskCreate} from '../actions';
 import {
 	Container,
 	Header,
@@ -13,13 +13,13 @@ import {
 	Text,
 	Right
 } from 'native-base';
-import TaskForm from './TaskForm';
-import { Actions } from 'react-native-router-flux';
-import {Platform} from 'react-native';
+import {Actions} from 'react-native-router-flux';
+import {taskUpdate, taskCreate} from '../actions';
+import TaskForm from './task-form';
 
 class TaskCreateForm extends Component {
 
-	//Handlers
+	// Handlers
 	handleCreateButton = () => {
 		const {name, count, priority} = this.props;
 		this.props.taskCreate({name, count, priority: priority || 'high'});
@@ -35,13 +35,13 @@ class TaskCreateForm extends Component {
 				<Header style={styles.headerStyle}>
 					<Left>
 						<Button transparent onPress={this.handleBackButton}>
-							<Icon name='arrow-back' style={{ color: (Platform.OS === 'android') ? 'white' : 'black' }} />
+							<Icon name="arrow-back" style={{color: (Platform.OS === 'android') ? 'white' : 'black'}}/>
 						</Button>
 					</Left>
 					<Body>
 						<Title>Create</Title>
 					</Body>
-					<Right />
+					<Right/>
 				</Header>
 				<Content>
 					{/* Content */}

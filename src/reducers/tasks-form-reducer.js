@@ -2,7 +2,7 @@ import {
 	TASK_UPDATE,
 	TASK_CREATE,
 	TASK_SAVE_SUCCESS
-} from '../actions/types.js';
+} from '../actions/types';
 
 const INITIAL_STATE = {
 	name: '',

@@ -1,3 +1,6 @@
+import firebase from 'firebase';
+import {Actions} from 'react-native-router-flux';
+import {Alert} from 'react-native';
 import {
 	EMAIL_CHANGED,
 	PASSWORD_CHANGED,
@@ -5,9 +8,6 @@ import {
 	LOGIN_USER_FAIL,
 	LOGIN_USER
 } from './types';
-import firebase from 'firebase';
-import {Actions} from 'react-native-router-flux';
-import {Alert} from 'react-native';
 
 // Helpers
 const loginUserSuccess = (dispatch, user) => {

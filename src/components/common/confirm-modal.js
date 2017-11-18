@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text, View, Modal} from 'react-native';
-import {CardSection} from './CardSection';
-import {Button} from './Button';
+import {CardSection} from './card-section';
+import {Button} from './button';
 
 const ConfirmModal = ({children, visible, onAccept, onReject}) => {
 	const {containerStyle, textStyle, cardSectionStyle} = styles;
@@ -9,7 +9,6 @@ const ConfirmModal = ({children, visible, onAccept, onReject}) => {
 	return (
 		<Modal
 			animationType="slide"
-			onRequestClose={() => {}}
 			transparent
 			visible={visible}
 		>
@@ -45,4 +44,6 @@ const styles = {
 	}
 };
 
+/* eslint-disable import/prefer-default-export */
 export {ConfirmModal};
+/* eslint-enable import/prefer-default-export */

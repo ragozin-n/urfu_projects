@@ -2,11 +2,11 @@ import React, {Component} from 'react';
 import {StyleSheet, Alert} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import {
-	ListItem, 
-	Left, 
-	Body, 
-	Right, 
-	Text, 
+	ListItem,
+	Left,
+	Body,
+	Right,
+	Text,
 	Thumbnail,
 	Button
 } from 'native-base';
@@ -21,8 +21,8 @@ class TaskListItem extends Component {
 			`Project ${name}`,
 			'Handle apply action',
 			[],
-			{ cancelable: true }
-		)
+			{cancelable: true}
+		);
 	}
 
 	render() {
@@ -31,7 +31,7 @@ class TaskListItem extends Component {
 		return (
 			<ListItem avatar style={styles.taskListItem} onPress={this.handleRowPress}>
 				<Left>
-					<Thumbnail source={require('../images/face.jpg')} />
+					<Thumbnail source={require('../images/face.jpg')}/>
 				</Left>
 				<Body>
 					<Text>Project name: {name}</Text>
@@ -46,12 +46,12 @@ class TaskListItem extends Component {
 			</ListItem>
 		);
 	}
-};
+}
 
 const styles = StyleSheet.create({
 	taskListItem: {
 		marginLeft: 0,
-		paddingLeft: 0, 
+		paddingLeft: 0,
 		paddingRight: 0,
 		marginRight: 0,
 		backgroundColor: 'rgba(253, 255, 252, 1)'

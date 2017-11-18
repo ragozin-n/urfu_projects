@@ -16,7 +16,7 @@ const styles = {
 		borderColor: '#ddd',
 		borderBottomWidth: 0,
 		shadowColor: '#000',
-		shadowOffset: { width: 0, height: 2 },
+		shadowOffset: {width: 0, height: 2},
 		shadowOpacity: 0.1,
 		shadowRadius: 2,
 		elevation: 1,
@@ -26,4 +26,6 @@ const styles = {
 	}
 };
 
+/* eslint-disable import/prefer-default-export */
 export {Card};
+/* eslint-enable import/prefer-default-export */

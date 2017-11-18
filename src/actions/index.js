@@ -1,2 +1,2 @@
-export * from './AuthActions';
-export * from './TasksActions';
+export * from './auth-actions';
+export * from './tasks-actions';

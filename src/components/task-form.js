@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {View, Slider, Picker} from 'react-native';
 import {connect} from 'react-redux';
-import {taskUpdate} from '../actions';
 import {
 	Form,
 	Item,
@@ -9,8 +8,22 @@ import {
 	Label,
 	Text
 } from 'native-base';
+import {taskUpdate} from '../actions';
 
 class TaskForm extends Component {
+	// Handlers
+	handleNameInput = value => {
+		this.props.taskUpdate({prop: 'name', value});
+	}
+
+	handleCountInput = value => {
+		this.props.taskUpdate({prop: 'count', value});
+	}
+
+	handlePriorityInput = value => {
+		this.props.taskUpdate({prop: 'priority', value});
+	}
+
 	render() {
 		const {labelStyle, sliderStyle} = styles;
 
@@ -19,9 +32,9 @@ class TaskForm extends Component {
 				<Form>
 					<Item floatingLabel>
 						<Label>Name</Label>
-						<Input 
+						<Input
 							value={this.props.name}
-							onChangeText={value => this.props.taskUpdate({ prop: 'name', value })}
+							onChangeText={value => this.handleCountInput(value)}
 						/>
 					</Item>
 					<Item style={{flexDirection: 'column', justifyContent: 'center'}}>
@@ -32,7 +45,7 @@ class TaskForm extends Component {
 							maximumValue={50}
 							step={1}
 							value={this.props.count}
-							onValueChange={value => this.props.taskUpdate({prop: 'count', value})}
+							onValueChange={count => this.handleCountInput(count)}
 						/>
 					</Item>
 
@@ -42,7 +55,7 @@ class TaskForm extends Component {
 
 						<Picker
 							style={styles.pickerStyle}
-							onValueChange={value => this.props.taskUpdate({prop: 'priority', value})}
+							onValueChange={priority => this.handlePriorityInput(priority)}
 							selectedValue={this.props.priority}
 						>
 							<Picker.Item label="High" value="high"/>

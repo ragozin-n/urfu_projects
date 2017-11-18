@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
+    "babel-eslint": "^8.0.2",
+    "eslint-config-xo-react": "^0.14.0",
+    "eslint-plugin-react": "^7.4.0",
     "jest-expo": "^22.0.0",
     "react-native-scripts": "1.7.0",
     "react-test-renderer": "16.0.0-beta.5"
@@ -30,5 +33,18 @@
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
     "xo": "^0.18.2"
+  },
+  "xo": {
+    "extends": "xo-react",
+    "rules": {
+      "no-undef": 0,
+      "react/no-find-dom-node": 0,
+	  "no-unused-expressions": 0,
+	  "react/prop-types": 0,
+	  "react/forbid-component-props": 0,
+	  "no-use-before-define": 0,
+	  "react/jsx-no-bind": 0
+    },
+    "parser": "babel-eslint"
   }
 }

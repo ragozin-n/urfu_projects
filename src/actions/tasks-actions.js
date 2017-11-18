@@ -1,11 +1,11 @@
+import firebase from 'firebase';
+import {Actions} from 'react-native-router-flux';
 import {
 	TASK_UPDATE,
 	TASK_CREATE,
 	TASKS_FETCH_SUCCESS,
 	TASK_SAVE_SUCCESS
 } from './types';
-import firebase from 'firebase';
-import {Actions} from 'react-native-router-flux';
 
 export const taskUpdate = ({prop, value}) => {
 	return {

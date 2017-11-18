@@ -41,4 +41,6 @@ const styles = {
 	}
 };
 
+/* eslint-disable import/prefer-default-export */
 export {Input};
+/* eslint-enable import/prefer-default-export */

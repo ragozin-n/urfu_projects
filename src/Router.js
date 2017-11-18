@@ -1,9 +1,9 @@
 import React from 'react';
-import {Actions, Scene, Router} from 'react-native-router-flux';
-import LoginForm from './components/LoginForm';
-import TasksList from './components/TasksList';
-import TaskCreateForm from './components/TaskCreateForm';
-import TaskEditForm from './components/TaskEditForm';
+import {Scene, Router} from 'react-native-router-flux';
+import LoginForm from './components/login-form';
+import TasksList from './components/tasks-list';
+import TaskCreateForm from './components/task-create-form';
+import TaskEditForm from './components/task-edit-form';
 
 const RouterComponent = () => {
 	return (
