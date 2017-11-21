@@ -34,7 +34,7 @@ class ProjectsList extends Component {
 	}
 
 	render() {
-		const {containerStyle, headerStyle, backArrowStyle} = styles;
+		const {containerStyle, headerStyle, iconStyle} = styles;
 
 		return (
 			<Container style={containerStyle}>
@@ -45,7 +45,7 @@ class ProjectsList extends Component {
 					</Body>
 					<Right>
 						<Button transparent onPress={this.handleAddProjectEvent}>
-							<Icon name="add" style={backArrowStyle}/>
+							<Icon name="cog" style={iconStyle}/>
 						</Button>
 					</Right>
 				</Header>
@@ -68,7 +68,7 @@ const styles = {
 	containerStyle: {
 		backgroundColor: 'rgba(253, 255, 252, 1)'
 	},
-	backArrowStyle: {
+	iconStyle: {
 		color: (Platform.OS === 'android') ? 'white' : 'black'
 	}
 };

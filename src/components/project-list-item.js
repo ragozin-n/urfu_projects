@@ -13,20 +13,21 @@ import {
 
 class ProjectListItem extends Component {
 	handleRowPress = () => {
-		Actions.editProject({project: this.props.project});
+		// DEPRECATED
+		// Actions.editProject({project: this.props.project});
 	}
 
-	handleApplyAction = name => {
+	handleApplyAction = (name, description) => {
 		Alert.alert(
-			`Project ${name}`,
-			'Handle apply action',
+			`${name}`,
+			`${description}`,
 			[],
 			{cancelable: true}
 		);
 	}
 
 	render() {
-		const {name} = this.props.project;
+		const {name, description, photoBase64} = this.props.project;
 		const {projectListItem} = styles;
 
 		return (
@@ -35,12 +36,12 @@ class ProjectListItem extends Component {
 					<Thumbnail source={require('../images/face.jpg')}/>
 				</Left>
 				<Body>
-					<Text>Project name: {name}</Text>
-					<Text note>Project description</Text>
+					<Text>{name}</Text>
+					<Text note>{description}</Text>
 				</Body>
 				{/* Fix for https://github.com/GeekyAnts/NativeBase/issues/672 */}
 				<Right>
-					<Button small transparent onPress={() => this.handleApplyAction(name)}>
+					<Button small transparent onPress={() => this.handleApplyAction(name, description)}>
 						<Text note>Apply</Text>
 					</Button>
 				</Right>

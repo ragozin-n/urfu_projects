@@ -33,7 +33,8 @@ const alertOnDevice = error => {
 };
 
 const loginUserFail = (dispatch, error) => {
-	alertOnDevice(error);
+	// DEBUG
+	console.log(error);
 
 	dispatch({
 		type: LOGIN_USER_FAIL

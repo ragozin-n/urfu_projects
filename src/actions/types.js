@@ -10,3 +10,8 @@ export const PROJECT_INFO_UPDATE = 'project_update';
 export const PROJECT_CREATE = 'project_create';
 export const PROJECTS_FETCH_SUCCESS = 'projects_fetch_success';
 export const PROJECT_SAVE_SUCCESS = 'project_save_success';
+
+// User customization
+export const USER_BIO_UPDATE = 'user_bio_update';
+export const USER_ACHIEVEMENTS_UPDATE = 'user_achievement_update';
+export const USER_HISTORY_UPDATE = 'user_history_update';

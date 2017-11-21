@@ -7,7 +7,7 @@ import {
 	PROJECT_SAVE_SUCCESS
 } from './types';
 
-// 1. RENAME URLS FROM 'TASKS' TO 'PROJECTS'
+// 1. RENAME URLS FROM 'TASKS' TO 'EVENTS'
 
 export const projectInfoUpdate = ({prop, value}) => {
 	return {
@@ -16,12 +16,10 @@ export const projectInfoUpdate = ({prop, value}) => {
 	};
 };
 
-export const projectCreate = ({name, count, priority}) => {
-	const {currentUser} = firebase.auth();
-
+export const projectCreate = ({name, description, photoBase64}) => {
 	return dispatch => {
-		firebase.database().ref(`/users/${currentUser.uid}/tasks`)
-			.push({name, count, priority})
+		firebase.database().ref(`/events`)
+			.push({name, description, photoBase64})
 			.then(() => {
 				dispatch({type: PROJECT_CREATE});
 				Actions.main();
@@ -30,10 +28,9 @@ export const projectCreate = ({name, count, priority}) => {
 };
 
 export const projectsFetch = () => {
-	const {currentUser} = firebase.auth();
-
+	// GET GLOBAL EVENTS
 	return dispatch => {
-		firebase.database().ref(`/users/${currentUser.uid}/tasks`)
+		firebase.database().ref(`/events`)
 			.on('value', snapshot => {
 				dispatch({
 					type: PROJECTS_FETCH_SUCCESS,
@@ -42,6 +39,8 @@ export const projectsFetch = () => {
 			});
 	};
 };
+
+// -----------DEPRECATED-----------
 
 export const projectSave = ({name, count, priority, uid}) => {
 	const {currentUser} = firebase.auth();
