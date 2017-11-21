@@ -86,6 +86,7 @@ const styles = {
 };
 
 const mapStateToProps = ({projectForm}) => {
+	console.log(projectForm);
 	const {name, count, priority} = projectForm;
 	return {name, count, priority};
 };

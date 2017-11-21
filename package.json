@@ -39,11 +39,11 @@
     "rules": {
       "no-undef": 0,
       "react/no-find-dom-node": 0,
-	  "no-unused-expressions": 0,
-	  "react/prop-types": 0,
-	  "react/forbid-component-props": 0,
-	  "no-use-before-define": 0,
-	  "react/jsx-no-bind": 0
+      "no-unused-expressions": 0,
+      "react/prop-types": 0,
+      "react/forbid-component-props": 0,
+      "no-use-before-define": 0,
+      "react/jsx-no-bind": 0
     },
     "parser": "babel-eslint"
   }
