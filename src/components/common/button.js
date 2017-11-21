@@ -33,4 +33,6 @@ const styles = {
 	}
 };
 
+/* eslint-disable import/prefer-default-export */
 export {Button};
+/* eslint-enable import/prefer-default-export */

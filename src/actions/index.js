@@ -1,2 +1,3 @@
-export * from './AuthActions';
-export * from './TasksActions';
+export * from './auth-actions';
+export * from './projects-actions';
+export * from './user-actions';

@@ -1,10 +1,12 @@
 import {combineReducers} from 'redux';
-import AuthReducer from './AuthReducer';
-import TaskFormReducer from './TasksFormReducer';
-import TaskReducer from './TaskReducer';
+import AuthReducer from './auth-reducer';
+import ProjectFormReducer from './projects-form-reducer';
+import ProjectReducer from './project-reducer';
+import UserReducer from './user-reducer';
 
 export default combineReducers({
 	auth: AuthReducer,
-	taskForm: TaskFormReducer,
-	tasks: TaskReducer
+	projectForm: ProjectFormReducer,
+	projects: ProjectReducer,
+	user: UserReducer
 });

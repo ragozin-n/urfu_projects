@@ -1,40 +1,34 @@
 import React, {Component} from 'react';
-import { 
-	Content, 
-	Card, 
-	CardItem, 
-	Body, 
-	Text, 
-	Button, 
-	Spinner, 
-	Form, 
-	Item, 
-	Label, 
-	Input, 
-	Container, 
-	Header, 
-	Left, 
-	Right, 
-	Title
+import {
+	Text,
+	Button,
+	Spinner,
+	Form,
+	Item,
+	Label,
+	Input,
+	Container
 } from 'native-base';
 import {connect} from 'react-redux';
 import {
-	Image, 
-	View,
+	Image,
 	Animated,
 	Easing,
 	Platform
 } from 'react-native';
+import {Font, AppLoading} from 'expo';
 import {
-	emailChanged, 
-	passwordChanged, 
+	emailChanged,
+	passwordChanged,
 	loginUser
 } from '../actions';
-// import {Video} from 'expo';
 
 class LoginForm extends Component {
+	state = {
+		appIsReady: false
+	}
 
-	//Handlers
+	// Handlers
 	handleEmailChange = text => {
 		this.props.emailChanged(text);
 	}
@@ -48,10 +42,10 @@ class LoginForm extends Component {
 		this.props.loginUser({email, password});
 	}
 
-	//Custom components
+	// Custom components
 	renderButton = () => {
 		if (this.props.loading) {
-			return <Spinner style={{marginTop: 20}} color="rgba(231, 29, 54, 1)" />;
+			return <Spinner style={{marginTop: 20}} color="rgba(231, 29, 54, 1)"/>;
 		}
 		return (
 			<Button onPress={this.handleLogin} style={styles.loginButtonStyle}>
@@ -60,9 +54,19 @@ class LoginForm extends Component {
 		);
 	}
 
-	//Lifecycle methods
+	async componentWillMount() {
+		/* eslint-disable camelcase, import/no-extraneous-dependencies */
+		await Font.loadAsync({
+			Roboto: require('native-base/Fonts/Roboto.ttf'),
+			Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf')
+		});
+		/* eslint-disable camelcase, import/no-extraneous-dependencies */
+		this.setState({appIsReady: true});
+	}
+
+	// Lifecycle methods
 	componentDidMount() {
-		//Animation Section
+		// Animation Section
 		Animated.timing(
 			this.props.fadeAnimation,
 			{
@@ -74,13 +78,14 @@ class LoginForm extends Component {
 	}
 
 	render() {
+		if (!this.state.appIsReady) {
+			return (
+				<AppLoading/>
+			);
+		}
+
 		return (
 			<Container style={styles.containerStyle}>
-				{/* <Header>
-					<Body>
-						<Title>Урфу.Проекты</Title>
-					</Body>
-				</Header> */}
 				<Animated.View
 					style={{
 						opacity: this.props.fadeAnimation
@@ -123,10 +128,10 @@ const styles = {
 		backgroundColor: 'rgba(231, 29, 54, 1)',
 		alignSelf: 'center',
 
-		//Чуть покруглей
+		// Чуть покруглей
 		borderRadius: 6,
 
-		//Чуть помясистей
+		// Чуть помясистей
 		padding: (Platform.OS === 'ios') ? 60 : 25
 	},
 	formStyle: {
@@ -135,30 +140,30 @@ const styles = {
 		marginRight: 25
 	},
 	logoStyle: {
-		//Покрупней
+		// Покрупней
 		height: 150,
 
 		resizeMode: 'contain',
 		alignSelf: 'center',
 
-		//Поиграться с resizeMode
+		// Поиграться с resizeMode
 		marginBottom: 10,
 		marginLeft: 40,
 		marginRight: 40,
 		marginTop: (Platform.OS === 'ios') ? 130 : 60
 	},
 	loginButtonTextStyle: {
-		// fontFamily: 'Roboto'
+		fontFamily: 'Roboto'
 	},
 	labelTextStyle: {
-		// fontFamily: 'Roboto'
+		fontFamily: 'Roboto'
 	}
 };
 
 const mapStateToProps = ({auth}) => {
 	const {email, password, error, loading} = auth;
 
-	//Variable for animation
+	// Variable for animation
 	const fadeAnimation = new Animated.Value(0);
 	return {email, password, error, loading, fadeAnimation};
 };

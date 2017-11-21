@@ -5,8 +5,13 @@ export const LOGIN_USER_SUCCESS = 'login_user_success';
 export const LOGIN_USER_FAIL = 'login_user_fail';
 export const LOGIN_USER = 'login_user';
 
-// Tasks
-export const TASK_UPDATE = 'task_update';
-export const TASK_CREATE = 'task_create';
-export const TASKS_FETCH_SUCCESS = 'tasks_fetch_success';
-export const TASK_SAVE_SUCCESS = 'task_save_success';
+// Projects
+export const PROJECT_INFO_UPDATE = 'project_update';
+export const PROJECT_CREATE = 'project_create';
+export const PROJECTS_FETCH_SUCCESS = 'projects_fetch_success';
+export const PROJECT_SAVE_SUCCESS = 'project_save_success';
+
+// User customization
+export const USER_BIO_UPDATE = 'user_bio_update';
+export const USER_ACHIEVEMENTS_UPDATE = 'user_achievement_update';
+export const USER_HISTORY_UPDATE = 'user_history_update';

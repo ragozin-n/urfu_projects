@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {View, Slider, Picker} from 'react-native';
 import {connect} from 'react-redux';
-import {taskUpdate} from '../actions';
 import {
 	Form,
 	Item,
@@ -9,22 +8,36 @@ import {
 	Label,
 	Text
 } from 'native-base';
+import {projectInfoUpdate} from '../actions';
 
-class TaskForm extends Component {
+class ProjectForm extends Component {
+	// Handlers
+	handleNameInput = value => {
+		this.props.projectInfoUpdate({prop: 'name', value});
+	}
+
+	handleCountInput = value => {
+		this.props.projectInfoUpdate({prop: 'count', value});
+	}
+
+	handlePriorityInput = value => {
+		this.props.projectInfoUpdate({prop: 'priority', value});
+	}
+
 	render() {
-		const {labelStyle, sliderStyle} = styles;
+		const {labelStyle, sliderStyle, itemStyle, pickerStyle} = styles;
 
 		return (
 			<View>
 				<Form>
 					<Item floatingLabel>
 						<Label>Name</Label>
-						<Input 
+						<Input
 							value={this.props.name}
-							onChangeText={value => this.props.taskUpdate({ prop: 'name', value })}
+							onChangeText={value => this.handleCountInput(value)}
 						/>
 					</Item>
-					<Item style={{flexDirection: 'column', justifyContent: 'center'}}>
+					<Item style={itemStyle}>
 						<Text style={labelStyle}>{this.props.count}</Text>
 						<Slider
 							style={sliderStyle}
@@ -32,17 +45,14 @@ class TaskForm extends Component {
 							maximumValue={50}
 							step={1}
 							value={this.props.count}
-							onValueChange={value => this.props.taskUpdate({prop: 'count', value})}
+							onValueChange={count => this.handleCountInput(count)}
 						/>
 					</Item>
-
-					<Item style={{flexDirection: 'column', justifyContent: 'center'}}>
-
+					<Item style={itemStyle}>
 						<Text style={labelStyle}>Choose priority: </Text>
-
 						<Picker
-							style={styles.pickerStyle}
-							onValueChange={value => this.props.taskUpdate({prop: 'priority', value})}
+							style={pickerStyle}
+							onValueChange={priority => this.handlePriorityInput(priority)}
 							selectedValue={this.props.priority}
 						>
 							<Picker.Item label="High" value="high"/>
@@ -68,12 +78,18 @@ const styles = {
 	},
 	pickerStyle: {
 		width: '100%'
+	},
+	itemStyle: {
+		flexDirection: 'column',
+		justifyContent: 'center'
 	}
 };
 
-const mapStateToProps = ({taskForm}) => {
-	const {name, count, priority} = taskForm;
+const mapStateToProps = ({projectForm}) => {
+	// DEBUG
+	console.log(projectForm);
+	const {name, count, priority} = projectForm;
 	return {name, count, priority};
 };
 
-export default connect(mapStateToProps, {taskUpdate})(TaskForm);
+export default connect(mapStateToProps, {projectInfoUpdate})(ProjectForm);

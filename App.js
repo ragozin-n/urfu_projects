@@ -1,12 +1,13 @@
+/* eslint-disable unicorn/filename-case */
 import React, {Component} from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { Provider } from 'react-redux';
+import {Provider} from 'react-redux';
 import {createStore, applyMiddleware} from 'redux';
-import reducers from './src/reducers';
 import firebase from 'firebase';
 import ReduxThunk from 'redux-thunk';
-import config from './src/config.json';
-import Router from './src/Router';
+import reducers from './src/reducers';
+import config from './src/config';
+import Router from './src/router';
+/* eslint-enable unicorn/filename-case */
 
 export default class App extends Component {
 	componentWillMount() {
@@ -18,7 +19,7 @@ export default class App extends Component {
 
 		return (
 			<Provider store={store}>
-				<Router />
+				<Router/>
 			</Provider>
 		);
 	}
