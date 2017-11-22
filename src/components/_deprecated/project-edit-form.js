@@ -16,8 +16,7 @@ import {
 	Text,
 	Subtitle
 } from 'native-base';
-import {projectInfoUpdate, projectSave, projectDelete} from '../actions';
-import {ConfirmModal} from './common';
+import {projectInfoUpdate, projectSave, projectDelete} from '../../actions';
 import ProjectForm from './project-form';
 
 class ProjectEditForm extends Component {
@@ -87,13 +86,13 @@ class ProjectEditForm extends Component {
 							<Text>Delete</Text>
 						</Button>
 					</View>
-					<ConfirmModal
+					{/* <ConfirmModal
 						visible={this.state.showModal}
 						onAccept={this.handleModalAccept}
 						onReject={this.handleModalWindowToggler}
 					>
 						<Text>Are you sure?</Text>
-					</ConfirmModal>
+					</ConfirmModal> */}
 				</Content>
 			</Container>
 		);

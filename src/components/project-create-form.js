@@ -10,10 +10,7 @@ import {
 	Button,
 	Icon,
 	Title,
-	Text,
-	Right,
-	Card,
-	CardItem
+	Text
 } from 'native-base';
 import {Actions} from 'react-native-router-flux';
 import faker from 'faker';
@@ -24,7 +21,6 @@ import {
 	updateUserHistory,
 	projectCreate
 } from '../actions';
-// import ProjectForm from './project-form';
 
 class ProjectCreateForm extends Component {
 	componentDidMount() {
@@ -32,11 +28,6 @@ class ProjectCreateForm extends Component {
 	}
 
 	// Handlers
-	handleCreateButton = () => {
-		// const {name, count, priority} = this.props;
-		// this.props.projectCreate({name, count, priority: priority || 'high'});
-	}
-
 	handleBackButton = () => {
 		Actions.main();
 	}

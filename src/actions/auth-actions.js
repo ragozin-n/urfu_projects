@@ -15,12 +15,10 @@ const loginUserSuccess = (dispatch, user) => {
 		type: LOGIN_USER_SUCCESS,
 		payload: user
 	});
-
 	Actions.main();
 };
 
 const alertOnDevice = error => {
-	// ALERT ONPRESS EVENTS MAY HAVE LOGIC
 	Alert.alert(
 		'Oops!',
 		error.message,
@@ -33,11 +31,9 @@ const alertOnDevice = error => {
 };
 
 const loginUserFail = (dispatch, error) => {
-	// DEBUG
-	console.log(error);
-
 	dispatch({
-		type: LOGIN_USER_FAIL
+		type: LOGIN_USER_FAIL,
+		payload: error
 	});
 };
 
@@ -58,12 +54,10 @@ export const passwordChanged = text => {
 export const loginUser = ({email, password}) => {
 	return dispatch => {
 		dispatch({type: LOGIN_USER});
-
 		firebase.auth().signInWithEmailAndPassword(email, password)
 			.then(user => loginUserSuccess(dispatch, user))
 			.catch(error => {
 				alertOnDevice(error);
-
 				firebase.auth().createUserWithEmailAndPassword(email, password)
 					.then(user => loginUserSuccess(dispatch, user))
 					.catch(error => loginUserFail(dispatch, error));

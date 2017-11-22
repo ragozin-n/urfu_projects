@@ -16,7 +16,9 @@ import {
 	Easing,
 	Platform
 } from 'react-native';
+/* eslint-disable import/named */
 import {Font, AppLoading} from 'expo';
+/* eslint-enable import/named */
 import {
 	emailChanged,
 	passwordChanged,
@@ -67,14 +69,16 @@ class LoginForm extends Component {
 	// Lifecycle methods
 	componentDidMount() {
 		// Animation Section
-		Animated.timing(
-			this.props.fadeAnimation,
-			{
-				toValue: 1,
-				duration: 900,
-				easing: Easing.quad
-			}
-		).start();
+		if (!this.state.appIsReady) {
+			Animated.timing(
+				this.props.fadeAnimation,
+				{
+					toValue: 1,
+					duration: 1000,
+					easing: Easing.quad
+				}
+			).start();
+		}
 	}
 
 	render() {
@@ -121,6 +125,7 @@ class LoginForm extends Component {
 
 const styles = {
 	containerStyle: {
+		flex: 1,
 		backgroundColor: 'rgba(253, 255, 252, 1)'
 	},
 	loginButtonStyle: {
