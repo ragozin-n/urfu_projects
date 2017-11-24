@@ -116,6 +116,7 @@ class LoginForm extends Component {
 							<Item style={{marginLeft: 0}}>
 								<Icon name="person" style={{color: '#ffffff'}}/>
 								<Input
+									style={{color: '#ffffff'}}
 									placeholderTextColor="#ffffff"
 									placeholder="Логин"
 									onChangeText={this.handleEmailChange}
@@ -125,6 +126,7 @@ class LoginForm extends Component {
 							<Item style={{marginLeft: 0}}>
 								<Icon name="lock" style={{color: '#ffffff'}}/>
 								<Input
+									style={{color: '#ffffff'}}
 									placeholderTextColor="#ffffff"
 									placeholder="Пароль"
 									secureTextEntry={this.state.isPasswordHidden}
