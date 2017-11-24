@@ -7,8 +7,6 @@ import {
 	PROJECT_SAVE_SUCCESS
 } from './types';
 
-// 1. RENAME URLS FROM 'TASKS' TO 'EVENTS'
-
 export const projectInfoUpdate = ({prop, value}) => {
 	return {
 		type: PROJECT_INFO_UPDATE,

@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {StyleSheet, Alert} from 'react-native';
-import {Actions} from 'react-native-router-flux';
 import {
 	ListItem,
 	Left,
@@ -12,6 +11,7 @@ import {
 } from 'native-base';
 
 class ProjectListItem extends Component {
+
 	handleRowPress = () => {
 		// DEPRECATED
 		// Actions.editProject({project: this.props.project});
@@ -27,7 +27,7 @@ class ProjectListItem extends Component {
 	}
 
 	render() {
-		const {name, description, photoBase64} = this.props.project;
+		const {name, description} = this.props.project;
 		const {projectListItem} = styles;
 
 		return (

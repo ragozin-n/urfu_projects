@@ -8,7 +8,7 @@ import {
 	Label,
 	Text
 } from 'native-base';
-import {projectInfoUpdate} from '../actions';
+import {projectInfoUpdate} from '../../actions';
 
 class ProjectForm extends Component {
 	// Handlers

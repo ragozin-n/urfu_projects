@@ -5,7 +5,7 @@ import {
 	Spinner,
 	Form,
 	Item,
-	Label,
+	Icon,
 	Input,
 	Container
 } from 'native-base';
@@ -16,7 +16,9 @@ import {
 	Easing,
 	Platform
 } from 'react-native';
-import {Font, AppLoading} from 'expo';
+/* eslint-disable import/named */
+import {Font, AppLoading, LinearGradient} from 'expo';
+/* eslint-enable import/named */
 import {
 	emailChanged,
 	passwordChanged,
@@ -25,7 +27,8 @@ import {
 
 class LoginForm extends Component {
 	state = {
-		appIsReady: false
+		appIsReady: false,
+		isPasswordHidden: true
 	}
 
 	// Handlers
@@ -42,13 +45,17 @@ class LoginForm extends Component {
 		this.props.loginUser({email, password});
 	}
 
+	handlePasswordVisibility = () => {
+		this.setState({isPasswordHidden: !this.state.isPasswordHidden});
+	}
+
 	// Custom components
 	renderButton = () => {
 		if (this.props.loading) {
 			return <Spinner style={{marginTop: 20}} color="rgba(231, 29, 54, 1)"/>;
 		}
 		return (
-			<Button onPress={this.handleLogin} style={styles.loginButtonStyle}>
+			<Button full bordered light onPress={this.handleLogin} style={styles.loginButtonStyle}>
 				<Text style={styles.loginButtonTextStyle}>Войти</Text>
 			</Button>
 		);
@@ -67,17 +74,21 @@ class LoginForm extends Component {
 	// Lifecycle methods
 	componentDidMount() {
 		// Animation Section
-		Animated.timing(
-			this.props.fadeAnimation,
-			{
-				toValue: 1,
-				duration: 900,
-				easing: Easing.quad
-			}
-		).start();
+		if (!this.state.appIsReady) {
+			Animated.timing(
+				this.props.fadeAnimation,
+				{
+					toValue: 1,
+					duration: 1000,
+					easing: Easing.quad
+				}
+			).start();
+		}
 	}
 
 	render() {
+		const {containerStyle, logoStyle, formStyle, backgroundGradientStyle, passwordRestoreStyle} = styles;
+
 		if (!this.state.appIsReady) {
 			return (
 				<AppLoading/>
@@ -85,35 +96,50 @@ class LoginForm extends Component {
 		}
 
 		return (
-			<Container style={styles.containerStyle}>
-				<Animated.View
-					style={{
-						opacity: this.props.fadeAnimation
-					}}
+			<Container style={containerStyle}>
+				<LinearGradient
+					colors={['#e01473', '#da281c', '#f8c301']}
+					style={backgroundGradientStyle}
 				>
-					<Image
-						source={require('../images/urfu-logo.png')}
-						style={styles.logoStyle}
-					/>
-					<Form style={styles.formStyle}>
-						<Item floatingLabel>
-							<Label style={styles.labelTextStyle}>Логин</Label>
-							<Input
-								onChangeText={this.handleEmailChange}
-								value={this.props.email}
-							/>
-						</Item>
-						<Item floatingLabel last>
-							<Label style={styles.labelTextStyle}>Пароль</Label>
-							<Input
-								secureTextEntry
-								onChangeText={this.handlePasswordChange}
-								value={this.props.password}
-							/>
-						</Item>
-						{this.renderButton()}
-					</Form>
-				</Animated.View>
+					<Animated.View
+						style={{
+							opacity: this.props.fadeAnimation,
+							flexDirection: 'column',
+							flex: 1
+						}}
+					>
+						<Image
+							source={require('../images/urfu-logo.png')}
+							style={logoStyle}
+						/>
+						<Form style={formStyle}>
+							<Item style={{marginLeft: 0}}>
+								<Icon name="person" style={{color: '#ffffff'}}/>
+								<Input
+									placeholderTextColor="#ffffff"
+									placeholder="Логин"
+									onChangeText={this.handleEmailChange}
+									value={this.props.email}
+								/>
+							</Item>
+							<Item style={{marginLeft: 0}}>
+								<Icon name="lock" style={{color: '#ffffff'}}/>
+								<Input
+									placeholderTextColor="#ffffff"
+									placeholder="Пароль"
+									secureTextEntry={this.state.isPasswordHidden}
+									onChangeText={this.handlePasswordChange}
+									value={this.props.password}
+								/>
+								<Icon name={this.state.isPasswordHidden ? 'eye-off' : 'eye'} onPress={this.handlePasswordVisibility} style={{color: '#ffffff'}}/>
+							</Item>
+							{this.renderButton()}
+						</Form>
+					</Animated.View>
+					<Button transparent light style={passwordRestoreStyle}>
+						<Text>Забыли пароль?</Text>
+					</Button>
+				</LinearGradient>
 			</Container>
 		);
 	}
@@ -121,23 +147,29 @@ class LoginForm extends Component {
 
 const styles = {
 	containerStyle: {
-		backgroundColor: 'rgba(253, 255, 252, 1)'
+		flex: 1
 	},
 	loginButtonStyle: {
-		marginTop: 40,
-		backgroundColor: 'rgba(231, 29, 54, 1)',
+		marginTop: '40%',
+		backgroundColor: 'rgba(255, 255, 255, 1)',
 		alignSelf: 'center',
 
-		// Чуть покруглей
-		borderRadius: 6,
+		// Квадратная наверное только у андроида
+		borderRadius: (Platform.OS === 'ios') ? 6 : 0,
 
 		// Чуть помясистей
-		padding: (Platform.OS === 'ios') ? 60 : 25
+		paddingLeft: 90,
+		paddingRight: 90,
+		marginLeft: 0,
+		marginRight: 0
 	},
 	formStyle: {
-		marginTop: 15,
-		marginLeft: 25,
-		marginRight: 25
+		flex: 1,
+		flexDirection: 'column',
+		marginLeft: '12%',
+		marginRight: '12%',
+		padding: 0,
+		marginTop: 60
 	},
 	logoStyle: {
 		// Покрупней
@@ -150,13 +182,21 @@ const styles = {
 		marginBottom: 10,
 		marginLeft: 40,
 		marginRight: 40,
-		marginTop: (Platform.OS === 'ios') ? 130 : 60
+		marginTop: (Platform.OS === 'ios') ? 150 : 80
 	},
 	loginButtonTextStyle: {
+		color: '#da3622',
 		fontFamily: 'Roboto'
 	},
-	labelTextStyle: {
-		fontFamily: 'Roboto'
+	backgroundGradientStyle: {
+		flex: 1,
+		flexDirection: 'column',
+		margin: 0
+	},
+	passwordRestoreStyle: {
+		position: 'absolute',
+		alignSelf: 'center',
+		bottom: 0
 	}
 };
 
