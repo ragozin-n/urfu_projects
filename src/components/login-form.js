@@ -55,8 +55,8 @@ class LoginForm extends Component {
 			return <Spinner style={{marginTop: 20}} color="rgba(231, 29, 54, 1)"/>;
 		}
 		return (
-			<Button full bordered light onPress={this.handleLogin} style={styles.loginButtonStyle}>
-				<Text style={styles.loginButtonTextStyle}>Войти</Text>
+			<Button bordered light onPress={this.handleLogin} style={styles.loginButtonStyle}>
+				<Text uppercase={false} style={styles.loginButtonTextStyle}>Войти</Text>
 			</Button>
 		);
 	}
@@ -109,7 +109,7 @@ class LoginForm extends Component {
 						}}
 					>
 						<Image
-							source={require('../images/urfu-logo.png')}
+							source={require('../images/logo.png')}
 							style={logoStyle}
 						/>
 						<Form style={formStyle}>
@@ -117,7 +117,7 @@ class LoginForm extends Component {
 								<Icon name="person" style={{color: '#ffffff'}}/>
 								<Input
 									style={{color: '#ffffff'}}
-									placeholderTextColor="#ffffff"
+									placeholderTextColor="rgba(255, 255, 255, 0.8)"
 									placeholder="Логин"
 									onChangeText={this.handleEmailChange}
 									value={this.props.email}
@@ -126,20 +126,20 @@ class LoginForm extends Component {
 							<Item style={{marginLeft: 0}}>
 								<Icon name="lock" style={{color: '#ffffff'}}/>
 								<Input
-									style={{color: '#ffffff'}}
-									placeholderTextColor="#ffffff"
+									style={{color: '#ffffff', marginLeft: 2}}
+									placeholderTextColor="rgba(255, 255, 255, 0.8)"
 									placeholder="Пароль"
 									secureTextEntry={this.state.isPasswordHidden}
 									onChangeText={this.handlePasswordChange}
 									value={this.props.password}
 								/>
-								<Icon name={this.state.isPasswordHidden ? 'eye-off' : 'eye'} onPress={this.handlePasswordVisibility} style={{color: '#ffffff'}}/>
+								<Icon name={this.state.isPasswordHidden ? 'eye-off' : 'eye'} onPress={this.handlePasswordVisibility} style={{color: 'rgba(255, 255, 255, 0.7)'}}/>
 							</Item>
 							{this.renderButton()}
 						</Form>
 					</Animated.View>
 					<Button transparent light style={passwordRestoreStyle}>
-						<Text>Забыли пароль?</Text>
+						<Text uppercase={false} style={styles.passwordRestoreTextStyle}>Забыли пароль?</Text>
 					</Button>
 				</LinearGradient>
 			</Container>
@@ -152,48 +152,57 @@ const styles = {
 		flex: 1
 	},
 	loginButtonStyle: {
-		marginTop: '40%',
+		marginTop: '25%',
+		width: '100%',
 		backgroundColor: 'rgba(255, 255, 255, 1)',
 		alignSelf: 'center',
+		justifyContent: 'center',
 
-		// Квадратная наверное только у андроида
+		//Квадратная наверное только у андроида
 		borderRadius: (Platform.OS === 'ios') ? 6 : 0,
 
 		// Чуть помясистей
-		paddingLeft: 90,
-		paddingRight: 90,
-		marginLeft: 0,
-		marginRight: 0
+		//paddingLeft: 90,
+		//paddingRight: 90,
+		//marginLeft: 0,
+		//marginRight: 0
 	},
 	formStyle: {
 		flex: 1,
 		flexDirection: 'column',
-		marginLeft: '12%',
-		marginRight: '12%',
+		marginLeft: '10%',
+		marginRight: '10%',
 		padding: 0,
 		marginTop: 60
 	},
 	logoStyle: {
 		// Покрупней
-		height: 150,
+		height: 110,
 
 		resizeMode: 'contain',
 		alignSelf: 'center',
 
 		// Поиграться с resizeMode
 		marginBottom: 10,
-		marginLeft: 40,
+		marginLeft: 30,
 		marginRight: 40,
 		marginTop: (Platform.OS === 'ios') ? 150 : 80
 	},
 	loginButtonTextStyle: {
 		color: '#da3622',
-		fontFamily: 'Roboto'
+		fontFamily: 'Roboto',
+		fontSize: 17
 	},
 	backgroundGradientStyle: {
 		flex: 1,
 		flexDirection: 'column',
 		margin: 0
+	},
+	passwordRestoreTextStyle: {
+		color: 'rgba(255, 255, 255, 0.9)',
+		fontFamily: 'Roboto',
+		fontSize: 15,
+		marginBottom: '3%'
 	},
 	passwordRestoreStyle: {
 		position: 'absolute',
