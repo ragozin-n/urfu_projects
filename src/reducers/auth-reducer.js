@@ -8,8 +8,8 @@ import {
 
 // !!!!!!!
 const INITIAL_STATE = {
-	email: 'User@test.com',
-	password: 'password',
+	email: '',
+	password: '',
 	user: null,
 	error: '',
 	loading: false
