@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Alert} from 'react-native';
+import {Alert} from 'react-native';
 import {
 	ListItem,
 	Left,
@@ -9,6 +9,7 @@ import {
 	Thumbnail,
 	Button
 } from 'native-base';
+import styles from './styles/projects-list';
 
 class ProjectListItem extends Component {
 
@@ -49,15 +50,5 @@ class ProjectListItem extends Component {
 		);
 	}
 }
-
-const styles = StyleSheet.create({
-	projectListItem: {
-		marginLeft: 0,
-		paddingLeft: 0,
-		paddingRight: 0,
-		marginRight: 0,
-		backgroundColor: 'rgba(253, 255, 252, 1)'
-	}
-});
 
 export default ProjectListItem;

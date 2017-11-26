@@ -117,6 +117,7 @@ class ProjectCreateForm extends Component {
 	}
 }
 
+// Вся форма тут исключительно для дебага, так что нет смысла что-то менять
 const styles = {
 	containerStyle: {
 		backgroundColor: 'rgba(253, 255, 252, 1)'

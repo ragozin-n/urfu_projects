@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {FlatList, Platform, View} from 'react-native';
+import {FlatList, View} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import {
 	Container,
@@ -19,6 +19,7 @@ import {connect} from 'react-redux';
 import _ from 'lodash';
 import {projectsFetch} from '../actions';
 import ProjectListItem from './project-list-item';
+import styles from './styles/projects-list';
 
 class ProjectsList extends Component {
 	state = {
@@ -65,7 +66,11 @@ class ProjectsList extends Component {
 	}
 
 	render() {
-		const {containerStyle, headerStyle, iconStyle} = styles;
+		const {
+			containerStyle,
+			headerStyle,
+			iconStyle
+		} = styles;
 
 		return (
 			<Container style={containerStyle}>
@@ -113,18 +118,6 @@ class ProjectsList extends Component {
 		);
 	}
 }
-
-const styles = {
-	headerStyle: {
-		backgroundColor: 'rgba(231, 29, 54, 1)'
-	},
-	containerStyle: {
-		backgroundColor: 'rgba(253, 255, 252, 1)'
-	},
-	iconStyle: {
-		color: (Platform.OS === 'android') ? 'white' : 'black'
-	}
-};
 
 const mapStateToProps = state => {
 	const projects = _.map(state.projects, (val, uid) => {
