@@ -8,9 +8,6 @@ import {
 } from '../styles';
 
 export default StyleSheet.create({
-	containerStyle: {
-		flex: 1
-	},
 	loginButtonStyle: {
 		marginTop: '25%',
 		width: '100%',

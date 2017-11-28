@@ -8,16 +8,16 @@ import {
 	Item,
 	Icon,
 	Input,
-	Container
+	Content
 } from 'native-base';
 import {
 	Image,
 	Animated,
-	Easing
+	Easing,
+	Keyboard
 } from 'react-native';
-/* eslint-disable import/named */
+// eslint-disable-next-line import/named
 import {Font, AppLoading, LinearGradient} from 'expo';
-/* eslint-enable import/named */
 import {
 	emailChanged,
 	passwordChanged,
@@ -89,7 +89,6 @@ class LoginForm extends Component {
 
 	render() {
 		const {
-			containerStyle,
 			logoStyle,
 			formStyle,
 			backgroundGradientStyle,
@@ -108,11 +107,11 @@ class LoginForm extends Component {
 		}
 
 		return (
-			<Container style={containerStyle}>
-				<LinearGradient
-					colors={LOGIN_GRADIENT_COLORS}
-					style={backgroundGradientStyle}
-				>
+			<LinearGradient
+				colors={LOGIN_GRADIENT_COLORS}
+				style={backgroundGradientStyle}
+			>
+				<Content keyboardShouldPersistTaps="never">
 					<Animated.View
 						style={[
 							animatedViewStyle,
@@ -132,6 +131,8 @@ class LoginForm extends Component {
 									placeholder="Логин"
 									onChangeText={this.handleEmailChange}
 									value={this.props.email}
+									// eslint-disable-next-line react/jsx-handler-names
+									onSubmitEditing={Keyboard.dismiss}
 								/>
 							</Item>
 							<Item style={itemFixStyle}>
@@ -143,17 +144,19 @@ class LoginForm extends Component {
 									secureTextEntry={this.state.isPasswordHidden}
 									onChangeText={this.handlePasswordChange}
 									value={this.props.password}
+									// eslint-disable-next-line react/jsx-handler-names
+									onSubmitEditing={Keyboard.dismiss}
 								/>
 								<Icon name={this.state.isPasswordHidden ? 'eye-off' : 'eye'} onPress={this.handlePasswordVisibility} style={inputIconStyle}/>
 							</Item>
 							{this.renderButton()}
 						</Form>
 					</Animated.View>
-					<Button transparent light style={passwordRestoreStyle}>
-						<Text uppercase={false} style={passwordRestoreTextStyle}>Забыли пароль?</Text>
-					</Button>
-				</LinearGradient>
-			</Container>
+				</Content>
+				<Button transparent light style={passwordRestoreStyle}>
+					<Text uppercase={false} style={passwordRestoreTextStyle}>Забыли пароль?</Text>
+				</Button>
+			</LinearGradient>
 		);
 	}
 }
