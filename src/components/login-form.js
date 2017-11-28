@@ -138,21 +138,25 @@ class LoginForm extends Component {
 									placeholder="Логин"
 									onChangeText={this.handleEmailChange}
 									value={this.props.email}
-									// eslint-disable-next-line react/jsx-handler-names
-									onSubmitEditing={Keyboard.dismiss}
+									returnKeyType="next"
+									keyboardType="email-address"
+									autoFocus
+									onSubmitEditing={() => this.passwordInput._root.focus()}
 								/>
 							</Item>
 							<Item style={itemFixStyle}>
 								<Icon name="lock" style={inputIconStyle}/>
 								<Input
+									ref={input => this.passwordInput = input}
+									returnKeyType="send"
+									selectTextOnFocus
 									style={inputStyle}
 									placeholderTextColor={INPUT_PLACEHOLDER_TEXT_COLOR}
 									placeholder="Пароль"
 									secureTextEntry={this.state.isPasswordHidden}
 									onChangeText={this.handlePasswordChange}
 									value={this.props.password}
-									// eslint-disable-next-line react/jsx-handler-names
-									onSubmitEditing={Keyboard.dismiss}
+									onSubmitEditing={this.handleLogin}
 								/>
 								<Icon name={this.state.isPasswordHidden ? 'eye-off' : 'eye'} onPress={this.handlePasswordVisibility} style={inputIconStyle}/>
 							</Item>
