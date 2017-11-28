@@ -24,7 +24,11 @@ import {
 	loginUser
 } from '../actions';
 import styles from './styles/login-form-styles';
-import {LOGIN_GRADIENT_COLORS, INPUT_PLACEHOLDER_TEXT_COLOR, SPINNER_COLOR} from './styles/';
+import {
+	LOGIN_GRADIENT_COLORS,
+	INPUT_PLACEHOLDER_TEXT_COLOR,
+	SPINNER_COLOR
+} from './styles/';
 
 class LoginForm extends Component {
 	state = {
@@ -62,6 +66,7 @@ class LoginForm extends Component {
 		);
 	}
 
+	// Lifecycle methods
 	async componentWillMount() {
 		/* eslint-disable camelcase, import/no-extraneous-dependencies */
 		await Font.loadAsync({
@@ -72,7 +77,6 @@ class LoginForm extends Component {
 		this.setState({appIsReady: true});
 	}
 
-	// Lifecycle methods
 	componentDidMount() {
 		// Animation Section
 		if (!this.state.appIsReady) {
@@ -111,7 +115,10 @@ class LoginForm extends Component {
 				colors={LOGIN_GRADIENT_COLORS}
 				style={backgroundGradientStyle}
 			>
-				<Content keyboardShouldPersistTaps="never">
+				<Content
+					keyboardShouldPersistTaps="never"
+					scrollEnabled={false}
+				>
 					<Animated.View
 						style={[
 							animatedViewStyle,

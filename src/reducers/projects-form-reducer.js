@@ -13,7 +13,6 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
 	switch (action.type) {
 		case PROJECT_INFO_UPDATE:
-			// ES6 key interpolation
 			return {...state, [action.payload.prop]: action.payload.value};
 		case PROJECT_SAVE_SUCCESS:
 		case PROJECT_CREATE:
