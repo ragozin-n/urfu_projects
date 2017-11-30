@@ -11,9 +11,9 @@ import {
 	Title,
 	Icon,
 	Button,
-	Footer,
-	FooterTab,
-	Text
+	Text,
+	Tabs,
+	Tab
 } from 'native-base';
 import {connect} from 'react-redux';
 import _ from 'lodash';
@@ -22,9 +22,6 @@ import ProjectListItem from './project-list-item';
 import styles from './styles/projects-list';
 
 class ProjectsList extends Component {
-	state = {
-		selectedTab: 'projects'
-	}
 
 	// Handlers
 	handleAddProjectEvent = () => {
@@ -35,37 +32,18 @@ class ProjectsList extends Component {
 		return <ProjectListItem project={project}/>;
 	}
 
-	renderSelectedTab = () => {
-		// Тут все красиво берется из папочки tabs, но пока так.
-		switch (this.state.selectedTab) {
-			case 'profile':
-				return (<Text>Profile</Text>);
-			case 'projects':
-				return (
-					<FlatList
-						data={this.props.projects}
-						renderItem={({item}) => this.renderRow(item)}
-						keyExtractor={item => item.uid}
-					/>
-				);
-			case 'contact_us':
-				return (<Text>Contact us</Text>);
-			default:
-				return (<View/>);
-		}
-	}
-
 	// Lifecycle methods
 	componentWillMount() {
 		this.props.projectsFetch();
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		// Тут мы боремся с ререндером при тапе на active tab
-		return this.state.selectedTab !== nextState.selectedTab || this.props !== nextProps;
-	}
+	// shouldComponentUpdate(nextProps, nextState) {
+	// 	// Тут мы боремся с ререндером при тапе на active tab
+	// 	return this.state.selectedTab !== nextState.selectedTab || this.props !== nextProps;
+	// }
 
 	render() {
+		console.log('I render!');
 		const {
 			containerStyle,
 			headerStyle,
@@ -74,7 +52,7 @@ class ProjectsList extends Component {
 
 		return (
 			<Container style={containerStyle}>
-				<Header style={headerStyle}>
+				<Header style={headerStyle} hasTabs>
 					<Left/>
 					<Body>
 						<Title>Projects</Title>
@@ -86,34 +64,24 @@ class ProjectsList extends Component {
 					</Right>
 				</Header>
 				<Content>
-					{this.renderSelectedTab()}
-				</Content>
-				<Footer>
-					{/* Можно тоже по сути выкинуть в отдельный компонент */}
-					<FooterTab>
-						<Button
-							active={this.state.selectedTab === 'profile'}
-							onPress={() => this.setState({selectedTab: 'profile'})}
-						>
+					<Tabs initialPage={1}>
+						<Tab heading="Tab1">
 							<Text>Profile</Text>
 							<Icon name="contact"/>
-						</Button>
-						<Button
-							active={this.state.selectedTab === 'projects'}
-							onPress={() => this.setState({selectedTab: 'projects'})}
-						>
-							<Text>Projects</Text>
-							<Icon name="home"/>
-						</Button>
-						<Button
-							active={this.state.selectedTab === 'contact_us'}
-							onPress={() => this.setState({selectedTab: 'contact_us'})}
-						>
+						</Tab>
+						<Tab heading="Tab2">
+							<FlatList
+								data={this.props.projects}
+								renderItem={({item}) => this.renderRow(item)}
+								keyExtractor={item => item.uid}
+							/>
+						</Tab>
+						<Tab heading="Tab3">
 							<Text>Contact us</Text>
 							<Icon name="send"/>
-						</Button>
-					</FooterTab>
-				</Footer>
+						</Tab>
+					</Tabs>
+				</Content>
 			</Container>
 		);
 	}
