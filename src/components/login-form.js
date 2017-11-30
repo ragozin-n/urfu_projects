@@ -34,7 +34,6 @@ class LoginForm extends Component {
 		isPasswordHidden: true
 	}
 
-	// Handlers
 	handleEmailChange = text => {
 		this.props.emailChanged(text);
 	}
@@ -52,11 +51,11 @@ class LoginForm extends Component {
 		this.setState({isPasswordHidden: !this.state.isPasswordHidden});
 	}
 
-	// Custom components
 	renderButton = () => {
 		if (this.props.loading) {
 			return <Spinner style={styles.spinnerStyle} color={SPINNER_COLOR}/>;
 		}
+
 		return (
 			<Button full bordered light onPress={this.handleLogin} style={styles.loginButtonStyle}>
 				<Text uppercase={false} style={styles.loginButtonTextStyle}>Войти</Text>
@@ -65,8 +64,6 @@ class LoginForm extends Component {
 	}
 
 	componentDidMount() {
-		console.log('Animation start');
-		// Animation Section
 		Animated.timing(
 			this.props.fadeAnimation,
 			{
@@ -90,7 +87,6 @@ class LoginForm extends Component {
 			passwordRestoreTextStyle
 		} = styles;
 
-		console.log('render screen');
 		return (
 			<LinearGradient
 				colors={LOGIN_GRADIENT_COLORS}
@@ -155,9 +151,8 @@ class LoginForm extends Component {
 
 const mapStateToProps = ({auth}) => {
 	const {email, password, error, loading} = auth;
-
-	// Variable for animation
 	const fadeAnimation = new Animated.Value(0);
+
 	return {email, password, error, loading, fadeAnimation};
 };
 

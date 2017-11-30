@@ -14,8 +14,7 @@ import styles from './styles/projects-list';
 class ProjectListItem extends Component {
 
 	handleRowPress = () => {
-		// DEPRECATED
-		// Actions.editProject({project: this.props.project});
+		// Project info logic. May be new screen or modal window.
 	}
 
 	handleApplyAction = (name, description) => {

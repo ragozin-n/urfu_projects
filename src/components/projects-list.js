@@ -1,14 +1,10 @@
 import React, {Component} from 'react';
-import {FlatList, View} from 'react-native';
+import {FlatList} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import {
 	Container,
 	Header,
 	Content,
-	Left,
-	Body,
-	Right,
-	Title,
 	Icon,
 	Button,
 	Text,
@@ -18,18 +14,17 @@ import {
 	Item,
 	Input
 } from 'native-base';
+// eslint-disable-next-line import/named
 import {LinearGradient} from 'expo';
-import {LOGIN_GRADIENT_COLORS} from './styles/colors'
 import {connect} from 'react-redux';
 import _ from 'lodash';
 import {projectsFetch} from '../actions';
+import {LOGIN_GRADIENT_COLORS} from './styles/colors';
 import ProjectListItem from './project-list-item';
 import styles from './styles/projects-list';
-import { LOGIN_BUTTON_COLOR } from './styles/index';
 
 class ProjectsList extends Component {
 
-	// Handlers
 	handleAddProjectEvent = () => {
 		Actions.createProject();
 	}
@@ -38,23 +33,18 @@ class ProjectsList extends Component {
 		return <ProjectListItem project={project}/>;
 	}
 
-	// Lifecycle methods
 	componentWillMount() {
 		this.props.projectsFetch();
 	}
 
 	render() {
-		console.log('I render!');
 		const {
-			containerStyle,
-			headerStyle,
-			iconStyle
+			containerStyle
 		} = styles;
 
 		return (
 			<Container style={containerStyle}>
-				// Направлениями start end управляем градиентом.
-				<LinearGradient style={{flex: 1}} colors={LOGIN_GRADIENT_COLORS}>	
+				<LinearGradient style={{flex: 1}} colors={LOGIN_GRADIENT_COLORS}>
 					<Header hasTabs searchBar style={{backgroundColor: 'transparent'}}>
 						<Item style={{backgroundColor: 'transparent'}}>
 							<Icon name="ios-search"/>
@@ -67,16 +57,31 @@ class ProjectsList extends Component {
 					</Header>
 					<Content scrollEnabled={false} style={{backgroundColor: 'transparent'}}>
 						<Tabs initialPage={0}>
-							<Tab heading={<TabHeading style={{ backgroundColor: 'transparent'}}><Text>Projects</Text></TabHeading>}>
+							<Tab
+								heading={
+									<TabHeading style={{backgroundColor: 'transparent'}}>
+										<Text>Projects</Text>
+									</TabHeading>}
+							>
 								<FlatList
 									style={{flex: 1}}
 									data={this.props.projects}
-									renderItem={({ item }) => this.renderRow(item)}
+									renderItem={({item}) => this.renderRow(item)}
 									keyExtractor={item => item.uid}
 								/>
 							</Tab>
-							<Tab heading={<TabHeading style={{backgroundColor: 'transparent'}}><Text>Bio</Text></TabHeading>}/>
-							<Tab heading={<TabHeading style={{backgroundColor: 'transparent'}}><Text>Settings</Text></TabHeading>}/>
+							<Tab
+								heading={
+									<TabHeading style={{backgroundColor: 'transparent'}}>
+										<Text>Bio</Text>
+									</TabHeading>}
+							/>
+							<Tab
+								heading={
+									<TabHeading style={{backgroundColor: 'transparent'}}>
+										<Text>Settings</Text>
+									</TabHeading>}
+							/>
 						</Tabs>
 					</Content>
 				</LinearGradient>

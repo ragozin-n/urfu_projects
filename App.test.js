@@ -1,10 +1,8 @@
-/* eslint-disable unicorn/filename-case */
+// eslint-disable-next-line unicorn/filename-case
 import React from 'react';
 import renderer from 'react-test-renderer';
-/* eslint-disable import/no-unresolved */
+// eslint-disable-next-line import/no-unresolved
 import App from './app';
-/* eslint-enable import/no-unresolved */
-/* eslint-enable unicorn/filename-case */
 
 it('renders without crashing', () => {
 	const rendered = renderer.create(<App/>).toJSON();
