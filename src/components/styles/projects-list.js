@@ -10,8 +10,7 @@ import {
 
 export default StyleSheet.create({
 	headerStyle: {
-		backgroundColor: HEADER_COLOR,
-		marginTop: 20
+		backgroundColor: HEADER_COLOR
 	},
 	containerStyle: {
 		backgroundColor: PROJECTS_LIST_BACKGROUND_COLOR

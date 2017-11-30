@@ -13,13 +13,19 @@ import {
 	Button,
 	Text,
 	Tabs,
-	Tab
+	Tab,
+	TabHeading,
+	Item,
+	Input
 } from 'native-base';
+import {LinearGradient} from 'expo';
+import {LOGIN_GRADIENT_COLORS} from './styles/colors'
 import {connect} from 'react-redux';
 import _ from 'lodash';
 import {projectsFetch} from '../actions';
 import ProjectListItem from './project-list-item';
 import styles from './styles/projects-list';
+import { LOGIN_BUTTON_COLOR } from './styles/index';
 
 class ProjectsList extends Component {
 
@@ -37,11 +43,6 @@ class ProjectsList extends Component {
 		this.props.projectsFetch();
 	}
 
-	// shouldComponentUpdate(nextProps, nextState) {
-	// 	// Тут мы боремся с ререндером при тапе на active tab
-	// 	return this.state.selectedTab !== nextState.selectedTab || this.props !== nextProps;
-	// }
-
 	render() {
 		console.log('I render!');
 		const {
@@ -52,36 +53,33 @@ class ProjectsList extends Component {
 
 		return (
 			<Container style={containerStyle}>
-				<Header style={headerStyle} hasTabs>
-					<Left/>
-					<Body>
-						<Title>Projects</Title>
-					</Body>
-					<Right>
-						<Button transparent onPress={this.handleAddProjectEvent}>
-							<Icon name="cog" style={iconStyle}/>
+				// Направлениями start end управляем градиентом.
+				<LinearGradient style={{flex: 1}} colors={LOGIN_GRADIENT_COLORS}>	
+					<Header hasTabs searchBar style={{backgroundColor: 'transparent'}}>
+						<Item style={{backgroundColor: 'transparent'}}>
+							<Icon name="ios-search"/>
+							<Input placeholder="Search"/>
+							<Icon name="ios-people"/>
+						</Item>
+						<Button transparent>
+							<Text>Search</Text>
 						</Button>
-					</Right>
-				</Header>
-				<Content>
-					<Tabs initialPage={1}>
-						<Tab heading="Tab1">
-							<Text>Profile</Text>
-							<Icon name="contact"/>
-						</Tab>
-						<Tab heading="Tab2">
-							<FlatList
-								data={this.props.projects}
-								renderItem={({item}) => this.renderRow(item)}
-								keyExtractor={item => item.uid}
-							/>
-						</Tab>
-						<Tab heading="Tab3">
-							<Text>Contact us</Text>
-							<Icon name="send"/>
-						</Tab>
-					</Tabs>
-				</Content>
+					</Header>
+					<Content scrollEnabled={false} style={{backgroundColor: 'transparent'}}>
+						<Tabs initialPage={0}>
+							<Tab heading={<TabHeading style={{ backgroundColor: 'transparent'}}><Text>Projects</Text></TabHeading>}>
+								<FlatList
+									style={{flex: 1}}
+									data={this.props.projects}
+									renderItem={({ item }) => this.renderRow(item)}
+									keyExtractor={item => item.uid}
+								/>
+							</Tab>
+							<Tab heading={<TabHeading style={{backgroundColor: 'transparent'}}><Text>Bio</Text></TabHeading>}/>
+							<Tab heading={<TabHeading style={{backgroundColor: 'transparent'}}><Text>Settings</Text></TabHeading>}/>
+						</Tabs>
+					</Content>
+				</LinearGradient>
 			</Container>
 		);
 	}

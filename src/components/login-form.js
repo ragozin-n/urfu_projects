@@ -13,11 +13,10 @@ import {
 import {
 	Image,
 	Animated,
-	Easing,
-	Keyboard
+	Easing
 } from 'react-native';
 // eslint-disable-next-line import/named
-import {Font, AppLoading, LinearGradient} from 'expo';
+import {LinearGradient} from 'expo';
 import {
 	emailChanged,
 	passwordChanged,
@@ -32,7 +31,6 @@ import {
 
 class LoginForm extends Component {
 	state = {
-		appIsReady: false,
 		isPasswordHidden: true
 	}
 
@@ -60,35 +58,23 @@ class LoginForm extends Component {
 			return <Spinner style={styles.spinnerStyle} color={SPINNER_COLOR}/>;
 		}
 		return (
-			<Button bordered light onPress={this.handleLogin} style={styles.loginButtonStyle}>
+			<Button full bordered light onPress={this.handleLogin} style={styles.loginButtonStyle}>
 				<Text uppercase={false} style={styles.loginButtonTextStyle}>Войти</Text>
 			</Button>
 		);
 	}
 
-	// Lifecycle methods
-	async componentWillMount() {
-		/* eslint-disable camelcase, import/no-extraneous-dependencies */
-		await Font.loadAsync({
-			Roboto: require('native-base/Fonts/Roboto.ttf'),
-			Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf')
-		});
-		/* eslint-disable camelcase, import/no-extraneous-dependencies */
-		this.setState({appIsReady: true});
-	}
-
 	componentDidMount() {
+		console.log('Animation start');
 		// Animation Section
-		if (!this.state.appIsReady) {
-			Animated.timing(
-				this.props.fadeAnimation,
-				{
-					toValue: 1,
-					duration: 1000,
-					easing: Easing.quad
-				}
-			).start();
-		}
+		Animated.timing(
+			this.props.fadeAnimation,
+			{
+				toValue: 1,
+				duration: 1000,
+				easing: Easing.quad
+			}
+		).start();
 	}
 
 	render() {
@@ -104,12 +90,7 @@ class LoginForm extends Component {
 			passwordRestoreTextStyle
 		} = styles;
 
-		if (!this.state.appIsReady) {
-			return (
-				<AppLoading/>
-			);
-		}
-
+		console.log('render screen');
 		return (
 			<LinearGradient
 				colors={LOGIN_GRADIENT_COLORS}
@@ -125,11 +106,11 @@ class LoginForm extends Component {
 							{opacity: this.props.fadeAnimation}
 						]}
 					>
-						<Image
-							source={require('../images/logo.png')}
-							style={logoStyle}
-						/>
 						<Form style={formStyle}>
+							<Image
+								source={require('../images/logo.png')}
+								style={logoStyle}
+							/>
 							<Item style={itemFixStyle}>
 								<Icon name="person" style={inputIconStyle}/>
 								<Input
