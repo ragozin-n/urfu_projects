@@ -3,27 +3,26 @@ import {FlatList} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import {
 	Container,
-	Header,
 	Content,
 	Icon,
-	Button,
-	Text,
 	Tabs,
 	Tab,
-	TabHeading,
-	Item,
-	Input
+	TabHeading
 } from 'native-base';
 // eslint-disable-next-line import/named
 import {LinearGradient} from 'expo';
 import {connect} from 'react-redux';
 import _ from 'lodash';
 import {projectsFetch} from '../actions';
+import SearchHeader from './common/search-header';
 import {LOGIN_GRADIENT_COLORS} from './styles/colors';
 import ProjectListItem from './project-list-item';
-import styles from './styles/projects-list';
+import styles from './styles/projects-list-styles';
 
 class ProjectsList extends Component {
+	state = {
+		isHeaderSearch: false
+	}
 
 	handleAddProjectEvent = () => {
 		Actions.createProject();
@@ -37,30 +36,28 @@ class ProjectsList extends Component {
 		this.props.projectsFetch();
 	}
 
+	shouldComponentUpdate(nextProps, nextState) {
+		return nextState.isHeaderSearch !== this.state.isHeaderSearch || nextProps !== this.props;
+	}
+
 	render() {
+		console.log('render');
 		const {
-			containerStyle
+			containerStyle,
+			iconStyle,
+			tabBarUnderlineStyle
 		} = styles;
 
 		return (
 			<Container style={containerStyle}>
 				<LinearGradient style={{flex: 1}} colors={LOGIN_GRADIENT_COLORS}>
-					<Header hasTabs searchBar style={{backgroundColor: 'transparent'}}>
-						<Item style={{backgroundColor: 'transparent'}}>
-							<Icon name="ios-search"/>
-							<Input placeholder="Search"/>
-							<Icon name="ios-people"/>
-						</Item>
-						<Button transparent>
-							<Text>Search</Text>
-						</Button>
-					</Header>
+					<SearchHeader/>
 					<Content scrollEnabled={false} style={{backgroundColor: 'transparent'}}>
-						<Tabs initialPage={0}>
+						<Tabs tabBarUnderlineStyle={tabBarUnderlineStyle} initialPage={0}>
 							<Tab
 								heading={
 									<TabHeading style={{backgroundColor: 'transparent'}}>
-										<Text>Projects</Text>
+										<Icon style={iconStyle} name="md-git-network"/>
 									</TabHeading>}
 							>
 								<FlatList
@@ -73,13 +70,13 @@ class ProjectsList extends Component {
 							<Tab
 								heading={
 									<TabHeading style={{backgroundColor: 'transparent'}}>
-										<Text>Bio</Text>
+										<Icon style={iconStyle} name="md-person"/>
 									</TabHeading>}
 							/>
 							<Tab
 								heading={
 									<TabHeading style={{backgroundColor: 'transparent'}}>
-										<Text>Settings</Text>
+										<Icon style={iconStyle} name="md-settings"/>
 									</TabHeading>}
 							/>
 						</Tabs>

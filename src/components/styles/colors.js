@@ -16,3 +16,9 @@ export const LOGIN_GRADIENT_COLORS = ['#e01473', '#da281c', '#f8c301'];
 export const HEADER_COLOR = 'rgba(231, 29, 54, 1)';
 export const PROJECTS_LIST_BACKGROUND_COLOR = 'rgba(253, 255, 252, 1)';
 export const PROJECTS_LIST_ITEM_BACKGROUND_COLOR = 'rgba(253, 255, 252, 1)';
+export const TAB_COLOR = 'rgba(255, 255, 255, 1)';
+export const ICON_COLOR = 'rgba(255, 255, 255, 1)';
+
+// SEARCH-HEADER.js
+export const TITLE_COLOR = 'rgba(255, 255, 255, 1)';
+export const BUTTON_COLOR = 'rgba(255, 255, 255, 1)';

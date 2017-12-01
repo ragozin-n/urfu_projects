@@ -9,7 +9,7 @@ import {
 	Thumbnail,
 	Button
 } from 'native-base';
-import styles from './styles/projects-list';
+import styles from './styles/projects-list-styles';
 
 class ProjectListItem extends Component {
 

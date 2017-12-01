@@ -5,7 +5,8 @@ import {
 import {
 	HEADER_COLOR,
 	PROJECTS_LIST_BACKGROUND_COLOR,
-	PROJECTS_LIST_ITEM_BACKGROUND_COLOR
+	PROJECTS_LIST_ITEM_BACKGROUND_COLOR,
+	ICON_COLOR
 } from './colors';
 
 export default StyleSheet.create({
@@ -17,7 +18,7 @@ export default StyleSheet.create({
 	},
 	iconStyle: {
 		// Тут тоже можно впилить цвета
-		color: (Platform.OS === 'android') ? 'white' : 'black'
+		color: ICON_COLOR
 	},
 	projectListItem: {
 		marginLeft: 0,
@@ -25,5 +26,8 @@ export default StyleSheet.create({
 		paddingRight: 0,
 		marginRight: 0,
 		backgroundColor: PROJECTS_LIST_ITEM_BACKGROUND_COLOR
+	},
+	tabBarUnderlineStyle: {
+		backgroundColor: ICON_COLOR
 	}
 });
