@@ -17,13 +17,10 @@ import {projectsFetch} from '../actions';
 import SearchHeader from './common/search-header';
 import {LOGIN_GRADIENT_COLORS} from './styles/colors';
 import ProjectListItem from './project-list-item';
+import ProjectCreateForm from './project-create-form';
 import styles from './styles/projects-list-styles';
 
 class ProjectsList extends Component {
-	state = {
-		isHeaderSearch: false
-	}
-
 	handleAddProjectEvent = () => {
 		Actions.createProject();
 	}
@@ -36,10 +33,6 @@ class ProjectsList extends Component {
 		this.props.projectsFetch();
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		return nextState.isHeaderSearch !== this.state.isHeaderSearch || nextProps !== this.props;
-	}
-
 	render() {
 		console.log('render');
 		const {
@@ -50,7 +43,12 @@ class ProjectsList extends Component {
 
 		return (
 			<Container style={containerStyle}>
-				<LinearGradient style={{flex: 1}} colors={LOGIN_GRADIENT_COLORS}>
+				<LinearGradient
+					style={{flex: 1}}
+					colors={LOGIN_GRADIENT_COLORS}
+					start={[0, 0]}
+					end={[1, 0]}
+				>
 					<SearchHeader/>
 					<Content scrollEnabled={false} style={{backgroundColor: 'transparent'}}>
 						<Tabs tabBarUnderlineStyle={tabBarUnderlineStyle} initialPage={0}>
@@ -78,7 +76,9 @@ class ProjectsList extends Component {
 									<TabHeading style={{backgroundColor: 'transparent'}}>
 										<Icon style={iconStyle} name="md-settings"/>
 									</TabHeading>}
-							/>
+							>
+								<ProjectCreateForm/>
+							</Tab>
 						</Tabs>
 					</Content>
 				</LinearGradient>

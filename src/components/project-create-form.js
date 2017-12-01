@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Platform} from 'react-native';
+import {Platform, View} from 'react-native';
 import {connect} from 'react-redux';
 import {
 	Container,
@@ -79,40 +79,24 @@ class ProjectCreateForm extends Component {
 		} = styles;
 
 		return (
-			<Container style={containerStyle}>
-				<Header style={headerStyle}>
-					<Left>
-						<Button transparent onPress={this.handleBackButton}>
-							<Icon name="arrow-back" style={backArrowStyle}/>
-						</Button>
-					</Left>
-					<Body>
-						<Title>_DEBUG-TOOLS</Title>
-					</Body>
-				</Header>
-				<Content>
-					<Text>User section</Text>
-					<Button block light onPress={this.handleGenerateName}>
-						<Text>Generate user name</Text>
-					</Button>
-					<Button block warning onPress={this.handleGenerateAchievement}>
-						<Text>Generate achievement</Text>
-					</Button>
-					<Button block primary onPress={this.handleGenerateHistory}>
-						<Text>Generate history</Text>
-					</Button>
+			<View>
+				<Text>User section</Text>
+				<Button block light onPress={this.handleGenerateName}>
+					<Text>Generate user name</Text>
+				</Button>
+				<Button block warning onPress={this.handleGenerateAchievement}>
+					<Text>Generate achievement</Text>
+				</Button>
+				<Button block primary onPress={this.handleGenerateHistory}>
+					<Text>Generate history</Text>
+				</Button>
 
-					<Text>Project section</Text>
+				<Text>Project section</Text>
 
-					<Button full light onPress={this.handleGenerateEvent}>
-						<Text>Generate event</Text>
-					</Button>
-					{/* <ProjectForm {...this.props}/>
-					<Button success style={buttonSuccessStyle} onPress={this.handleCreateButton}>
-						<Text>Submit</Text>
-					</Button> */}
-				</Content>
-			</Container>
+				<Button full light onPress={this.handleGenerateEvent}>
+					<Text>Generate event</Text>
+				</Button>
+			</View>
 		);
 	}
 }

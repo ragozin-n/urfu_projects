@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Alert} from 'react-native';
+import { Alert, Modal, View} from 'react-native';
 import {
 	ListItem,
 	Left,
@@ -7,14 +7,20 @@ import {
 	Right,
 	Text,
 	Thumbnail,
-	Button
+	Button,
+	H1,
+	H3
 } from 'native-base';
 import styles from './styles/projects-list-styles';
 
 class ProjectListItem extends Component {
 
+	state = {
+		modalVisible: false
+	}
+
 	handleRowPress = () => {
-		// Project info logic. May be new screen or modal window.
+		this.setState({modalVisible: true});
 	}
 
 	handleApplyAction = (name, description) => {
@@ -45,6 +51,32 @@ class ProjectListItem extends Component {
 						<Text note>Apply</Text>
 					</Button>
 				</Right>
+
+				<Modal
+					animationType="fade"
+					transparent={false}
+					visible={this.state.modalVisible}
+					onRequestClose={() => { alert("Modal has been closed.") }}
+				>
+					<View style={{ marginTop: 400, paddingLeft: 30, paddingRight: 30 }}>
+						<View>
+							<H1>{name}</H1>
+							<H3>{description}</H3>
+							<H3>List of all users:</H3>
+							<Text>Not implemented yet</Text>
+							<Button
+								warning
+								block
+								onPress={() => {
+								this.setState({modalVisible: false});
+							}}
+							>
+								<Text>Hide</Text>
+							</Button>
+
+						</View>
+					</View>
+				</Modal>
 			</ListItem>
 		);
 	}
