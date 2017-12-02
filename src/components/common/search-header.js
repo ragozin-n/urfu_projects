@@ -9,14 +9,20 @@ import {
 	Title,
 	Right
 } from 'native-base';
+import _ from 'lodash';
 import {connect} from 'react-redux';
 import styles from '../styles/search-header-styles';
-import { ICON_COLOR } from '../styles/colors';
+import {ICON_COLOR} from '../styles/colors';
+import {projectsFilter} from '../../actions';
 
 class SearchHeader extends Component {
 	state = {
 		isHeaderSearch: false
-	}
+	};
+
+	handleSearch = text => {
+		this.props.projectsFilter(text, this.props._projects);
+	};
 
 	render() {
 		const {titleStyle, iconStyle} = styles;
@@ -27,7 +33,12 @@ class SearchHeader extends Component {
 				<Header hasTabs searchBar style={{backgroundColor: 'transparent'}}>
 					<Item style={{backgroundColor: 'transparent'}}>
 						<Icon style={iconStyle} name="ios-search"/>
-						<Input style={iconStyle} placeholderTextColor={ICON_COLOR} placeholder="Search"/>
+						<Input
+							style={iconStyle}
+							placeholderTextColor={ICON_COLOR}
+							placeholder="Поиск проектов"
+							onChangeText={text => this.handleSearch(text)}
+						/>
 						<Button transparent onPress={() => this.setState({isHeaderSearch: false})}>
 							<Icon style={iconStyle} name="md-close"/>
 						</Button>
@@ -48,4 +59,11 @@ class SearchHeader extends Component {
 	}
 }
 
-export default connect(null, {})(SearchHeader);
+const mapStateToProps = state => {
+	const _projects = _.map(state.projects.data, (val, uid) => {
+		return {...val, uid};
+	});
+	return {_projects};
+};
+
+export default connect(mapStateToProps, {projectsFilter})(SearchHeader);

@@ -86,7 +86,7 @@ class ProjectsList extends Component {
 }
 
 const mapStateToProps = state => {
-	const projects = _.map(state.projects, (val, uid) => {
+	const projects = _.map(state.projects.filteredProjects, (val, uid) => {
 		return {...val, uid};
 	});
 	return {projects};

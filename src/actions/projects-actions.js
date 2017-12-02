@@ -4,7 +4,8 @@ import {
 	PROJECT_INFO_UPDATE,
 	PROJECT_CREATE,
 	PROJECTS_FETCH_SUCCESS,
-	PROJECT_SAVE_SUCCESS
+	PROJECT_SAVE_SUCCESS,
+	PROJECTS_FILTER
 } from './types';
 
 export const projectInfoUpdate = ({prop, value}) => {
@@ -35,6 +36,24 @@ export const projectsFetch = () => {
 					payload: snapshot.val()
 				});
 			});
+	};
+};
+
+export const projectsFilter = (searchString, arr) => {
+	if (!searchString) {
+		return {
+			type: PROJECTS_FILTER,
+			payload: arr
+		};
+	}
+
+	const filteredProjects = arr.filter(project =>
+		project.name.toLowerCase().includes(searchString.toLowerCase())
+	);
+
+	return {
+		type: PROJECTS_FILTER,
+		payload: filteredProjects
 	};
 };
 
