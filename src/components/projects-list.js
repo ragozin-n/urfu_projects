@@ -50,37 +50,35 @@ class ProjectsList extends Component {
 					end={[1, 0]}
 				>
 					<SearchHeader/>
-					<Content scrollEnabled={false} style={{backgroundColor: 'transparent'}}>
-						<Tabs tabBarUnderlineStyle={tabBarUnderlineStyle} initialPage={0}>
-							<Tab
-								heading={
-									<TabHeading style={{backgroundColor: 'transparent'}}>
-										<Icon style={iconStyle} name="md-git-network"/>
-									</TabHeading>}
-							>
-								<FlatList
-									style={{flex: 1}}
-									data={this.props.projects}
-									renderItem={({item}) => this.renderRow(item)}
-									keyExtractor={item => item.uid}
-								/>
-							</Tab>
-							<Tab
-								heading={
-									<TabHeading style={{backgroundColor: 'transparent'}}>
-										<Icon style={iconStyle} name="md-person"/>
-									</TabHeading>}
+					<Tabs locked tabBarUnderlineStyle={tabBarUnderlineStyle} initialPage={0}>
+						<Tab
+							heading={
+								<TabHeading style={{backgroundColor: 'transparent'}}>
+									<Icon style={iconStyle} name="md-git-network"/>
+								</TabHeading>}
+						>
+							<FlatList
+								style={{flex: 1}}
+								data={this.props.projects}
+								renderItem={({item}) => this.renderRow(item)}
+								keyExtractor={item => item.uid}
 							/>
-							<Tab
-								heading={
-									<TabHeading style={{backgroundColor: 'transparent'}}>
-										<Icon style={iconStyle} name="md-settings"/>
-									</TabHeading>}
-							>
-								<ProjectCreateForm/>
-							</Tab>
-						</Tabs>
-					</Content>
+						</Tab>
+						<Tab
+							heading={
+								<TabHeading style={{backgroundColor: 'transparent'}}>
+									<Icon style={iconStyle} name="md-person"/>
+								</TabHeading>}
+						/>
+						<Tab
+							heading={
+								<TabHeading style={{backgroundColor: 'transparent'}}>
+									<Icon style={iconStyle} name="md-settings"/>
+								</TabHeading>}
+						>
+							<ProjectCreateForm/>
+						</Tab>
+					</Tabs>
 				</LinearGradient>
 			</Container>
 		);
