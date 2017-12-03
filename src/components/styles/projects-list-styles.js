@@ -15,10 +15,6 @@ export default StyleSheet.create({
 	containerStyle: {
 		backgroundColor: PROJECTS_LIST_BACKGROUND_COLOR
 	},
-	iconStyle: {
-		// Тут тоже можно впилить цвета
-		color: ICON_ACTIVE_COLOR
-	},
 	projectListItem: {
 		marginLeft: 0,
 		paddingLeft: 0,
@@ -27,6 +23,6 @@ export default StyleSheet.create({
 		backgroundColor: PROJECTS_LIST_ITEM_BACKGROUND_COLOR
 	},
 	tabBarUnderlineStyle: {
-		backgroundColor: 'navy'
+		backgroundColor: ICON_ACTIVE_COLOR
 	}
 });

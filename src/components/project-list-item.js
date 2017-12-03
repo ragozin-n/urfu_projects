@@ -64,9 +64,9 @@ class ProjectListItem extends Component {
 					animationType="fade"
 					transparent={false}
 					visible={this.state.modalVisible}
-					onRequestClose={() => { alert("Modal has been closed.") }}
+					onRequestClose={() => alert('Hardware close request.')}
 				>
-					<View style={{ marginTop: 400, paddingLeft: 30, paddingRight: 30 }}>
+					<View style={{marginTop: 400, paddingLeft: 30, paddingRight: 30}}>
 						<View>
 							<H1>{name}</H1>
 							<H3>{description}</H3>
@@ -76,8 +76,8 @@ class ProjectListItem extends Component {
 								warning
 								block
 								onPress={() => {
-								this.setState({modalVisible: false});
-							}}
+									this.setState({modalVisible: false});
+								}}
 							>
 								<Text>Hide</Text>
 							</Button>

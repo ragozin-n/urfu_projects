@@ -6,8 +6,7 @@ import {
 	Icon,
 	Tabs,
 	Tab,
-	TabHeading,
-	ScrollableTab
+	TabHeading
 } from 'native-base';
 // eslint-disable-next-line import/named
 import {LinearGradient} from 'expo';
@@ -15,12 +14,18 @@ import {connect} from 'react-redux';
 import _ from 'lodash';
 import {projectsFetch} from '../actions';
 import SearchHeader from './common/search-header';
+import TabIcon from './common/tab-icon';
 import {PROJECTS_LIST_GRADIENT_COLORS} from './styles/colors';
 import ProjectListItem from './project-list-item';
 import ProjectCreateForm from './project-create-form';
 import styles from './styles/projects-list-styles';
 
 class ProjectsList extends Component {
+	state = {
+		activeTab: 0,
+		initTab: 0
+	}
+
 	handleAddProjectEvent = () => {
 		Actions.createProject();
 	}
@@ -37,7 +42,6 @@ class ProjectsList extends Component {
 		console.log('render');
 		const {
 			containerStyle,
-			iconStyle,
 			tabBarUnderlineStyle
 		} = styles;
 
@@ -53,12 +57,13 @@ class ProjectsList extends Component {
 					<Tabs
 						locked
 						tabBarUnderlineStyle={tabBarUnderlineStyle}
-						initialPage={0}
+						initialPage={this.state.initTab}
+						onChangeTab={({i}) => this.setState({activeTab: i})}
 					>
 						<Tab
 							heading={
 								<TabHeading style={{backgroundColor: 'transparent'}}>
-									<Icon style={iconStyle} name="md-git-network"/>
+									<TabIcon name="md-git-network" position={0} activeTab={this.state.activeTab}/>
 								</TabHeading>}
 						>
 							<FlatList
@@ -71,13 +76,13 @@ class ProjectsList extends Component {
 						<Tab
 							heading={
 								<TabHeading style={{backgroundColor: 'transparent'}}>
-									<Icon style={iconStyle} name="md-person"/>
+									<TabIcon name="md-person" position={1} activeTab={this.state.activeTab}/>
 								</TabHeading>}
 						/>
 						<Tab
 							heading={
 								<TabHeading style={{backgroundColor: 'transparent'}}>
-									<Icon style={iconStyle} name="md-settings"/>
+									<TabIcon name="md-settings" position={2} activeTab={this.state.activeTab}/>
 								</TabHeading>}
 						>
 							<ProjectCreateForm/>

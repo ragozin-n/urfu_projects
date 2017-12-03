@@ -16,7 +16,7 @@ export const PROJECTS_LIST_BACKGROUND_COLOR = 'rgba(253, 255, 252, 1)';
 export const PROJECTS_LIST_ITEM_BACKGROUND_COLOR = 'rgba(253, 255, 252, 1)';
 export const TAB_COLOR = 'rgba(255, 255, 255, 1)';
 export const ICON_ACTIVE_COLOR = 'rgba(255, 255, 255, 1)';
-export const ICON_INACTIVE_COLOR = 'rgba(0, 0, 0, 1)';
+export const ICON_INACTIVE_COLOR = 'rgba(0, 0, 0, 0.4)';
 export const PROJECTS_LIST_GRADIENT_COLORS = ['rgba(242, 89, 31, 1)', 'rgba(247, 66, 65, 1)', 'rgba(253, 39, 99, 1)'];
 export const THUMBNAIL_BORDER_COLOR = 'rgba(255, 87, 34, 1)';
 

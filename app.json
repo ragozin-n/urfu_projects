@@ -4,10 +4,10 @@
 	"slug": "urfu_projects",
 	"privacy": "public",
 	"sdkVersion": "22.0.0",
-	"androidStatusBarColor": "#334393",
+	"androidStatusBarColor": "#f33d1d",
 	"androidStatusBar": {
 		"barStyle": "light-content",
-		"backgroundColor": "#334393"
+		"backgroundColor": "#f33d1d"
 	}
   }
 }
