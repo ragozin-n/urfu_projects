@@ -1,0 +1,48 @@
+{
+	"urfu_projects": {
+		"events": {
+			"event_hash": {
+				"name": "Event name",
+				"description": "Event description",
+				"photoBase64": "data...",
+				"vacancy": {
+					"name": "Vacancy name",
+					"skills": {
+						"skill_hash": "isRequired flag"
+					}
+				},
+				"keywords": {
+					"name": "Keyword"
+				},
+				"users_count": 10,
+				"members": {
+					"user_hash": "user_hash"
+				}
+			}
+		},
+		"users": {
+			"user_hash": {
+				"name": "User fullname",
+				"photoBase64": "data...",
+				"skills": {
+					"skill_hash": "skill_hash"
+				},
+				"achievements": {
+					"achievemen_hash": "achievement_hash"
+				}
+			}
+
+		},
+		"skills": {
+			"skill_hash": {
+				"name": "Skill name"
+			}
+		},
+		"achievements": {
+			"achievemen_hash": {
+				"name": "Achievement name",
+				"photoBase64": "data..."	
+			}
+		}
+	}
+}
