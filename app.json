@@ -3,6 +3,11 @@
 	"name": "Urfu Projects",
 	"slug": "urfu_projects",
 	"privacy": "public",
-    "sdkVersion": "22.0.0"
+	"sdkVersion": "22.0.0",
+	"androidStatusBarColor": "#334393",
+	"androidStatusBar": {
+		"barStyle": "light-content",
+		"backgroundColor": "#334393"
+	}
   }
 }

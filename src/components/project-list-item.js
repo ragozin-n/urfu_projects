@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Alert, Modal, View} from 'react-native';
+import {Alert, Modal, View} from 'react-native';
 import {
 	ListItem,
 	Left,
@@ -11,6 +11,7 @@ import {
 	H1,
 	H3
 } from 'native-base';
+import {THUMBNAIL_BORDER_COLOR} from './styles/colors';
 import styles from './styles/projects-list-styles';
 
 class ProjectListItem extends Component {
@@ -39,7 +40,14 @@ class ProjectListItem extends Component {
 		return (
 			<ListItem avatar style={projectListItem} onPress={this.handleRowPress}>
 				<Left>
-					<Thumbnail source={require('../images/face.jpg')}/>
+					<Thumbnail
+						large
+						source={require('../images/face.jpg')}
+						style={{
+							borderColor: THUMBNAIL_BORDER_COLOR,
+							borderWidth: 2
+						}}
+					/>
 				</Left>
 				<Body>
 					<Text>{name}</Text>

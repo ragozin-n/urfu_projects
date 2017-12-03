@@ -12,7 +12,7 @@ import {
 import _ from 'lodash';
 import {connect} from 'react-redux';
 import styles from '../styles/search-header-styles';
-import {ICON_COLOR} from '../styles/colors';
+import {SEARCH_INPUT_COLOR, ICON_ACTIVE_COLOR} from '../styles/colors';
 import {projectsFilter} from '../../actions';
 
 class SearchHeader extends Component {
@@ -32,14 +32,14 @@ class SearchHeader extends Component {
 			return (
 				<Header hasTabs searchBar style={{backgroundColor: 'transparent'}}>
 					<Item style={{backgroundColor: 'transparent'}}>
-						<Icon style={iconStyle} name="ios-search"/>
+						<Icon style={iconStyle} name="md-search"/>
 						<Input
-							style={iconStyle}
-							placeholderTextColor={ICON_COLOR}
-							placeholder="Поиск проектов"
+							style={{color: SEARCH_INPUT_COLOR}}
+							placeholderTextColor={ICON_ACTIVE_COLOR}
+							placeholder="Поиск..."
 							onChangeText={text => this.handleSearch(text)}
 						/>
-						<Button transparent onPress={() => this.setState({isHeaderSearch: false})}>
+						<Button transparent small onPress={() => this.setState({isHeaderSearch: false})}>
 							<Icon style={iconStyle} name="md-close"/>
 						</Button>
 					</Item>
@@ -51,8 +51,8 @@ class SearchHeader extends Component {
 					<Title style={titleStyle}>Все проекты</Title>
 				</Left>
 				<Right>
-					<Button transparent onPress={() => this.setState({isHeaderSearch: true})}>
-						<Icon style={iconStyle} name="ios-search"/>
+					<Button transparent small onPress={() => this.setState({isHeaderSearch: true})}>
+						<Icon style={iconStyle} name="md-search"/>
 					</Button>
 				</Right>
 			</Header>);

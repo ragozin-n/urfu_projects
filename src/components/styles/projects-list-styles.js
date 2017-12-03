@@ -1,12 +1,11 @@
 import {
-	StyleSheet,
-	Platform
+	StyleSheet
 } from 'react-native';
 import {
 	HEADER_COLOR,
 	PROJECTS_LIST_BACKGROUND_COLOR,
 	PROJECTS_LIST_ITEM_BACKGROUND_COLOR,
-	ICON_COLOR
+	ICON_ACTIVE_COLOR
 } from './colors';
 
 export default StyleSheet.create({
@@ -18,7 +17,7 @@ export default StyleSheet.create({
 	},
 	iconStyle: {
 		// Тут тоже можно впилить цвета
-		color: ICON_COLOR
+		color: ICON_ACTIVE_COLOR
 	},
 	projectListItem: {
 		marginLeft: 0,
@@ -28,6 +27,6 @@ export default StyleSheet.create({
 		backgroundColor: PROJECTS_LIST_ITEM_BACKGROUND_COLOR
 	},
 	tabBarUnderlineStyle: {
-		backgroundColor: ICON_COLOR
+		backgroundColor: 'navy'
 	}
 });
