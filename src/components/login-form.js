@@ -8,12 +8,15 @@ import {
 	Item,
 	Icon,
 	Input,
-	Content
+	Content,
+	Container
 } from 'native-base';
 import {
 	Image,
 	Animated,
-	Easing
+	Easing,
+	KeyboardAvoidingView,
+	ScrollView
 } from 'react-native';
 // eslint-disable-next-line import/named
 import {LinearGradient} from 'expo';
@@ -117,7 +120,6 @@ class LoginForm extends Component {
 									value={this.props.email}
 									returnKeyType="next"
 									keyboardType="email-address"
-									autoFocus
 									onSubmitEditing={() => this.passwordInput._root.focus()}
 								/>
 							</Item>
@@ -140,10 +142,10 @@ class LoginForm extends Component {
 							{this.renderButton()}
 						</Form>
 					</Animated.View>
-				</Content>
-				<Button transparent light style={passwordRestoreStyle}>
+				{/* <Button transparent light style={passwordRestoreStyle}>
 					<Text uppercase={false} style={passwordRestoreTextStyle}>Забыли пароль?</Text>
-				</Button>
+				</Button>				 */}
+				</Content>
 			</LinearGradient>
 		);
 	}

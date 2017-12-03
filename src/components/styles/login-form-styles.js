@@ -25,7 +25,7 @@ export default StyleSheet.create({
 		marginBottom: 10,
 		marginLeft: 30,
 		marginRight: 40,
-		marginTop: (Platform.OS === 'ios') ? 150 : 80
+		marginTop: (Platform.OS === 'ios') ? 150 : 60
 	},
 	loginButtonTextStyle: {
 		color: LOGIN_BUTTON_TEXT_COLOR,
