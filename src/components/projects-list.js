@@ -63,7 +63,7 @@ class ProjectsList extends Component {
 						<Tab
 							heading={
 								<TabHeading style={{backgroundColor: 'transparent'}}>
-									<TabIcon name="md-git-network" position={0} activeTab={this.state.activeTab}/>
+									<TabIcon name="md-list" position={0} activeTab={this.state.activeTab}/>
 								</TabHeading>}
 						>
 							<FlatList

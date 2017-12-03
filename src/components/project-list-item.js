@@ -41,7 +41,6 @@ class ProjectListItem extends Component {
 			<ListItem avatar style={projectListItem} onPress={this.handleRowPress}>
 				<Left>
 					<Thumbnail
-						large
 						source={require('../images/face.jpg')}
 						style={{
 							borderColor: THUMBNAIL_BORDER_COLOR,
