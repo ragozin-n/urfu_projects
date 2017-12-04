@@ -9,19 +9,13 @@ import {
 
 export default StyleSheet.create({
 	loginButtonStyle: {
-		marginTop: '25%',
-		width: '100%',
+		marginTop: 60,
 		backgroundColor: LOGIN_BUTTON_COLOR,
-		alignSelf: 'center',
-		justifyContent: 'center',
 		borderRadius: (Platform.OS === 'ios') ? 6 : 0
 	},
 	formStyle: {
-		flex: 1,
-		flexDirection: 'column',
-		marginLeft: '10%',
-		marginRight: '10%',
-		padding: 0,
+		marginLeft: 25,
+		marginRight: 25,
 		marginTop: 60
 	},
 	logoStyle: {
@@ -31,28 +25,23 @@ export default StyleSheet.create({
 		marginBottom: 10,
 		marginLeft: 30,
 		marginRight: 40,
-		marginTop: (Platform.OS === 'ios') ? 150 : 80
+		marginTop: (Platform.OS === 'ios') ? 150 : 60
 	},
 	loginButtonTextStyle: {
 		color: LOGIN_BUTTON_TEXT_COLOR,
-		fontFamily: 'Roboto',
 		fontSize: 17
 	},
 	backgroundGradientStyle: {
-		flex: 1,
-		flexDirection: 'column',
-		margin: 0
+		flex: 1
 	},
 	passwordRestoreTextStyle: {
 		color: PASSWORD_RESTORE_TEXT_COLOR,
-		fontFamily: 'Roboto',
-		fontSize: 15,
-		marginBottom: '3%'
+		fontSize: 15
 	},
 	passwordRestoreStyle: {
 		position: 'absolute',
 		alignSelf: 'center',
-		bottom: 0
+		bottom: 10
 	},
 	itemFixStyle: {
 		marginLeft: 0
@@ -64,7 +53,6 @@ export default StyleSheet.create({
 		color: INPUT_COLOR
 	},
 	animatedViewStyle: {
-		flexDirection: 'column',
 		flex: 1
 	},
 	spinnerStyle: {

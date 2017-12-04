@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Platform} from 'react-native';
+import {Platform, View} from 'react-native';
 import {connect} from 'react-redux';
 import {
 	Container,
@@ -32,17 +32,19 @@ class ProjectCreateForm extends Component {
 		Actions.main();
 	}
 
-	handleGenerateName = () => {
+	handleGenerateUser = ({isCurator}) => {
 		const randomUserName = faker.name.findName();
-		const randomImage = faker.image.dataUri(200, 200);
+		const randomAvatar = faker.image.dataUri(200, 200);
 
 		this.props._updateUserBio({
 			name: randomUserName,
-			photoBase64: randomImage
+			photoBase64: randomAvatar,
+			isCurator
 		});
+	}
 
-		this.props.updateUserBio({prop: 'name', value: randomUserName});
-		this.props.updateUserBio({prop: 'photoBase64', value: randomImage});
+	handleGenerateSkill = () => {
+		//
 	}
 
 	handleGenerateAchievement = () => {
@@ -60,14 +62,31 @@ class ProjectCreateForm extends Component {
 	}
 
 	handleGenerateEvent = () => {
-		const randomEventName = faker.lorem.words(3);
-		const randomDescription = faker.lorem.sentence(5);
+		const randomEventName = faker.random.words();
+		const randomDescription = faker.random.words();
 		const randomImage = faker.image.dataUri(200, 200);
+		const membersCount = faker.random.number(20);
+		const keywords = faker.random.words();
+
+		const vacancyCount = faker.random.number(10);
+		const vacancies = [];
+		for (let i = 0; i < vacancyCount; i++) {
+			vacancies.push(
+				{
+					name: faker.name.jobTitle(),
+					description: faker.random.words(3),
+					skills: faker.random.words(5)
+				}
+			);
+		}
 
 		this.props.projectCreate({
 			name: randomEventName,
 			description: randomDescription,
-			photoBase64: randomImage
+			photoBase64: randomImage,
+			membersCount,
+			keywords,
+			vacancies
 		});
 	}
 
@@ -79,40 +98,26 @@ class ProjectCreateForm extends Component {
 		} = styles;
 
 		return (
-			<Container style={containerStyle}>
-				<Header style={headerStyle}>
-					<Left>
-						<Button transparent onPress={this.handleBackButton}>
-							<Icon name="arrow-back" style={backArrowStyle}/>
-						</Button>
-					</Left>
-					<Body>
-						<Title>_DEBUG-TOOLS</Title>
-					</Body>
-				</Header>
-				<Content>
-					<Text>User section</Text>
-					<Button block light onPress={this.handleGenerateName}>
-						<Text>Generate user name</Text>
-					</Button>
-					<Button block warning onPress={this.handleGenerateAchievement}>
-						<Text>Generate achievement</Text>
-					</Button>
-					<Button block primary onPress={this.handleGenerateHistory}>
-						<Text>Generate history</Text>
-					</Button>
+			<View>
+				<Text>User section</Text>
+				<Button block light onPress={() => this.handleGenerateUser({isCurator: false})}>
+					<Text>Generate common user</Text>
+				</Button>
+				<Button block warning onPress={() => this.handleGenerateUser({isCurator: true})}>
+					<Text>Generate curator</Text>
+				</Button>
+				<Button block light onPress={this.handleGenerateSkill}>
+					<Text>Generate skill</Text>
+				</Button>
+				<Button block warning onPress={this.handleGenerateAchievement}>
+					<Text>Generate achievement</Text>
+				</Button>
 
-					<Text>Project section</Text>
-
-					<Button full light onPress={this.handleGenerateEvent}>
-						<Text>Generate event</Text>
-					</Button>
-					{/* <ProjectForm {...this.props}/>
-					<Button success style={buttonSuccessStyle} onPress={this.handleCreateButton}>
-						<Text>Submit</Text>
-					</Button> */}
-				</Content>
-			</Container>
+				<Text>Globals</Text>
+				<Button full danger onPress={this.handleGenerateEvent}>
+					<Text>Generate event</Text>
+				</Button>
+			</View>
 		);
 	}
 }

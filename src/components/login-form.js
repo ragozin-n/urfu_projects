@@ -8,16 +8,18 @@ import {
 	Item,
 	Icon,
 	Input,
-	Content
+	Content,
+	Container
 } from 'native-base';
 import {
 	Image,
 	Animated,
 	Easing,
-	Keyboard
+	KeyboardAvoidingView,
+	ScrollView
 } from 'react-native';
 // eslint-disable-next-line import/named
-import {Font, AppLoading, LinearGradient} from 'expo';
+import {LinearGradient} from 'expo';
 import {
 	emailChanged,
 	passwordChanged,
@@ -32,11 +34,9 @@ import {
 
 class LoginForm extends Component {
 	state = {
-		appIsReady: false,
 		isPasswordHidden: true
 	}
 
-	// Handlers
 	handleEmailChange = text => {
 		this.props.emailChanged(text);
 	}
@@ -54,41 +54,27 @@ class LoginForm extends Component {
 		this.setState({isPasswordHidden: !this.state.isPasswordHidden});
 	}
 
-	// Custom components
 	renderButton = () => {
 		if (this.props.loading) {
 			return <Spinner style={styles.spinnerStyle} color={SPINNER_COLOR}/>;
 		}
+
 		return (
-			<Button bordered light onPress={this.handleLogin} style={styles.loginButtonStyle}>
+			<Button full bordered light onPress={this.handleLogin} style={styles.loginButtonStyle}>
 				<Text uppercase={false} style={styles.loginButtonTextStyle}>Войти</Text>
 			</Button>
 		);
 	}
 
-	// Lifecycle methods
-	async componentWillMount() {
-		/* eslint-disable camelcase, import/no-extraneous-dependencies */
-		await Font.loadAsync({
-			Roboto: require('native-base/Fonts/Roboto.ttf'),
-			Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf')
-		});
-		/* eslint-disable camelcase, import/no-extraneous-dependencies */
-		this.setState({appIsReady: true});
-	}
-
 	componentDidMount() {
-		// Animation Section
-		if (!this.state.appIsReady) {
-			Animated.timing(
-				this.props.fadeAnimation,
-				{
-					toValue: 1,
-					duration: 1000,
-					easing: Easing.quad
-				}
-			).start();
-		}
+		Animated.timing(
+			this.props.fadeAnimation,
+			{
+				toValue: 1,
+				duration: 1000,
+				easing: Easing.quad
+			}
+		).start();
 	}
 
 	render() {
@@ -103,12 +89,6 @@ class LoginForm extends Component {
 			animatedViewStyle,
 			passwordRestoreTextStyle
 		} = styles;
-
-		if (!this.state.appIsReady) {
-			return (
-				<AppLoading/>
-			);
-		}
 
 		return (
 			<LinearGradient
@@ -125,11 +105,11 @@ class LoginForm extends Component {
 							{opacity: this.props.fadeAnimation}
 						]}
 					>
-						<Image
-							source={require('../images/logo.png')}
-							style={logoStyle}
-						/>
 						<Form style={formStyle}>
+							<Image
+								source={require('../images/logo.png')}
+								style={logoStyle}
+							/>
 							<Item style={itemFixStyle}>
 								<Icon name="person" style={inputIconStyle}/>
 								<Input
@@ -140,7 +120,6 @@ class LoginForm extends Component {
 									value={this.props.email}
 									returnKeyType="next"
 									keyboardType="email-address"
-									autoFocus
 									onSubmitEditing={() => this.passwordInput._root.focus()}
 								/>
 							</Item>
@@ -163,10 +142,10 @@ class LoginForm extends Component {
 							{this.renderButton()}
 						</Form>
 					</Animated.View>
-				</Content>
-				<Button transparent light style={passwordRestoreStyle}>
+				{/* <Button transparent light style={passwordRestoreStyle}>
 					<Text uppercase={false} style={passwordRestoreTextStyle}>Забыли пароль?</Text>
-				</Button>
+				</Button>				 */}
+				</Content>
 			</LinearGradient>
 		);
 	}
@@ -174,9 +153,8 @@ class LoginForm extends Component {
 
 const mapStateToProps = ({auth}) => {
 	const {email, password, error, loading} = auth;
-
-	// Variable for animation
 	const fadeAnimation = new Animated.Value(0);
+
 	return {email, password, error, loading, fadeAnimation};
 };
 

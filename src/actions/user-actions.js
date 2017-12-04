@@ -15,14 +15,15 @@ export const updateUserBio = ({prop, value}) => {
 };
 
 // Using for update users bio. ***DEBUG ONLY***
-export const _updateUserBio = ({name, photoBase64}) => {
+export const _updateUserBio = ({name, photoBase64, isCurator}) => {
 	const {currentUser} = firebase.auth();
 
 	return dispatch => {
 		firebase.database().ref(`/users/${currentUser.uid}/`)
-			.set({name, photoBase64})
+			.set({name, photoBase64, isCurator})
 			.then(() => {
-				dispatch({type: USER_BIO_UPDATE});
+				dispatch({type: USER_BIO_UPDATE, payload: name});
+				dispatch({type: USER_BIO_UPDATE, payload: photoBase64});
 				Actions.main();
 			});
 	};
