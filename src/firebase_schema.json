@@ -16,7 +16,8 @@
 				"membersCount": 10,
 				"members": {
 					"user_hash": "user_hash"
-				}
+				},
+				"createdBy": "user_hash"
 			}
 		},
 		"users": {

@@ -19,13 +19,15 @@ export const projectCreate = ({name, description, photoBase64, membersCount, key
 	return dispatch => {
 		const currentEventKey = firebase.database().ref(`/events`).push().key;
 		const currentEventRef = firebase.database().ref(`/events/${currentEventKey}`);
+		const {currentUser} = firebase.auth();
 		currentEventRef.set(
 			{
 				name,
 				description,
 				photoBase64,
 				membersCount,
-				keywords
+				keywords,
+				createdBy: currentUser.uid
 			}
 		);
 
@@ -67,6 +69,7 @@ export const projectsFilter = (searchString, arr) => {
 	}
 
 	const filteredProjects = arr.filter(project =>
+		project.keywords.toLowerCase().includes(searchString.toLowerCase()) ||
 		project.name.toLowerCase().includes(searchString.toLowerCase())
 	);
 

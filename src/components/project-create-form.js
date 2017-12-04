@@ -32,7 +32,7 @@ class ProjectCreateForm extends Component {
 		Actions.main();
 	}
 
-	handleGenerateCommonUser = ({isCurator}) => {
+	handleGenerateUser = ({isCurator}) => {
 		const randomUserName = faker.name.findName();
 		const randomAvatar = faker.image.dataUri(200, 200);
 
@@ -74,7 +74,7 @@ class ProjectCreateForm extends Component {
 			vacancies.push(
 				{
 					name: faker.name.jobTitle(),
-					description: faker.random.words(20),
+					description: faker.random.words(3),
 					skills: faker.random.words(5)
 				}
 			);
