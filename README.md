@@ -4,9 +4,13 @@
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
 ## React native app for student intracommand communication
 
-TODO:
-- [x] Finish migrating to Expo framework
-- [X] Update all code with XO linter
-- [X] Publish project to Expo cloud [link](https://exp.host/@ragozin-n/urfu_projects)
-- [ ] Add profile info screen
-- [x] Add api stubs with Faker.js library
+### Local development:
+ 
+```bash
+git clone https://github.com/ragozin-n/urfu_projects.git
+cd urfu_projects
+yarn install (or npm i)
+yarn start (or npm run start)
+```
+
+### [Link](https://exp.host/@ragozin-n/urfu_projects) to Expo
