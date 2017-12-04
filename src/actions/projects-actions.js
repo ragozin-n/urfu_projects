@@ -4,7 +4,8 @@ import {
 	PROJECT_INFO_UPDATE,
 	PROJECT_CREATE,
 	PROJECTS_FETCH_SUCCESS,
-	PROJECT_SAVE_SUCCESS
+	PROJECT_SAVE_SUCCESS,
+	PROJECTS_FILTER
 } from './types';
 
 export const projectInfoUpdate = ({prop, value}) => {
@@ -14,14 +15,35 @@ export const projectInfoUpdate = ({prop, value}) => {
 	};
 };
 
-export const projectCreate = ({name, description, photoBase64}) => {
+export const projectCreate = ({name, description, photoBase64, membersCount, keywords, vacancies}) => {
 	return dispatch => {
-		firebase.database().ref(`/events`)
-			.push({name, description, photoBase64})
-			.then(() => {
-				dispatch({type: PROJECT_CREATE});
-				Actions.main();
-			});
+		const currentEventKey = firebase.database().ref(`/events`).push().key;
+		const currentEventRef = firebase.database().ref(`/events/${currentEventKey}`);
+		const {currentUser} = firebase.auth();
+		currentEventRef.set(
+			{
+				name,
+				description,
+				photoBase64,
+				membersCount,
+				keywords,
+				createdBy: currentUser.uid
+			}
+		);
+
+		const currentVacanciesRef = firebase.database().ref(`/events/${currentEventKey}/vacancies`);
+		vacancies.forEach(element => {
+			currentVacanciesRef.push(
+				{
+					name: element.name,
+					description: element.description,
+					skills: element.skills
+				}
+			);
+		});
+
+		dispatch({type: PROJECT_CREATE});
+		Actions.main();
 	};
 };
 
@@ -35,6 +57,25 @@ export const projectsFetch = () => {
 					payload: snapshot.val()
 				});
 			});
+	};
+};
+
+export const projectsFilter = (searchString, arr) => {
+	if (!searchString) {
+		return {
+			type: PROJECTS_FILTER,
+			payload: arr
+		};
+	}
+
+	const filteredProjects = arr.filter(project =>
+		project.keywords.toLowerCase().includes(searchString.toLowerCase()) ||
+		project.name.toLowerCase().includes(searchString.toLowerCase())
+	);
+
+	return {
+		type: PROJECTS_FILTER,
+		payload: filteredProjects
 	};
 };
 

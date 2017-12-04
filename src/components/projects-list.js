@@ -1,31 +1,31 @@
 import React, {Component} from 'react';
-import {FlatList, Platform, View} from 'react-native';
+import {FlatList} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import {
 	Container,
-	Header,
-	Content,
-	Left,
-	Body,
-	Right,
-	Title,
 	Icon,
-	Button,
-	Footer,
-	FooterTab,
-	Text
+	Tabs,
+	Tab,
+	TabHeading
 } from 'native-base';
+// eslint-disable-next-line import/named
+import {LinearGradient} from 'expo';
 import {connect} from 'react-redux';
 import _ from 'lodash';
 import {projectsFetch} from '../actions';
+import SearchHeader from './common/search-header';
+import TabIcon from './common/tab-icon';
+import {PROJECTS_LIST_GRADIENT_COLORS} from './styles/colors';
 import ProjectListItem from './project-list-item';
+import ProjectCreateForm from './project-create-form';
+import styles from './styles/projects-list-styles';
 
 class ProjectsList extends Component {
 	state = {
-		selectedTab: 'projects'
+		activeTab: 0,
+		initTab: 0
 	}
 
-	// Handlers
 	handleAddProjectEvent = () => {
 		Actions.createProject();
 	}
@@ -34,100 +34,68 @@ class ProjectsList extends Component {
 		return <ProjectListItem project={project}/>;
 	}
 
-	renderSelectedTab = () => {
-		// Тут все красиво берется из папочки tabs, но пока так.
-		switch (this.state.selectedTab) {
-			case 'profile':
-				return (<Text>Profile</Text>);
-			case 'projects':
-				return (
-					<FlatList
-						data={this.props.projects}
-						renderItem={({item}) => this.renderRow(item)}
-						keyExtractor={item => item.uid}
-					/>
-				);
-			case 'contact_us':
-				return (<Text>Contact us</Text>);
-			default:
-				return (<View/>);
-		}
-	}
-
-	// Lifecycle methods
 	componentWillMount() {
 		this.props.projectsFetch();
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		// Тут мы боремся с ререндером при тапе на active tab
-		return this.state.selectedTab !== nextState.selectedTab || this.props !== nextProps;
-	}
-
 	render() {
-		const {containerStyle, headerStyle, iconStyle} = styles;
+		console.log('render');
+		const {
+			containerStyle,
+			tabBarUnderlineStyle
+		} = styles;
 
 		return (
 			<Container style={containerStyle}>
-				<Header style={headerStyle}>
-					<Left/>
-					<Body>
-						<Title>Projects</Title>
-					</Body>
-					<Right>
-						<Button transparent onPress={this.handleAddProjectEvent}>
-							<Icon name="cog" style={iconStyle}/>
-						</Button>
-					</Right>
-				</Header>
-				<Content>
-					{this.renderSelectedTab()}
-				</Content>
-				<Footer>
-					{/* Можно тоже по сути выкинуть в отдельный компонент */}
-					<FooterTab>
-						<Button
-							active={this.state.selectedTab === 'profile'}
-							onPress={() => this.setState({selectedTab: 'profile'})}
+				<LinearGradient
+					style={{flex: 1}}
+					colors={PROJECTS_LIST_GRADIENT_COLORS}
+					start={[0, 0]}
+					end={[1, 0]}
+				>
+					<SearchHeader/>
+					<Tabs
+						locked
+						tabBarUnderlineStyle={tabBarUnderlineStyle}
+						initialPage={this.state.initTab}
+						onChangeTab={({i}) => this.setState({activeTab: i})}
+					>
+						<Tab
+							heading={
+								<TabHeading style={{backgroundColor: 'transparent'}}>
+									<TabIcon name="md-list" position={0} activeTab={this.state.activeTab}/>
+								</TabHeading>}
 						>
-							<Text>Profile</Text>
-							<Icon name="contact"/>
-						</Button>
-						<Button
-							active={this.state.selectedTab === 'projects'}
-							onPress={() => this.setState({selectedTab: 'projects'})}
+							<FlatList
+								style={{flex: 1}}
+								data={this.props.projects}
+								renderItem={({item}) => this.renderRow(item)}
+								keyExtractor={item => item.uid}
+							/>
+						</Tab>
+						<Tab
+							heading={
+								<TabHeading style={{backgroundColor: 'transparent'}}>
+									<TabIcon name="md-person" position={1} activeTab={this.state.activeTab}/>
+								</TabHeading>}
+						/>
+						<Tab
+							heading={
+								<TabHeading style={{backgroundColor: 'transparent'}}>
+									<TabIcon name="md-settings" position={2} activeTab={this.state.activeTab}/>
+								</TabHeading>}
 						>
-							<Text>Projects</Text>
-							<Icon name="home"/>
-						</Button>
-						<Button
-							active={this.state.selectedTab === 'contact_us'}
-							onPress={() => this.setState({selectedTab: 'contact_us'})}
-						>
-							<Text>Contact us</Text>
-							<Icon name="send"/>
-						</Button>
-					</FooterTab>
-				</Footer>
+							<ProjectCreateForm/>
+						</Tab>
+					</Tabs>
+				</LinearGradient>
 			</Container>
 		);
 	}
 }
 
-const styles = {
-	headerStyle: {
-		backgroundColor: 'rgba(231, 29, 54, 1)'
-	},
-	containerStyle: {
-		backgroundColor: 'rgba(253, 255, 252, 1)'
-	},
-	iconStyle: {
-		color: (Platform.OS === 'android') ? 'white' : 'black'
-	}
-};
-
 const mapStateToProps = state => {
-	const projects = _.map(state.projects, (val, uid) => {
+	const projects = _.map(state.projects.filteredProjects, (val, uid) => {
 		return {...val, uid};
 	});
 	return {projects};

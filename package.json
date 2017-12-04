@@ -17,7 +17,8 @@
     "eject": "react-native-scripts eject",
     "android": "react-native-scripts android",
     "ios": "react-native-scripts ios",
-    "test": "node node_modules/jest/bin/jest.js --watch"
+	"test": "node node_modules/jest/bin/jest.js --watch",
+	"debug": "open 'rndebugger://set-debugger-loc?host=localhost&port=19001'"
   },
   "jest": {
     "preset": "jest-expo"
@@ -44,7 +45,9 @@
       "react/prop-types": 0,
       "react/forbid-component-props": 0,
       "no-use-before-define": 0,
-      "react/jsx-no-bind": 0
+      "react/jsx-no-bind": 0,
+      "import/prefer-default-export": 0,
+      "no-return-assign": 0
     },
     "parser": "babel-eslint"
   }

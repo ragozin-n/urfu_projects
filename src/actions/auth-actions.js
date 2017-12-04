@@ -30,10 +30,10 @@ const alertOnDevice = error => {
 	);
 };
 
-const loginUserFail = (dispatch, error) => {
+const loginUserFail = (dispatch, err) => {
 	dispatch({
 		type: LOGIN_USER_FAIL,
-		payload: error
+		payload: err
 	});
 };
 
@@ -56,11 +56,12 @@ export const loginUser = ({email, password}) => {
 		dispatch({type: LOGIN_USER});
 		firebase.auth().signInWithEmailAndPassword(email, password)
 			.then(user => loginUserSuccess(dispatch, user))
-			.catch(error => {
-				alertOnDevice(error);
-				firebase.auth().createUserWithEmailAndPassword(email, password)
-					.then(user => loginUserSuccess(dispatch, user))
-					.catch(error => loginUserFail(dispatch, error));
+			.catch(err => {
+				alertOnDevice(err);
+				loginUserFail(dispatch, err);
+				// firebase.auth().createUserWithEmailAndPassword(email, password)
+				// 	.then(user => loginUserSuccess(dispatch, user))
+				// 	.catch(error => loginUserFail(dispatch, error));
 			});
 	};
 };
