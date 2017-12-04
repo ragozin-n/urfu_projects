@@ -5,16 +5,15 @@
 				"name": "Event name",
 				"description": "Event description",
 				"photoBase64": "data...",
-				"vacancy": {
-					"name": "Vacancy name",
-					"skills": {
-						"skill_hash": "isRequired flag"
+				"vacancies": {
+					"vacancy_hash": {
+						"name": "Vacancy name",
+						"description": "blah blah blah",
+						"skills": "skill skill skill"
 					}
 				},
-				"keywords": {
-					"name": "Keyword"
-				},
-				"users_count": 10,
+				"keywords": "blah blah blah",
+				"membersCount": 10,
 				"members": {
 					"user_hash": "user_hash"
 				}
@@ -24,6 +23,7 @@
 			"user_hash": {
 				"name": "User fullname",
 				"photoBase64": "data...",
+				"isCurator": "flag",
 				"skills": {
 					"skill_hash": "skill_hash"
 				},

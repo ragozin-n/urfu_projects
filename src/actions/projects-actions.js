@@ -15,14 +15,33 @@ export const projectInfoUpdate = ({prop, value}) => {
 	};
 };
 
-export const projectCreate = ({name, description, photoBase64}) => {
+export const projectCreate = ({name, description, photoBase64, membersCount, keywords, vacancies}) => {
 	return dispatch => {
-		firebase.database().ref(`/events`)
-			.push({name, description, photoBase64})
-			.then(() => {
-				dispatch({type: PROJECT_CREATE});
-				Actions.main();
-			});
+		const currentEventKey = firebase.database().ref(`/events`).push().key;
+		const currentEventRef = firebase.database().ref(`/events/${currentEventKey}`);
+		currentEventRef.set(
+			{
+				name,
+				description,
+				photoBase64,
+				membersCount,
+				keywords
+			}
+		);
+
+		const currentVacanciesRef = firebase.database().ref(`/events/${currentEventKey}/vacancies`);
+		vacancies.forEach(element => {
+			currentVacanciesRef.push(
+				{
+					name: element.name,
+					description: element.description,
+					skills: element.skills
+				}
+			);
+		});
+
+		dispatch({type: PROJECT_CREATE});
+		Actions.main();
 	};
 };
 
