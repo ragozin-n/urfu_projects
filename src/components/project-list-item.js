@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Alert, Modal, View} from 'react-native';
+import {Alert, Modal, List, FlatList, View} from 'react-native';
 import {
 	ListItem,
 	Left,
@@ -8,8 +8,9 @@ import {
 	Text,
 	Thumbnail,
 	Button,
-	H1,
-	H3
+	Card,
+	CardItem,
+	Content
 } from 'native-base';
 import _ from 'lodash';
 import {THUMBNAIL_BORDER_COLOR} from './styles/colors';
@@ -25,28 +26,29 @@ class ProjectListItem extends Component {
 		this.setState({modalVisible: true});
 	}
 
-	handleApplyAction = (name, description) => {
+	handleApplyAction = (description, skills, projectUid, vacancyUid) => {
 		Alert.alert(
-			`${name}`,
 			`${description}`,
-			[],
+			`${skills} ЗДЕСЬ БУДЕТ ТИПО ДОСТУПНОСТЬ И ВОЗМОЖНОСТЬ ДОБАВЛЕНИЯ`,
+			[{text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+				{text: 'Apply', onPress: () => this.props.applyToProject({projectUid, vacancyUid})}],
 			{cancelable: true}
 		);
 	}
 
-	renderVacancies = vacancies => {
-		const _vacancies = [];
-		const _text = [];
-		_.forEach(vacancies, value => _vacancies.push(value));
-		for (let i = 0; i < _vacancies.length && i < 5; i++) {
-			const {name, description, skills} = _vacancies[i];
-			_text.push(<Text key={i}>{name}:{skills}</Text>);
-		}
-		return _text;
+	renderRow(vacancy, uid) {
+		const {name, description, skills} = vacancy.value;
+		const {key} = vacancy;
+		return (
+			<ListItem onPress={() => this.handleApplyAction(description, skills, uid, key)}>
+				<Text>{name}</Text>
+			</ListItem>
+		);
 	}
 
 	render() {
-		const {name, description, photoBase64, keywords, membersCount, vacancies} = this.props.project;
+		const {name, description, photoBase64, keywords, maxMembers, uid} = this.props.project;
+		const vacancies = _.map(this.props.project.vacancies, (value, key) => ({key, value}));
 		const {projectListItem} = styles;
 		return (
 			<ListItem avatar style={projectListItem} onPress={this.handleRowPress}>
@@ -65,8 +67,8 @@ class ProjectListItem extends Component {
 				</Body>
 				{/* Fix for https://github.com/GeekyAnts/NativeBase/issues/672 */}
 				<Right>
-					<Button small transparent onPress={() => this.handleApplyAction(name, description)}>
-						<Text note>{membersCount}</Text>
+					<Button small transparent>
+						<Text note>{maxMembers}</Text>
 					</Button>
 				</Right>
 
@@ -76,26 +78,36 @@ class ProjectListItem extends Component {
 					visible={this.state.modalVisible}
 					onRequestClose={() => alert('Hardware close request.')}
 				>
-					<View style={{marginTop: 20, paddingLeft: 30, paddingRight: 30}}>
-						<View>
-							<H1>{name}</H1>
-							<H3>{description}</H3>
-							<H3>Keywords:</H3>
-							<Text>{keywords}</Text>
-							<H3>First five vacancies:</H3>
-							{this.renderVacancies(vacancies)}
-							<Button
-								warning
-								block
-								onPress={() => {
-									this.setState({modalVisible: false});
-								}}
-							>
-								<Text>Hide</Text>
-							</Button>
-
-						</View>
-					</View>
+					<Content>
+						<Card>
+							<CardItem header>
+								<Text>{name}</Text>
+							</CardItem>
+							<CardItem>
+								<Body>
+									<Text>Description: {description}</Text>
+									<Text>Keywords: {keywords}</Text>
+									<Text>Vacancies:</Text>
+									<FlatList
+										style={{flex: 1}}
+										data={vacancies}
+										renderItem={({item}) => this.renderRow(item, uid)}
+										keyExtractor={(item) => item.key}
+									/>
+								</Body>
+							</CardItem>
+							<CardItem footer>
+								<Button
+									warning
+									onPress={() => {
+										this.setState({modalVisible: false});
+									}}
+								>
+									<Text>Hide</Text>
+								</Button>
+							</CardItem>
+						</Card>
+					</Content>
 				</Modal>
 			</ListItem>
 		);

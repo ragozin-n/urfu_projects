@@ -5,7 +5,8 @@ import {
 	PROJECT_CREATE,
 	PROJECTS_FETCH_SUCCESS,
 	PROJECT_SAVE_SUCCESS,
-	PROJECTS_FILTER
+	PROJECTS_FILTER,
+	USER_APPLY_TO_PROJECT
 } from './types';
 
 export const projectInfoUpdate = ({prop, value}) => {
@@ -15,7 +16,7 @@ export const projectInfoUpdate = ({prop, value}) => {
 	};
 };
 
-export const projectCreate = ({name, description, photoBase64, membersCount, keywords, vacancies}) => {
+export const projectCreate = ({name, description, photoBase64, maxMembers, keywords, vacancies}) => {
 	return dispatch => {
 		const currentEventKey = firebase.database().ref(`/events`).push().key;
 		const currentEventRef = firebase.database().ref(`/events/${currentEventKey}`);
@@ -25,7 +26,7 @@ export const projectCreate = ({name, description, photoBase64, membersCount, key
 				name,
 				description,
 				photoBase64,
-				membersCount,
+				maxMembers,
 				keywords,
 				createdBy: currentUser.uid
 			}
@@ -44,6 +45,15 @@ export const projectCreate = ({name, description, photoBase64, membersCount, key
 
 		dispatch({type: PROJECT_CREATE});
 		Actions.main();
+	};
+};
+
+export const applyToProject = ({projectUid, vacancyUid}) => {
+	const {uid} = firebase.auth().currentUser;
+	const currentRef = firebase.database().ref(`/events/${projectUid}/vacancies/${vacancyUid}/`);
+	currentRef.update({wantTo: uid});
+	return dispatch => {
+		dispatch({type: USER_APPLY_TO_PROJECT});
 	};
 };
 

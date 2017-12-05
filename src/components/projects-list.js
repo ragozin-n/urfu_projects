@@ -12,7 +12,7 @@ import {
 import {LinearGradient} from 'expo';
 import {connect} from 'react-redux';
 import _ from 'lodash';
-import {projectsFetch} from '../actions';
+import {projectsFetch, applyToProject} from '../actions';
 import SearchHeader from './common/search-header';
 import TabIcon from './common/tab-icon';
 import {PROJECTS_LIST_GRADIENT_COLORS} from './styles/colors';
@@ -31,7 +31,7 @@ class ProjectsList extends Component {
 	}
 
 	renderRow(project) {
-		return <ProjectListItem project={project}/>;
+		return <ProjectListItem project={project} applyToProject={this.props.applyToProject}/>;
 	}
 
 	componentWillMount() {
@@ -101,4 +101,4 @@ const mapStateToProps = state => {
 	return {projects};
 };
 
-export default connect(mapStateToProps, {projectsFetch})(ProjectsList);
+export default connect(mapStateToProps, {projectsFetch, applyToProject})(ProjectsList);

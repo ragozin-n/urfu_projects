@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 // eslint-disable-next-line import/named
 import {AppLoading} from 'expo';
 import {Provider} from 'react-redux';
+import {composeWithDevTools} from 'redux-devtools-extension';
 import {createStore, applyMiddleware} from 'redux';
 import firebase from 'firebase';
 import ReduxThunk from 'redux-thunk';
@@ -27,7 +28,7 @@ export default class App extends Component {
 	}
 
 	render() {
-		const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
+		const store = createStore(reducers, {}, composeWithDevTools(applyMiddleware(ReduxThunk)));
 		if (!this.state.appIsReady) {
 			return <AppLoading/>;
 		}

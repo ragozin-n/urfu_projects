@@ -62,14 +62,14 @@ class ProjectCreateForm extends Component {
 	}
 
 	handleGenerateEvent = () => {
-		const randomEventName = faker.random.words();
-		const randomDescription = faker.random.words();
+		const randomEventName = faker.random.words(2);
+		const randomDescription = faker.random.words(4);
 		const randomImage = faker.image.dataUri(200, 200);
-		const membersCount = faker.random.number(20);
-		const keywords = faker.random.words();
-
-		const vacancyCount = faker.random.number(10);
+		const maxMembers = faker.random.number(20);
+		const keywords = faker.random.words(5);
+		const vacancyCount = faker.random.number({min: 7, max: 10});
 		const vacancies = [];
+
 		for (let i = 0; i < vacancyCount; i++) {
 			vacancies.push(
 				{
@@ -84,7 +84,7 @@ class ProjectCreateForm extends Component {
 			name: randomEventName,
 			description: randomDescription,
 			photoBase64: randomImage,
-			membersCount,
+			maxMembers,
 			keywords,
 			vacancies
 		});
