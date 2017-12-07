@@ -8,7 +8,8 @@ import {
 	Right,
 	Text,
 	Thumbnail,
-	Button
+	Button,
+	Icon
 } from 'native-base';
 import _ from 'lodash';
 import {THUMBNAIL_BORDER_COLOR} from './styles/colors';
@@ -33,6 +34,7 @@ class ProjectListItem extends Component {
 	render() {
 		const {name, description, photoBase64, keywords, maxMembers, uid} = this.props.project;
 		const vacancies = _.map(this.props.project.vacancies, (value, key) => ({key, value}));
+		const members = _.map(this.props.project.members, (value, key) => ({key, value}));
 		const {projectListItem} = styles;
 
 		return (
@@ -53,7 +55,8 @@ class ProjectListItem extends Component {
 				{/* Fix for https://github.com/GeekyAnts/NativeBase/issues/672 */}
 				<Right>
 					<Button small transparent>
-						<Text note>{maxMembers}</Text>
+						{/* Да, отступ в пробел это жестко, а все потому, что лень делать stateless component */}
+						<Text note>{members.length}/{maxMembers}{' '}<Icon style={{fontSize: 14}} name="md-person"/></Text>
 					</Button>
 				</Right>
 			</ListItem>

@@ -43,6 +43,7 @@ class ProjectInfo extends Component {
 	render() {
 		const {name, description, photoBase64, keywords, maxMembers, uid} = this.props.currentProject;
 		const vacancies = _.map(this.props.currentProject.vacancies, (value, key) => ({key, value}));
+		const members = _.map(this.props.currentProject.members, (value, key) => ({key, value}));
 
 		return (
 			<Container>
@@ -75,7 +76,7 @@ class ProjectInfo extends Component {
 						</CardItem>
 						<CardItem style={{flex: 1, flexDirection: 'column', alignItems: 'center'}}>
 							<Button small full style={{flex: 1}} transparent onPress={() => this.setState({isMembersVisible: !this.state.isMembersVisible})}>
-								<Text>Участники проекта: Сложно/{maxMembers} <Icon style={{fontSize: 15}} name={this.state.isMembersVisible ? 'arrow-up' : 'arrow-down'}/></Text>									
+								<Text>Участники проекта: {members.length}/{maxMembers} <Icon style={{fontSize: 15}} name={this.state.isMembersVisible ? 'arrow-up' : 'arrow-down'}/></Text>									
 							</Button>
 							<View style={{flex: 1}}>
 								{this.state.isMembersVisible && <Text>ТУПО БЛОК ТЕКСТА ПОКА: {keywords}</Text>}

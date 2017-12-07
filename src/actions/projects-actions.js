@@ -22,7 +22,8 @@ export const projectCreate = ({name, description, photoBase64, maxMembers, keywo
 				photoBase64,
 				maxMembers,
 				keywords,
-				createdBy: currentUser.uid
+				createdBy: currentUser.uid,
+				members: {}
 			}
 		);
 
@@ -44,9 +45,9 @@ export const projectCreate = ({name, description, photoBase64, maxMembers, keywo
 // Students apply for project
 export const applyToProject = ({projectUid, vacancyUid}) => {
 	const {uid} = firebase.auth().currentUser;
-	const currentRef = firebase.database().ref(`/events/${projectUid}/vacancies/${vacancyUid}/`);
+	const currentRef = firebase.database().ref(`/events/${projectUid}/vacancies/${vacancyUid}/candidates`);
 
-	currentRef.update({wantTo: uid});
+	currentRef.push({uid});
 	return dispatch => {
 		dispatch({type: USER_APPLY_TO_PROJECT});
 	};

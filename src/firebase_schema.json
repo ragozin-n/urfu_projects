@@ -9,7 +9,12 @@
 					"vacancy_hash": {
 						"name": "Vacancy name",
 						"description": "blah blah blah",
-						"skills": "skill skill skill"
+						"skills": "skill skill skill",
+						"candidates": {
+							"candidate_hash": {
+								"user_hash": "user_hash"
+							}
+						}
 					}
 				},
 				"keywords": "blah blah blah",
