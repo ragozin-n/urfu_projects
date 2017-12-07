@@ -1,15 +1,8 @@
 import React, {Component} from 'react';
-import {Platform, View} from 'react-native';
+import {View} from 'react-native';
 import {connect} from 'react-redux';
 import {
-	Container,
-	Header,
-	Left,
-	Body,
-	Content,
 	Button,
-	Icon,
-	Title,
 	Text
 } from 'native-base';
 import {Actions} from 'react-native-router-flux';
@@ -91,12 +84,6 @@ class ProjectCreateForm extends Component {
 	}
 
 	render() {
-		const {
-			containerStyle,
-			headerStyle,
-			backArrowStyle
-		} = styles;
-
 		return (
 			<View>
 				<Text>User section</Text>
@@ -122,26 +109,9 @@ class ProjectCreateForm extends Component {
 	}
 }
 
-// Вся форма тут исключительно для дебага, так что нет смысла что-то менять
-const styles = {
-	containerStyle: {
-		backgroundColor: 'rgba(253, 255, 252, 1)'
-	},
-	headerStyle: {
-		backgroundColor: 'rgba(231, 29, 54, 1)'
-	},
-	buttonSuccessStyle: {
-		margin: 15,
-		alignSelf: 'center',
-		padding: 25
-	},
-	backArrowStyle: {
-		color: (Platform.OS === 'android') ? 'white' : 'black'
-	}
-};
-
 const mapStateToProps = ({user}) => {
 	const {name, photoBase64, achievements, history} = user;
+
 	return {name, photoBase64, achievements, history};
 };
 

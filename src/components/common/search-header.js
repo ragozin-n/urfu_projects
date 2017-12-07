@@ -28,7 +28,6 @@ class SearchHeader extends Component {
 		const {titleStyle, iconStyle} = styles;
 
 		if (this.state.isHeaderSearch) {
-			console.log('header');
 			return (
 				<Header hasTabs searchBar style={{backgroundColor: 'transparent'}}>
 					<Item style={{backgroundColor: 'transparent'}}>
@@ -45,6 +44,7 @@ class SearchHeader extends Component {
 					</Item>
 				</Header>);
 		}
+
 		return (
 			<Header hasTabs style={{backgroundColor: 'transparent'}}>
 				<Left>
@@ -63,6 +63,7 @@ const mapStateToProps = state => {
 	const _projects = _.map(state.projects.data, (val, uid) => {
 		return {...val, uid};
 	});
+
 	return {_projects};
 };
 

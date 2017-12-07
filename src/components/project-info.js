@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {FlatList, View} from 'react-native';
+import {View} from 'react-native';
 import {
 	Container,
 	Content,
@@ -20,8 +20,9 @@ import {
 } from 'native-base';
 import {connect} from 'react-redux';
 import {Actions} from 'react-native-router-flux';
-import {THUMBNAIL_BORDER_COLOR, PROJECTS_LIST_GRADIENT_COLORS} from './styles/colors';
+// eslint-disable-next-line import/named
 import {LinearGradient} from 'expo';
+import {THUMBNAIL_BORDER_COLOR, PROJECTS_LIST_GRADIENT_COLORS} from './styles/colors';
 
 class ProjectInfo extends Component {
 	state = {
@@ -31,6 +32,7 @@ class ProjectInfo extends Component {
 	renderRow = (vacancy, uid) => {
 		const {name, description, skills} = vacancy.value;
 		const {key} = vacancy;
+
 		return (
 			<ListItem onPress={() => this.handleApplyAction(description, skills, uid, key)}>
 				<Text>{name}</Text>
@@ -41,6 +43,7 @@ class ProjectInfo extends Component {
 	render() {
 		const {name, description, photoBase64, keywords, maxMembers, uid} = this.props.currentProject;
 		const vacancies = _.map(this.props.currentProject.vacancies, (value, key) => ({key, value}));
+
 		return (
 			<Container>
 				<Header>
@@ -99,10 +102,5 @@ class ProjectInfo extends Component {
 			</Container>);
 	}
 }
-
-// const mapStateToProps = ({projectForm}) => {
-// 	const {currentProject} = projectForm;
-// 	return {currentProject};
-// };
 
 export default connect(null, {})(ProjectInfo);

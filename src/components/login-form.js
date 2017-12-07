@@ -82,12 +82,10 @@ class LoginForm extends Component {
 			logoStyle,
 			formStyle,
 			backgroundGradientStyle,
-			passwordRestoreStyle,
 			itemFixStyle,
 			inputIconStyle,
 			inputStyle,
-			animatedViewStyle,
-			passwordRestoreTextStyle
+			animatedViewStyle
 		} = styles;
 
 		return (

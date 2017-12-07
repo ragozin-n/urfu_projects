@@ -1,27 +1,20 @@
 import firebase from 'firebase';
 import {Actions} from 'react-native-router-flux';
 import {
-	PROJECT_INFO_UPDATE,
 	PROJECT_CREATE,
 	PROJECTS_FETCH_SUCCESS,
-	PROJECT_SAVE_SUCCESS,
 	PROJECTS_FILTER,
-	USER_APPLY_TO_PROJECT,
-	GET_PROJECT_INFO
+	USER_APPLY_TO_PROJECT
 } from './types';
 
-export const projectInfoUpdate = ({prop, value}) => {
-	return {
-		type: PROJECT_INFO_UPDATE,
-		payload: {prop, value}
-	};
-};
-
+// Curator create project
 export const projectCreate = ({name, description, photoBase64, maxMembers, keywords, vacancies}) => {
 	return dispatch => {
 		const currentEventKey = firebase.database().ref(`/events`).push().key;
 		const currentEventRef = firebase.database().ref(`/events/${currentEventKey}`);
 		const {currentUser} = firebase.auth();
+		const currentVacanciesRef = firebase.database().ref(`/events/${currentEventKey}/vacancies`);
+
 		currentEventRef.set(
 			{
 				name,
@@ -33,7 +26,6 @@ export const projectCreate = ({name, description, photoBase64, maxMembers, keywo
 			}
 		);
 
-		const currentVacanciesRef = firebase.database().ref(`/events/${currentEventKey}/vacancies`);
 		vacancies.forEach(element => {
 			currentVacanciesRef.push(
 				{
@@ -49,17 +41,19 @@ export const projectCreate = ({name, description, photoBase64, maxMembers, keywo
 	};
 };
 
+// Students apply for project
 export const applyToProject = ({projectUid, vacancyUid}) => {
 	const {uid} = firebase.auth().currentUser;
 	const currentRef = firebase.database().ref(`/events/${projectUid}/vacancies/${vacancyUid}/`);
+
 	currentRef.update({wantTo: uid});
 	return dispatch => {
 		dispatch({type: USER_APPLY_TO_PROJECT});
 	};
 };
 
+// Get global events from database with callback
 export const projectsFetch = () => {
-	// GET GLOBAL EVENTS
 	return dispatch => {
 		firebase.database().ref(`/events`)
 			.on('value', snapshot => {
@@ -71,6 +65,7 @@ export const projectsFetch = () => {
 	};
 };
 
+// Filter projects
 export const projectsFilter = (searchString, arr) => {
 	if (!searchString) {
 		return {
@@ -87,42 +82,5 @@ export const projectsFilter = (searchString, arr) => {
 	return {
 		type: PROJECTS_FILTER,
 		payload: filteredProjects
-	};
-};
-
-// export const getProjectInfo = ({projectUid}) => {
-// 	dispatch(
-// 		{
-// 			type: GET_PROJECT_INFO,
-// 			payload: projectUid
-// 		}
-// 	);
-// 	Actions.projectInfo();
-// };
-
-// -----------DEPRECATED-----------
-
-export const projectSave = ({name, count, priority, uid}) => {
-	const {currentUser} = firebase.auth();
-
-	return dispatch => {
-		firebase.database().ref(`/users/${currentUser.uid}/tasks/${uid}`)
-			.set({name, count, priority})
-			.then(() => {
-				dispatch({type: PROJECT_SAVE_SUCCESS});
-				Actions.main();
-			});
-	};
-};
-
-export const projectDelete = ({uid}) => {
-	const {currentUser} = firebase.auth();
-
-	return () => {
-		firebase.database().ref(`/users/${currentUser.uid}/tasks/${uid}`)
-			.remove()
-			.then(() => {
-				Actions.main();
-			});
 	};
 };

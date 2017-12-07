@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Alert, Modal, List, FlatList, View} from 'react-native';
+import {Alert} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import {
 	ListItem,
@@ -8,10 +8,7 @@ import {
 	Right,
 	Text,
 	Thumbnail,
-	Button,
-	Card,
-	CardItem,
-	Content
+	Button
 } from 'native-base';
 import _ from 'lodash';
 import {THUMBNAIL_BORDER_COLOR} from './styles/colors';
@@ -37,6 +34,7 @@ class ProjectListItem extends Component {
 		const {name, description, photoBase64, keywords, maxMembers, uid} = this.props.project;
 		const vacancies = _.map(this.props.project.vacancies, (value, key) => ({key, value}));
 		const {projectListItem} = styles;
+
 		return (
 			<ListItem avatar style={projectListItem} onPress={this.handleRowPress}>
 				<Left>

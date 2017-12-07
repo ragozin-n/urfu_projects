@@ -3,7 +3,6 @@ import {FlatList} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import {
 	Container,
-	Icon,
 	Tabs,
 	Tab,
 	TabHeading
@@ -39,7 +38,6 @@ class ProjectsList extends Component {
 	}
 
 	render() {
-		console.log('render');
 		const {
 			containerStyle,
 			tabBarUnderlineStyle
@@ -98,6 +96,7 @@ const mapStateToProps = state => {
 	const projects = _.map(state.projects.filteredProjects, (val, uid) => {
 		return {...val, uid};
 	});
+
 	return {projects};
 };
 
