@@ -12,6 +12,7 @@ export const PROJECTS_FETCH_SUCCESS = 'projects_fetch_success';
 export const PROJECT_SAVE_SUCCESS = 'project_save_success';
 export const PROJECTS_FILTER = 'projects_filter';
 export const USER_APPLY_TO_PROJECT = 'user_apply_to_project';
+export const GET_PROJECT_INFO = 'get_project_info';
 
 // User customization
 export const USER_BIO_UPDATE = 'user_bio_update';

@@ -6,7 +6,8 @@ import {
 	PROJECTS_FETCH_SUCCESS,
 	PROJECT_SAVE_SUCCESS,
 	PROJECTS_FILTER,
-	USER_APPLY_TO_PROJECT
+	USER_APPLY_TO_PROJECT,
+	GET_PROJECT_INFO
 } from './types';
 
 export const projectInfoUpdate = ({prop, value}) => {
@@ -88,6 +89,16 @@ export const projectsFilter = (searchString, arr) => {
 		payload: filteredProjects
 	};
 };
+
+// export const getProjectInfo = ({projectUid}) => {
+// 	dispatch(
+// 		{
+// 			type: GET_PROJECT_INFO,
+// 			payload: projectUid
+// 		}
+// 	);
+// 	Actions.projectInfo();
+// };
 
 // -----------DEPRECATED-----------
 

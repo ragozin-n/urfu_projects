@@ -17,7 +17,7 @@ export default StyleSheet.create({
 	},
 	projectListItem: {
 		marginLeft: 0,
-		paddingLeft: 0,
+		paddingLeft: 15,
 		paddingRight: 0,
 		marginRight: 0,
 		backgroundColor: PROJECTS_LIST_ITEM_BACKGROUND_COLOR

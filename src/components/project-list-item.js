@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Alert, Modal, List, FlatList, View} from 'react-native';
+import {Actions} from 'react-native-router-flux';
 import {
 	ListItem,
 	Left,
@@ -18,14 +19,6 @@ import styles from './styles/projects-list-styles';
 
 class ProjectListItem extends Component {
 
-	state = {
-		modalVisible: false
-	}
-
-	handleRowPress = () => {
-		this.setState({modalVisible: true});
-	}
-
 	handleApplyAction = (description, skills, projectUid, vacancyUid) => {
 		Alert.alert(
 			`${description}`,
@@ -36,14 +29,8 @@ class ProjectListItem extends Component {
 		);
 	}
 
-	renderRow(vacancy, uid) {
-		const {name, description, skills} = vacancy.value;
-		const {key} = vacancy;
-		return (
-			<ListItem onPress={() => this.handleApplyAction(description, skills, uid, key)}>
-				<Text>{name}</Text>
-			</ListItem>
-		);
+	handleRowPress = () => {
+		Actions.projectInfo({currentProject: this.props.project});
 	}
 
 	render() {
@@ -71,44 +58,6 @@ class ProjectListItem extends Component {
 						<Text note>{maxMembers}</Text>
 					</Button>
 				</Right>
-
-				<Modal
-					animationType="fade"
-					transparent={false}
-					visible={this.state.modalVisible}
-					onRequestClose={() => alert('Hardware close request.')}
-				>
-					<Content>
-						<Card>
-							<CardItem header>
-								<Text>{name}</Text>
-							</CardItem>
-							<CardItem>
-								<Body>
-									<Text>Description: {description}</Text>
-									<Text>Keywords: {keywords}</Text>
-									<Text>Vacancies:</Text>
-									<FlatList
-										style={{flex: 1}}
-										data={vacancies}
-										renderItem={({item}) => this.renderRow(item, uid)}
-										keyExtractor={(item) => item.key}
-									/>
-								</Body>
-							</CardItem>
-							<CardItem footer>
-								<Button
-									warning
-									onPress={() => {
-										this.setState({modalVisible: false});
-									}}
-								>
-									<Text>Hide</Text>
-								</Button>
-							</CardItem>
-						</Card>
-					</Content>
-				</Modal>
 			</ListItem>
 		);
 	}
