@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {View, Platform, FlatList, Alert} from 'react-native';
+import VacancyListItem from './common/vacancy-list-item';
 import {
 	Container,
 	Content,
@@ -30,26 +31,12 @@ class ProjectInfo extends Component {
 		isVacancyVisible: false
 	}
 
-	handleApply = ({description, skills, key, uid}) => {
-		Alert.alert(
-			`${description}`,
-			`SKILLS:${skills}\nKEY:${key}\nPROJECT_UID:${uid}`,
-			[
-				{text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-				{text: 'OK', onPress: () => console.log('OK Pressed')}
-			],
-			{cancelable: false}
-		);
-	}
-
 	renderVacancy = (vacancy, uid) => {
 		const {name, description, skills} = vacancy.value;
 		const {key} = vacancy;
 
 		return (
-			<ListItem onPress={() => this.handleApply({name, description, skills, key, uid})}>
-				<Text>{name}</Text>
-			</ListItem>
+			<VacancyListItem name={name} description={description} skills={skills} uid={key}/>
 		);
 	}
 
@@ -73,61 +60,51 @@ class ProjectInfo extends Component {
 					</Body>
 					<Right/>
 				</Header>
-				<Content>
-					<Card>
-						<CardItem style={{flex: 1, flexDirection: 'row'}}>
-							<Thumbnail
-								style={{
-									borderColor: THUMBNAIL_BORDER_COLOR,
-									borderWidth: 2,
-									marginRight: 15,
-									overlayColor: 'white'
-								}}
-								large
-								source={{uri: photoBase64}}
-							/>
-							<H2>{name}</H2>
-						</CardItem>
-						<CardItem style={{flex: 1, flexDirection: 'column', alignItems: 'flex-start'}}>
-							<Button small full style={{flex: 1}} transparent onPress={() => this.setState({isMembersVisible: !this.state.isMembersVisible})}>
-								<Text>Участники проекта: {members.length}/{maxMembers} <Icon style={{fontSize: 15}} name={this.state.isMembersVisible ? 'arrow-up' : 'arrow-down'}/></Text>
-							</Button>
-							<View style={{flex: 1}}>
-								{this.state.isMembersVisible &&
-									<Text>Вместо участников пока ключевые слова: {keywords}</Text>
-								}
-							</View>
-							<Button small full style={{flex: 1}} transparent onPress={() => this.setState({isVacancyVisible: !this.state.isVacancyVisible})}>
-								<Text>Вакансии: <Icon style={{fontSize: 15}} name={this.state.isVacancyVisible ? 'arrow-up' : 'arrow-down'}/></Text>
-							</Button>
-							<View style={{flex: 1}}>
-								{this.state.isVacancyVisible &&
-									<FlatList
-										style={{flex: 1}}
-										data={vacancies}
-										renderItem={({item}) => this.renderVacancy(item, uid)}
-										keyExtractor={item => item.key}
-									/>
-								}
-							</View>
-						</CardItem>
-						<CardItem>
-							<View style={{flex: 1, flexDirection: 'column'}}>
-								<H3>Описание:</H3>
-								<Text>{description}</Text>
-							</View>
-						</CardItem>
-						<CardItem>
-							<LinearGradient
-								colors={PROJECTS_LIST_GRADIENT_COLORS}
-								style={{flex: 1}}
-							>
-								<Button full transparent style={{flex: 1}}>
-									<Text style={{color: 'white', fontWeight: 'bold', fontSize: 18}}>Отправить заявку</Text>
-								</Button>
-							</LinearGradient>
-						</CardItem>
-					</Card>
+				<Content style={{backgroundColor: 'white', padding: 15}}>
+					<View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+						<Thumbnail
+							style={{
+								borderColor: THUMBNAIL_BORDER_COLOR,
+								borderWidth: 2,
+								marginRight: 35,
+								overlayColor: 'white'
+							}}
+							large
+							source={{uri: photoBase64}}
+						/>
+						<H2>{name}</H2>
+					</View>
+
+					<Button small full transparent onPress={() => this.setState({isMembersVisible: !this.state.isMembersVisible})}>
+						<Text>Участники проекта: {members.length}/{maxMembers} <Icon style={{fontSize: 15}} name={this.state.isMembersVisible ? 'arrow-up' : 'arrow-down'}/></Text>
+					</Button>
+					{this.state.isMembersVisible &&
+						<Text>Вместо участников пока ключевые слова: {keywords}</Text>
+					}
+
+					<Button small full transparent onPress={() => this.setState({isVacancyVisible: !this.state.isVacancyVisible})}>
+						<Text>Вакансии: <Icon style={{fontSize: 15}} name={this.state.isVacancyVisible ? 'arrow-up' : 'arrow-down'}/></Text>
+					</Button>
+					{this.state.isVacancyVisible &&
+						<FlatList
+							style={{flex: 1}}
+							data={vacancies}
+							renderItem={({item}) => this.renderVacancy(item, uid)}
+							keyExtractor={item => item.key}
+						/>
+					}
+
+					<H3>Описание:</H3>
+					<Text>{description}</Text>
+
+					<LinearGradient
+						colors={PROJECTS_LIST_GRADIENT_COLORS}
+						style={{flex: 1}}
+					>
+						<Button full transparent>
+							<Text style={{color: 'white', fontWeight: 'bold', fontSize: 18}}>Отправить заявку</Text>
+						</Button>
+					</LinearGradient>
 				</Content>
 			</Container>);
 	}

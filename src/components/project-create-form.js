@@ -88,22 +88,22 @@ class ProjectCreateForm extends Component {
 			<View>
 				<Text>User section</Text>
 				<Button block light onPress={() => this.handleGenerateUser({isCurator: false})}>
-					<Text>Generate common user</Text>
+					<Text>Become common user</Text>
 				</Button>
 				<Button block warning onPress={() => this.handleGenerateUser({isCurator: true})}>
-					<Text>Generate curator</Text>
+					<Text>Become curator</Text>
 				</Button>
-				<Button block light onPress={this.handleGenerateSkill}>
+				{/* <Button block light onPress={this.handleGenerateSkill}>
 					<Text>Generate skill</Text>
 				</Button>
 				<Button block warning onPress={this.handleGenerateAchievement}>
 					<Text>Generate achievement</Text>
-				</Button>
+				</Button> */}
 
-				<Text>Globals</Text>
+				{/* <Text>Globals</Text>
 				<Button full danger onPress={this.handleGenerateEvent}>
 					<Text>Generate event</Text>
-				</Button>
+				</Button> */}
 			</View>
 		);
 	}
