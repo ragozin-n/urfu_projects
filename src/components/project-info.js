@@ -51,20 +51,26 @@ class ProjectInfo extends Component {
 		const members = _.map(this.props.currentProject.members, (value, key) => ({key, value}));
 
 		return (
-			<Container>
-				<Header style={{marginTop: (Platform.OS === 'android') ? 15 : 0}}>
-					<Left>
-						<Button small transparent onPress={() => Actions.main()}>
-							<Icon name="arrow-back"/>
-						</Button>
-					</Left>
-					<Body>
-						<Title>
-							БЛАБЛАБЛА
-						</Title>
-					</Body>
-					<Right/>
-				</Header>
+			<Container style={{flex: 1}}>
+				<LinearGradient
+					style={{flex: 1}}
+					colors={PROJECTS_LIST_GRADIENT_COLORS}
+					start={[0, 0]}
+					end={[1, 0]}
+				>
+					<Header style={{marginTop: (Platform.OS === 'android') ? 15 : 0, backgroundColor: 'transparent'}}>
+						<Left>
+							<Button small transparent onPress={() => Actions.main()}>
+								<Icon name="arrow-back"/>
+							</Button>
+						</Left>
+						<Body>
+							<Title>
+								Подробнее
+							</Title>
+						</Body>
+						<Right/>
+					</Header>
 				<Content style={{backgroundColor: 'white', padding: 15}}>
 					<View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
 						<Thumbnail
@@ -112,6 +118,7 @@ class ProjectInfo extends Component {
 						</Button>
 					</LinearGradient> */}
 				</Content>
+				</LinearGradient>
 			</Container>);
 	}
 }
