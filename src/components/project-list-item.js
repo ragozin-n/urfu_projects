@@ -62,7 +62,8 @@ class ProjectListItem extends Component {
 							source={{uri: photoBase64}}
 							style={{
 								borderColor: THUMBNAIL_BORDER_COLOR,
-								borderWidth: 2
+								borderWidth: 2,
+								overlayColor: 'white'
 							}}
 						/>
 					</Left>

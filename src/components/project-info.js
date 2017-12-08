@@ -47,7 +47,7 @@ class ProjectInfo extends Component {
 
 		return (
 			<Container>
-				<Header>
+				<Header style={{marginTop: (Platform.OS === 'android') ? 15 : 0}}>
 					<Left>
 						<Button small transparent onPress={() => Actions.main()}>
 							<Icon name="arrow-back"/>
@@ -67,7 +67,8 @@ class ProjectInfo extends Component {
 								style={{
 									borderColor: THUMBNAIL_BORDER_COLOR,
 									borderWidth: 2,
-									marginRight: 15
+									marginRight: 15,
+									overlayColor: 'white'
 								}}
 								large
 								source={{uri: photoBase64}}
