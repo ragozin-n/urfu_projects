@@ -20,7 +20,7 @@ import {projectsFilter} from '../../actions';
 class SearchHeader extends Component {
 	state = {
 		isHeaderSearch: false,
-		slideAnimation: new Animated.Value(-150),
+		slideAnimation: new Animated.Value(-10),
 		opacityAnimation: new Animated.Value(0)
 	};
 
@@ -55,19 +55,20 @@ class SearchHeader extends Component {
 	handleCloseIcon = () => {
 		this.setState(
 			{
-				slideAnimation: new Animated.Value(-150),
+				slideAnimation: new Animated.Value(-10),
 				isHeaderSearch: !this.state.isHeaderSearch,
 				opacityAnimation: new Animated.Value(0)
 			});
+		// Display all projects
+		this.props.projectsFilter('', this.props._projects);
 	};
 
 	render() {
-		const {titleStyle, iconStyle} = styles;
+		const {titleStyle, iconStyle, headerStyle} = styles;
 
 		if (this.state.isHeaderSearch) {
 			return (
-				<Header hasTabs searchBar style={{backgroundColor: 'transparent'}}>
-					{/* <Item style={{backgroundColor: 'transparent'}}> */}
+				<Header hasTabs searchBar style={headerStyle}>
 					<Animated.View
 						style={{
 							flex: 1,
@@ -77,7 +78,7 @@ class SearchHeader extends Component {
 							opacity: this.state.opacityAnimation
 						}}
 					>
-						<Item style={{backgroundColor: 'transparent'}}>
+						<Item style={{backgroundColor: 'transparent', flex: 1}}>
 							<Icon style={iconStyle} name="md-search"/>
 							<Input
 								style={{color: SEARCH_INPUT_COLOR, flex: 1}}
@@ -85,17 +86,16 @@ class SearchHeader extends Component {
 								placeholder="Поиск..."
 								onChangeText={text => this.handleSearch(text)}
 							/>
+							<Button style={{alignSelf: 'center'}} transparent small onPress={this.handleCloseIcon}>
+								<Icon style={iconStyle} name="md-close"/>
+							</Button>
 						</Item>
 					</Animated.View>
-					<Button transparent small onPress={this.handleCloseIcon}>
-						<Icon style={iconStyle} name="md-close"/>
-					</Button>
-					{/* </Item> */}
 				</Header>);
 		}
 
 		return (
-			<Header hasTabs style={{backgroundColor: 'transparent'}}>
+			<Header hasTabs style={headerStyle}>
 				<Left>
 					<Title style={titleStyle}>Все проекты</Title>
 				</Left>

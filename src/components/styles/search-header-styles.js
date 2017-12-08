@@ -1,5 +1,6 @@
 import {
-	StyleSheet
+	StyleSheet,
+	Platform
 } from 'react-native';
 import {
 	TITLE_COLOR,
@@ -12,5 +13,9 @@ export default StyleSheet.create({
 	},
 	iconStyle: {
 		color: BUTTON_COLOR
+	},
+	headerStyle: {
+		marginTop: (Platform.OS === 'android') ? 15 : 0,
+		backgroundColor: 'transparent'
 	}
 });
