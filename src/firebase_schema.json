@@ -12,7 +12,7 @@
 						"skills": "skill skill skill",
 						"candidates": {
 							"candidate_hash": {
-								"user_hash": "user_hash"
+								"uid": "user_hash"
 							}
 						}
 					}

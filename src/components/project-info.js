@@ -1,19 +1,16 @@
 import React, {Component} from 'react';
-import {View, Platform, FlatList, Alert} from 'react-native';
-import VacancyListItem from './common/vacancy-list-item';
+import {View, Platform, FlatList} from 'react-native';
+import firebase from 'firebase';
 import {
 	Container,
 	Content,
 	Header,
-	Card,
-	CardItem,
 	Text,
 	Body,
 	Button,
 	Left,
 	Icon,
 	Title,
-	ListItem,
 	Right,
 	Thumbnail,
 	H2,
@@ -23,6 +20,7 @@ import {connect} from 'react-redux';
 import {Actions} from 'react-native-router-flux';
 // eslint-disable-next-line import/named
 import {LinearGradient} from 'expo';
+import VacancyListItem from './common/vacancy-list-item';
 import {THUMBNAIL_BORDER_COLOR, PROJECTS_LIST_GRADIENT_COLORS} from './styles/colors';
 
 class ProjectInfo extends Component {
@@ -32,11 +30,18 @@ class ProjectInfo extends Component {
 	}
 
 	renderVacancy = (vacancy, uid) => {
-		const {name, description, skills} = vacancy.value;
+		const {name, description, skills, candidates} = vacancy.value;
 		const {key} = vacancy;
+		const currentUserUid = firebase.auth().currentUser.uid;
+		const _candidates = _.map(candidates, (value, key) => ({key, value}));
+
+		// Run throw candidates array and search current user id in it
+		const isAlreadyApplied = _candidates.filter(item =>
+			item.value.uid === currentUserUid
+		).length > 0;
 
 		return (
-			<VacancyListItem name={name} description={description} skills={skills} uid={key}/>
+			<VacancyListItem name={name} description={description} skills={skills} vacancyUid={key} projectUid={uid} isAlreadyApplied={isAlreadyApplied}/>
 		);
 	}
 
@@ -96,15 +101,16 @@ class ProjectInfo extends Component {
 
 					<H3>Описание:</H3>
 					<Text>{description}</Text>
+					<View style={{flex: 1}}/>
 
-					<LinearGradient
+					{/* <LinearGradient
 						colors={PROJECTS_LIST_GRADIENT_COLORS}
 						style={{flex: 1}}
 					>
 						<Button full transparent>
 							<Text style={{color: 'white', fontWeight: 'bold', fontSize: 18}}>Отправить заявку</Text>
 						</Button>
-					</LinearGradient>
+					</LinearGradient> */}
 				</Content>
 			</Container>);
 	}

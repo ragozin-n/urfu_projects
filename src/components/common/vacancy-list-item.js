@@ -1,18 +1,27 @@
 import React, {Component} from 'react';
 import {ListItem, Right, Left, Button, Icon, Text} from 'native-base';
+import {connect} from 'react-redux';
 import {Alert} from 'react-native';
+import {Actions} from 'react-native-router-flux';
+import {applyToProject} from '../../actions';
 
 class VacancyListItem extends Component {
 	state = {
-		isSelected: false
+		isSelected: this.props.isAlreadyApplied
 	}
 
-	handleApply = ({description, skills}) => {
+	handleApplyAction = ({projectUid, vacancyUid}) => {
+		this.setState({isSelected: true});
+		this.props.applyToProject({projectUid, vacancyUid});
+		Actions.main();
+	}
+
+	handleVacancyPress = ({description, skills, projectUid, vacancyUid}) => {
 		Alert.alert(
 			`${description}`,
 			`SKILLS:${skills}\n\nApply for this vacancy?`,
 			[
-				{text: 'Apply', onPress: () => this.setState({isSelected: !this.state.isSelected})},
+				{text: 'Apply', onPress: () => this.handleApplyAction({projectUid, vacancyUid})},
 				{text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'}
 			],
 			{cancelable: false}
@@ -20,9 +29,10 @@ class VacancyListItem extends Component {
 	}
 
 	render() {
-		const {description, skills, name, uid} = this.props;
+		const {description, skills, name, projectUid, vacancyUid} = this.props;
+
 		return (
-			<ListItem onPress={() => this.handleApply({description, skills})}>
+			<ListItem onPress={() => this.handleVacancyPress({description, skills, projectUid, vacancyUid})}>
 				<Left>
 					<Button small transparent>
 						<Icon name={this.state.isSelected ? 'checkmark-circle' : 'radio-button-off'}/>
@@ -35,4 +45,4 @@ class VacancyListItem extends Component {
 	}
 }
 
-export default VacancyListItem;
+export default connect(null, {applyToProject})(VacancyListItem);
