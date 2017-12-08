@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View} from 'react-native';
+import {View, Platform, FlatList, Alert} from 'react-native';
 import {
 	Container,
 	Content,
@@ -26,15 +26,28 @@ import {THUMBNAIL_BORDER_COLOR, PROJECTS_LIST_GRADIENT_COLORS} from './styles/co
 
 class ProjectInfo extends Component {
 	state = {
-		isMembersVisible: false
+		isMembersVisible: false,
+		isVacancyVisible: false
 	}
 
-	renderRow = (vacancy, uid) => {
+	handleApply = ({description, skills, key, uid}) => {
+		Alert.alert(
+			`${description}`,
+			`SKILLS:${skills}\nKEY:${key}\nPROJECT_UID:${uid}`,
+			[
+				{text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+				{text: 'OK', onPress: () => console.log('OK Pressed')}
+			],
+			{cancelable: false}
+		);
+	}
+
+	renderVacancy = (vacancy, uid) => {
 		const {name, description, skills} = vacancy.value;
 		const {key} = vacancy;
 
 		return (
-			<ListItem onPress={() => this.handleApplyAction(description, skills, uid, key)}>
+			<ListItem onPress={() => this.handleApply({name, description, skills, key, uid})}>
 				<Text>{name}</Text>
 			</ListItem>
 		);
@@ -75,12 +88,27 @@ class ProjectInfo extends Component {
 							/>
 							<H2>{name}</H2>
 						</CardItem>
-						<CardItem style={{flex: 1, flexDirection: 'column', alignItems: 'center'}}>
+						<CardItem style={{flex: 1, flexDirection: 'column', alignItems: 'flex-start'}}>
 							<Button small full style={{flex: 1}} transparent onPress={() => this.setState({isMembersVisible: !this.state.isMembersVisible})}>
-								<Text>Участники проекта: {members.length}/{maxMembers} <Icon style={{fontSize: 15}} name={this.state.isMembersVisible ? 'arrow-up' : 'arrow-down'}/></Text>									
+								<Text>Участники проекта: {members.length}/{maxMembers} <Icon style={{fontSize: 15}} name={this.state.isMembersVisible ? 'arrow-up' : 'arrow-down'}/></Text>
 							</Button>
 							<View style={{flex: 1}}>
-								{this.state.isMembersVisible && <Text>ТУПО БЛОК ТЕКСТА ПОКА: {keywords}</Text>}
+								{this.state.isMembersVisible &&
+									<Text>Вместо участников пока ключевые слова: {keywords}</Text>
+								}
+							</View>
+							<Button small full style={{flex: 1}} transparent onPress={() => this.setState({isVacancyVisible: !this.state.isVacancyVisible})}>
+								<Text>Вакансии: <Icon style={{fontSize: 15}} name={this.state.isVacancyVisible ? 'arrow-up' : 'arrow-down'}/></Text>
+							</Button>
+							<View style={{flex: 1}}>
+								{this.state.isVacancyVisible &&
+									<FlatList
+										style={{flex: 1}}
+										data={vacancies}
+										renderItem={({item}) => this.renderVacancy(item, uid)}
+										keyExtractor={item => item.key}
+									/>
+								}
 							</View>
 						</CardItem>
 						<CardItem>
