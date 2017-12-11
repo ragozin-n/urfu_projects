@@ -1,15 +1,8 @@
 import React, {Component} from 'react';
-import {Platform, View} from 'react-native';
+import {View} from 'react-native';
 import {connect} from 'react-redux';
 import {
-	Container,
-	Header,
-	Left,
-	Body,
-	Content,
 	Button,
-	Icon,
-	Title,
 	Text
 } from 'native-base';
 import {Actions} from 'react-native-router-flux';
@@ -62,14 +55,14 @@ class ProjectCreateForm extends Component {
 	}
 
 	handleGenerateEvent = () => {
-		const randomEventName = faker.random.words();
-		const randomDescription = faker.random.words();
+		const randomEventName = faker.random.words(2);
+		const randomDescription = faker.random.words(4);
 		const randomImage = faker.image.dataUri(200, 200);
-		const membersCount = faker.random.number(20);
-		const keywords = faker.random.words();
-
-		const vacancyCount = faker.random.number(10);
+		const maxMembers = faker.random.number(20);
+		const keywords = faker.random.words(5);
+		const vacancyCount = faker.random.number({min: 7, max: 10});
 		const vacancies = [];
+
 		for (let i = 0; i < vacancyCount; i++) {
 			vacancies.push(
 				{
@@ -84,64 +77,41 @@ class ProjectCreateForm extends Component {
 			name: randomEventName,
 			description: randomDescription,
 			photoBase64: randomImage,
-			membersCount,
+			maxMembers,
 			keywords,
 			vacancies
 		});
 	}
 
 	render() {
-		const {
-			containerStyle,
-			headerStyle,
-			backArrowStyle
-		} = styles;
-
 		return (
 			<View>
 				<Text>User section</Text>
 				<Button block light onPress={() => this.handleGenerateUser({isCurator: false})}>
-					<Text>Generate common user</Text>
+					<Text>Become common user</Text>
 				</Button>
 				<Button block warning onPress={() => this.handleGenerateUser({isCurator: true})}>
-					<Text>Generate curator</Text>
+					<Text>Become curator</Text>
 				</Button>
-				<Button block light onPress={this.handleGenerateSkill}>
+				{/* <Button block light onPress={this.handleGenerateSkill}>
 					<Text>Generate skill</Text>
 				</Button>
 				<Button block warning onPress={this.handleGenerateAchievement}>
 					<Text>Generate achievement</Text>
-				</Button>
+				</Button> */}
 
-				<Text>Globals</Text>
+				{/* <Text>Globals</Text>
 				<Button full danger onPress={this.handleGenerateEvent}>
 					<Text>Generate event</Text>
-				</Button>
+				</Button> */}
 			</View>
 		);
 	}
 }
 
-// Вся форма тут исключительно для дебага, так что нет смысла что-то менять
-const styles = {
-	containerStyle: {
-		backgroundColor: 'rgba(253, 255, 252, 1)'
-	},
-	headerStyle: {
-		backgroundColor: 'rgba(231, 29, 54, 1)'
-	},
-	buttonSuccessStyle: {
-		margin: 15,
-		alignSelf: 'center',
-		padding: 25
-	},
-	backArrowStyle: {
-		color: (Platform.OS === 'android') ? 'white' : 'black'
-	}
-};
-
 const mapStateToProps = ({user}) => {
 	const {name, photoBase64, achievements, history} = user;
+
 	return {name, photoBase64, achievements, history};
 };
 

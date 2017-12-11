@@ -6,6 +6,8 @@ import {
 	USER_HISTORY_UPDATE
 } from './types';
 
+// TODO: rewrite all code
+
 // User customization actions. May group in one method.
 export const updateUserBio = ({prop, value}) => {
 	return {

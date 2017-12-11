@@ -9,34 +9,34 @@ import {
 
 export default StyleSheet.create({
 	loginButtonStyle: {
-		marginTop: 60,
+		marginTop: 100,
 		backgroundColor: LOGIN_BUTTON_COLOR,
 		borderRadius: (Platform.OS === 'ios') ? 6 : 0
 	},
 	formStyle: {
-		marginLeft: 25,
-		marginRight: 25,
+		marginLeft: 35,
+		marginRight: 35,
 		marginTop: 60
 	},
 	logoStyle: {
-		height: 110,
+		height: 115,
 		resizeMode: 'contain',
 		alignSelf: 'center',
-		marginBottom: 10,
+		marginBottom: 90,
 		marginLeft: 30,
 		marginRight: 40,
 		marginTop: (Platform.OS === 'ios') ? 150 : 60
 	},
 	loginButtonTextStyle: {
 		color: LOGIN_BUTTON_TEXT_COLOR,
-		fontSize: 17
+		fontSize: 19
 	},
 	backgroundGradientStyle: {
 		flex: 1
 	},
 	passwordRestoreTextStyle: {
 		color: PASSWORD_RESTORE_TEXT_COLOR,
-		fontSize: 15
+		fontSize: 16
 	},
 	passwordRestoreStyle: {
 		position: 'absolute',

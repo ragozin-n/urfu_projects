@@ -59,9 +59,6 @@ export const loginUser = ({email, password}) => {
 			.catch(err => {
 				alertOnDevice(err);
 				loginUserFail(dispatch, err);
-				// firebase.auth().createUserWithEmailAndPassword(email, password)
-				// 	.then(user => loginUserSuccess(dispatch, user))
-				// 	.catch(error => loginUserFail(dispatch, error));
 			});
 	};
 };

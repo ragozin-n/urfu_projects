@@ -9,13 +9,20 @@
 					"vacancy_hash": {
 						"name": "Vacancy name",
 						"description": "blah blah blah",
-						"skills": "skill skill skill"
+						"skills": "skill skill skill",
+						"candidates": {
+							"candidate_hash": {
+								"uid": "user_hash"
+							}
+						}
 					}
 				},
 				"keywords": "blah blah blah",
-				"membersCount": 10,
+				"maxMembers": 10,
 				"members": {
-					"user_hash": "user_hash"
+					"member_hash": {
+						"user_hash": "user_hash"
+					}
 				},
 				"createdBy": "user_hash"
 			}

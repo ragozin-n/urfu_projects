@@ -3,7 +3,6 @@ import {FlatList} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import {
 	Container,
-	Icon,
 	Tabs,
 	Tab,
 	TabHeading
@@ -12,7 +11,7 @@ import {
 import {LinearGradient} from 'expo';
 import {connect} from 'react-redux';
 import _ from 'lodash';
-import {projectsFetch} from '../actions';
+import {projectsFetch, applyToProject} from '../actions';
 import SearchHeader from './common/search-header';
 import TabIcon from './common/tab-icon';
 import {PROJECTS_LIST_GRADIENT_COLORS} from './styles/colors';
@@ -31,7 +30,7 @@ class ProjectsList extends Component {
 	}
 
 	renderRow(project) {
-		return <ProjectListItem project={project}/>;
+		return <ProjectListItem project={project} applyToProject={this.props.applyToProject}/>;
 	}
 
 	componentWillMount() {
@@ -39,7 +38,6 @@ class ProjectsList extends Component {
 	}
 
 	render() {
-		console.log('render');
 		const {
 			containerStyle,
 			tabBarUnderlineStyle
@@ -98,7 +96,8 @@ const mapStateToProps = state => {
 	const projects = _.map(state.projects.filteredProjects, (val, uid) => {
 		return {...val, uid};
 	});
+
 	return {projects};
 };
 
-export default connect(mapStateToProps, {projectsFetch})(ProjectsList);
+export default connect(mapStateToProps, {projectsFetch, applyToProject})(ProjectsList);

@@ -34,7 +34,8 @@ import {
 
 class LoginForm extends Component {
 	state = {
-		isPasswordHidden: true
+		isPasswordHidden: true,
+		fadeAnimation: new Animated.Value(0)
 	}
 
 	handleEmailChange = text => {
@@ -68,11 +69,12 @@ class LoginForm extends Component {
 
 	componentDidMount() {
 		Animated.timing(
-			this.props.fadeAnimation,
+			this.state.fadeAnimation,
 			{
 				toValue: 1,
-				duration: 1000,
-				easing: Easing.quad
+				duration: 800,
+				easing: Easing.bezier(0.42, 0, 1, 1),
+				useNativeDriver: true
 			}
 		).start();
 	}
@@ -82,12 +84,10 @@ class LoginForm extends Component {
 			logoStyle,
 			formStyle,
 			backgroundGradientStyle,
-			passwordRestoreStyle,
 			itemFixStyle,
 			inputIconStyle,
 			inputStyle,
-			animatedViewStyle,
-			passwordRestoreTextStyle
+			animatedViewStyle
 		} = styles;
 
 		return (
@@ -102,7 +102,7 @@ class LoginForm extends Component {
 					<Animated.View
 						style={[
 							animatedViewStyle,
-							{opacity: this.props.fadeAnimation}
+							{opacity: this.state.fadeAnimation}
 						]}
 					>
 						<Form style={formStyle}>
@@ -153,9 +153,8 @@ class LoginForm extends Component {
 
 const mapStateToProps = ({auth}) => {
 	const {email, password, error, loading} = auth;
-	const fadeAnimation = new Animated.Value(0);
 
-	return {email, password, error, loading, fadeAnimation};
+	return {email, password, error, loading};
 };
 
 export default connect(mapStateToProps, {emailChanged, passwordChanged, loginUser})(LoginForm);
