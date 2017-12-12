@@ -51,22 +51,24 @@ export const applyToProject = ({projectUid, vacancyUid}) => {
 
 		const projectRef = firebase.database().ref(`/events/${projectUid}/vacancies/${vacancyUid}/candidates`);
 		console.log({[uid]: true});
-		projectRef.update({[uid]: true});
+		projectRef.update(
+			{
+				[uid]: true
+			}
+		);
 
 		// 2. Verify for myProjects length
-		const userProjectsRef = firebase.database().ref(`/users/${uid}/myProjects/`);
+		const userAllProjectsRef = firebase.database().ref(`/users/${uid}/myProjects/`);
 
-		userProjectsRef.once('value', data => {
+		userAllProjectsRef.once('value', data => {
 			console.log(data.val());
 		});
 
 		// 3. Update currentUser.myProjects array
-		userProjectsRef.update(
+		const userThisProjectRef = firebase.database().ref(`/users/${uid}/myProjects/${projectUid}`);
+		userThisProjectRef.update(
 			{
-				[projectUid]:
-				{
-					[vacancyUid]: true
-				}
+				[vacancyUid]: true
 			}
 		);
 

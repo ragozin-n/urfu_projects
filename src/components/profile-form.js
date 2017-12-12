@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {View} from 'react-native';
-import {Container, Content, H2, Thumbnail, Text} from 'native-base';
+import {View, FlatList} from 'react-native';
+import {Container, Content, H2, Thumbnail, Text, ListItem} from 'native-base';
 import {THUMBNAIL_BORDER_COLOR} from './styles/colors';
 
 class ProfileForm extends Component {
 	render() {
 		const {isCurator, name, photoBase64} = this.props.user;
 		const {uid, email} = this.props._token;
+		const myProjects = _.map(this.props.user.myProjects, (value, key) => ({key, value}));
 
 		return (
 			<Container>
@@ -27,6 +28,15 @@ class ProfileForm extends Component {
 					</View>
 					<Text>Я {isCurator ? 'куратор' : 'обычный студент'}</Text>
 					<Text>Мой email: {email}, уникальный идентификатор {uid}</Text>
+					{
+						myProjects.map(project => {
+							const projectUid = project.key;
+							const vacanciesUids = _.map(project.value, (value, key) => ({key, value}));
+							return vacanciesUids.map(vacancy => {
+								return (<Text key={vacancy.key}>{`\nProject:${projectUid}\nVacancy:${vacancy.key}`}</Text>);
+							});
+						})
+					}
 				</Content>
 			</Container>
 		);
