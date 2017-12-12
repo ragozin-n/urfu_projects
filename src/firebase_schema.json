@@ -9,20 +9,18 @@
 					"vacancy_hash": {
 						"name": "Vacancy name",
 						"description": "blah blah blah",
-						"skills": "skill skill skill",
+						"skills": {
+							"skill_hash": true
+						},
 						"candidates": {
-							"candidate_hash": {
-								"uid": "user_hash"
-							}
+							"user_hash": true
 						}
 					}
 				},
 				"keywords": "blah blah blah",
 				"maxMembers": 10,
 				"members": {
-					"member_hash": {
-						"user_hash": "user_hash"
-					}
+					"user_hash": true
 				},
 				"createdBy": "user_hash"
 			}
@@ -36,7 +34,12 @@
 					"skill_hash": "skill_hash"
 				},
 				"achievements": {
-					"achievemen_hash": "achievement_hash"
+					"achievemen_hash": true
+				},
+				"myProjects": {
+					"project_hash": {
+						"vacancy_hash": true
+					}
 				}
 			}
 

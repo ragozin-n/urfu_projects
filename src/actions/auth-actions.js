@@ -6,18 +6,21 @@ import {
 	PASSWORD_CHANGED,
 	LOGIN_USER_SUCCESS,
 	LOGIN_USER_FAIL,
-	LOGIN_USER
+	LOGIN_USER,
+	FETCH_USER_BIO
 } from './types';
 
-// Helpers
+// Main login thread
 const loginUserSuccess = (dispatch, user) => {
 	dispatch({
 		type: LOGIN_USER_SUCCESS,
 		payload: user
 	});
+	fetchUserBio(dispatch);
 	Actions.main();
 };
 
+// Helper for alert error on device
 const alertOnDevice = error => {
 	Alert.alert(
 		'Oops!',
@@ -30,6 +33,7 @@ const alertOnDevice = error => {
 	);
 };
 
+// Callback for error
 const loginUserFail = (dispatch, err) => {
 	dispatch({
 		type: LOGIN_USER_FAIL,
@@ -51,6 +55,7 @@ export const passwordChanged = text => {
 	};
 };
 
+// Main login thread
 export const loginUser = ({email, password}) => {
 	return dispatch => {
 		dispatch({type: LOGIN_USER});
@@ -61,4 +66,16 @@ export const loginUser = ({email, password}) => {
 				loginUserFail(dispatch, err);
 			});
 	};
+};
+
+// Listen to user information updates
+const fetchUserBio = dispatch => {
+	const {uid} = firebase.auth().currentUser;
+	firebase.database().ref(`/users/${uid}`)
+	.on('value', snapshot => {
+		dispatch({
+			type: FETCH_USER_BIO,
+			payload: snapshot.val()
+		});
+	});
 };

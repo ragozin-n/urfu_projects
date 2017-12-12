@@ -4,7 +4,7 @@ import {
 	PROJECT_CREATE,
 	PROJECTS_FETCH_SUCCESS,
 	PROJECTS_FILTER,
-	USER_APPLY_TO_PROJECT
+	APPLY_TO_PROJECT_SUCCESS
 } from './types';
 
 // Curator create project
@@ -12,7 +12,7 @@ export const projectCreate = ({name, description, photoBase64, maxMembers, keywo
 	return dispatch => {
 		const currentEventKey = firebase.database().ref(`/events`).push().key;
 		const currentEventRef = firebase.database().ref(`/events/${currentEventKey}`);
-		const {currentUser} = firebase.auth();
+		const {uid} = firebase.auth().currentUser;
 		const currentVacanciesRef = firebase.database().ref(`/events/${currentEventKey}/vacancies`);
 
 		currentEventRef.set(
@@ -22,7 +22,7 @@ export const projectCreate = ({name, description, photoBase64, maxMembers, keywo
 				photoBase64,
 				maxMembers,
 				keywords,
-				createdBy: currentUser.uid,
+				createdBy: uid,
 				members: {}
 			}
 		);
@@ -44,12 +44,33 @@ export const projectCreate = ({name, description, photoBase64, maxMembers, keywo
 
 // Students apply for project
 export const applyToProject = ({projectUid, vacancyUid}) => {
-	const {uid} = firebase.auth().currentUser;
-	const currentRef = firebase.database().ref(`/events/${projectUid}/vacancies/${vacancyUid}/candidates`);
-
-	currentRef.push({uid});
 	return dispatch => {
-		dispatch({type: USER_APPLY_TO_PROJECT});
+		// 3 steps to apply to projectUid project.
+		// 1. Update candidates array in projectUid
+		const {uid} = firebase.auth().currentUser;
+
+		const projectRef = firebase.database().ref(`/events/${projectUid}/vacancies/${vacancyUid}/candidates`);
+		console.log({[uid]: true});
+		projectRef.update({[uid]: true});
+
+		// 2. Verify for myProjects length
+		const userProjectsRef = firebase.database().ref(`/users/${uid}/myProjects/`);
+
+		userProjectsRef.once('value', data => {
+			console.log(data.val());
+		});
+
+		// 3. Update currentUser.myProjects array
+		userProjectsRef.update(
+			{
+				[projectUid]:
+				{
+					[vacancyUid]: true
+				}
+			}
+		);
+
+		dispatch({type: APPLY_TO_PROJECT_SUCCESS});
 	};
 };
 

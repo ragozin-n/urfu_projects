@@ -37,7 +37,7 @@ class ProjectInfo extends Component {
 
 		// Run throw candidates array and search current user id in it
 		const isAlreadyApplied = _candidates.filter(item =>
-			item.value.uid === currentUserUid
+			item.key === currentUserUid
 		).length > 0;
 
 		return (

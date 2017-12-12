@@ -18,6 +18,7 @@ import {PROJECTS_LIST_GRADIENT_COLORS} from './styles/colors';
 import ProjectListItem from './project-list-item';
 import ProjectCreateForm from './project-create-form';
 import styles from './styles/projects-list-styles';
+import ProfileForm from './profile-form';
 
 class ProjectsList extends Component {
 	state = {
@@ -76,7 +77,9 @@ class ProjectsList extends Component {
 								<TabHeading style={{backgroundColor: 'transparent'}}>
 									<TabIcon name="md-person" position={1} activeTab={this.state.activeTab}/>
 								</TabHeading>}
-						/>
+						>
+							<ProfileForm/>
+						</Tab>
 						<Tab
 							heading={
 								<TabHeading style={{backgroundColor: 'transparent'}}>

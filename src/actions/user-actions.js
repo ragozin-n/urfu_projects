@@ -22,7 +22,7 @@ export const _updateUserBio = ({name, photoBase64, isCurator}) => {
 
 	return dispatch => {
 		firebase.database().ref(`/users/${currentUser.uid}/`)
-			.set({name, photoBase64, isCurator})
+			.update({name, photoBase64, isCurator})
 			.then(() => {
 				dispatch({type: USER_BIO_UPDATE, payload: name});
 				dispatch({type: USER_BIO_UPDATE, payload: photoBase64});
