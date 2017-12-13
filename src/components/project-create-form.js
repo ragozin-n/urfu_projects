@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
 import {View} from 'react-native';
 import {connect} from 'react-redux';
+import _ from 'lodash';
 import {
 	Button,
-	Text
+	Text,
+	Container,
+	Content
 } from 'native-base';
 import {Actions} from 'react-native-router-flux';
 import faker from 'faker';
@@ -12,12 +15,16 @@ import {
 	updateUserBio,
 	updateUserAchievements,
 	updateUserHistory,
-	projectCreate
+	projectCreate,
+	getCandidates
 } from '../actions';
 
 class ProjectCreateForm extends Component {
 	componentDidMount() {
+		const {isCurator} = this.props.user;
+		const {uid} = this.props._token;
 		faker.locale = 'ru';
+		this.props.getCandidates({uid, isCurator});
 	}
 
 	// Handlers
@@ -25,13 +32,10 @@ class ProjectCreateForm extends Component {
 		Actions.main();
 	}
 
-	handleGenerateUser = ({isCurator}) => {
-		const randomUserName = faker.name.findName();
-		const randomAvatar = faker.image.dataUri(200, 200);
-
+	handleGenerateUser = ({isCurator, name, photoBase64}) => {
 		this.props._updateUserBio({
-			name: randomUserName,
-			photoBase64: randomAvatar,
+			name,
+			photoBase64,
 			isCurator
 		});
 	}
@@ -55,23 +59,12 @@ class ProjectCreateForm extends Component {
 	}
 
 	handleGenerateEvent = () => {
-		const randomEventName = faker.random.words(2);
-		const randomDescription = faker.random.words(4);
+		const randomEventName = '';
+		const randomDescription = '';
 		const randomImage = faker.image.dataUri(200, 200);
 		const maxMembers = faker.random.number(20);
-		const keywords = faker.random.words(5);
-		const vacancyCount = faker.random.number({min: 7, max: 10});
+		const keywords = '';
 		const vacancies = [];
-
-		for (let i = 0; i < vacancyCount; i++) {
-			vacancies.push(
-				{
-					name: faker.name.jobTitle(),
-					description: faker.random.words(3),
-					skills: faker.random.words(5)
-				}
-			);
-		}
 
 		this.props.projectCreate({
 			name: randomEventName,
@@ -84,35 +77,30 @@ class ProjectCreateForm extends Component {
 	}
 
 	render() {
-		return (
-			<View>
-				<Text>User section</Text>
-				<Button block light onPress={() => this.handleGenerateUser({isCurator: false})}>
-					<Text>Become common user</Text>
-				</Button>
-				<Button block warning onPress={() => this.handleGenerateUser({isCurator: true})}>
-					<Text>Become curator</Text>
-				</Button>
-				{/* <Button block light onPress={this.handleGenerateSkill}>
-					<Text>Generate skill</Text>
-				</Button>
-				<Button block warning onPress={this.handleGenerateAchievement}>
-					<Text>Generate achievement</Text>
-				</Button> */}
+		const {isCurator} = this.props.user;
 
-				{/* <Text>Globals</Text>
-				<Button full danger onPress={this.handleGenerateEvent}>
-					<Text>Generate event</Text>
-				</Button> */}
-			</View>
+		return (
+			<Container>
+				<Content>
+					{isCurator &&
+						<View>
+							<Text>Заявки в мои проекты: </Text>
+							{this.props._curatorProjects.map((project, index) => {
+								return (<Text key={index}>{`Project: ${project.projectUid}\nVacancy: ${project.vacancyUid}\nCandidateUid: ${project.candidateUid}\n\n\n`}</Text>);
+							}) || 'Пусто'}
+						</View>
+					}
+				</Content>
+			</Container>
 		);
 	}
 }
 
-const mapStateToProps = ({user}) => {
-	const {name, photoBase64, achievements, history} = user;
+const mapStateToProps = ({auth, projects}) => {
+	const {user, _token} = auth;
+	const {_curatorProjects} = projects;
 
-	return {name, photoBase64, achievements, history};
+	return {user, _token, _curatorProjects};
 };
 
 export default connect(mapStateToProps, {
@@ -120,5 +108,6 @@ export default connect(mapStateToProps, {
 	updateUserBio,
 	updateUserAchievements,
 	updateUserHistory,
-	projectCreate
+	projectCreate,
+	getCandidates
 })(ProjectCreateForm);

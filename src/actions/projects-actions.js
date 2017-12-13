@@ -4,7 +4,8 @@ import {
 	PROJECT_CREATE,
 	PROJECTS_FETCH_SUCCESS,
 	PROJECTS_FILTER,
-	APPLY_TO_PROJECT_SUCCESS
+	APPLY_TO_PROJECT_SUCCESS,
+	CURATOR_PROJECT_FETCH
 } from './types';
 
 // Curator create project
@@ -106,5 +107,35 @@ export const projectsFilter = (searchString, arr) => {
 	return {
 		type: PROJECTS_FILTER,
 		payload: filteredProjects
+	};
+};
+
+export const getCandidates = ({uid, isCurator}) => {
+	if (!isCurator) {
+		throw new Error(`${uid} trying to fetch curator events, while isCurator field is false`);
+	}
+
+	return dispatch => {
+		// Не понимаю как сделать сложный запрос пока
+		firebase.database().ref(`/events`).orderByChild('createdBy').equalTo(uid).on('value', snapshot => {
+			const projects = _.map(snapshot.val(), (value, key) => ({key, value}));
+			const curatorProjects = [];
+			projects.forEach(project => {
+				const vacancies = _.map(project.value.vacancies, (value, key) => ({key, value}));
+				vacancies.forEach(vacancy => {
+					const candidates = _.map(vacancy.value.candidates, (value, key) => ({key, value}));
+					candidates.forEach(candidate => {
+						curatorProjects.push(
+							{
+								projectUid: project.key,
+								vacancyUid: vacancy.key,
+								candidateUid: candidate.key
+							}
+						);
+					});
+				});
+			});
+			dispatch({type: CURATOR_PROJECT_FETCH, payload: curatorProjects});
+		});
 	};
 };

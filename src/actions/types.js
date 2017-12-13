@@ -17,7 +17,7 @@ export const PROJECTS_FILTER = 'projects_filter';
 export const GET_PROJECT_INFO = 'get_project_info';
 export const APPLY_TO_PROJECT_SUCCESS = 'apply_to_project_success';
 export const APPLY_TO_PROJECT_REJECTED = 'apply_to_project_rejected';
-
+export const CURATOR_PROJECT_FETCH = 'curator_project_fetch';
 
 // User customization
 export const USER_BIO_UPDATE = 'user_bio_update';
