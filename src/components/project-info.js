@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Platform, FlatList} from 'react-native';
+import {View, Platform, FlatList, Image} from 'react-native';
 import firebase from 'firebase';
 import {
 	Container,
@@ -17,16 +17,16 @@ import {
 	H3
 } from 'native-base';
 import {connect} from 'react-redux';
+import _ from 'lodash';
+import {getCuratorBio} from '../actions/projects-actions';
 import {Actions} from 'react-native-router-flux';
-// eslint-disable-next-line import/named
-import {LinearGradient} from 'expo';
 import VacancyListItem from './common/vacancy-list-item';
-import {THUMBNAIL_BORDER_COLOR, PROJECTS_LIST_GRADIENT_COLORS} from './styles/colors';
+import Divider from './common/divider';
 
 class ProjectInfo extends Component {
 	state = {
 		isMembersVisible: false,
-		isVacancyVisible: false
+		curator: {}
 	}
 
 	renderVacancy = (vacancy, uid) => {
@@ -45,58 +45,50 @@ class ProjectInfo extends Component {
 		);
 	}
 
+	componentWillMount() {
+		console.log(_.isEmpty(this.state.curator));
+		if (_.isEmpty(this.state.curator)) {
+			firebase.database().ref(`/users/${uid}`).once('value')
+				.then(bio => this.setState({curator: bio}));
+		}
+	}
+
 	render() {
 		const {name, description, photoBase64, keywords, maxMembers, uid} = this.props.currentProject;
 		const vacancies = _.map(this.props.currentProject.vacancies, (value, key) => ({key, value}));
 		const members = _.map(this.props.currentProject.members, (value, key) => ({key, value}));
+		console.log(this.state.curator);
 
 		return (
 			<Container style={{flex: 1}}>
-				<LinearGradient
-					style={{flex: 1}}
-					colors={PROJECTS_LIST_GRADIENT_COLORS}
-					start={[0, 0]}
-					end={[1, 0]}
+				<Image
+					resizeMode="cover"
+					source={{uri: photoBase64}}
 				>
-					<Header style={{marginTop: (Platform.OS === 'android') ? 15 : 0, backgroundColor: 'transparent'}}>
+					<Header style={{marginTop: (Platform.OS === 'android') ? 15 : 0, backgroundColor: 'transparent', marginBottom: 100}}>
 						<Left>
 							<Button small transparent onPress={() => Actions.main()}>
 								<Icon name="arrow-back"/>
 							</Button>
 						</Left>
-						<Body>
-							<Title>
-								Подробнее
-							</Title>
-						</Body>
+						<Body/>
 						<Right/>
 					</Header>
-				<Content style={{backgroundColor: 'white', padding: 15}}>
-					<View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-						<Thumbnail
-							style={{
-								borderColor: THUMBNAIL_BORDER_COLOR,
-								borderWidth: 2,
-								marginRight: 35,
-								overlayColor: 'white'
-							}}
-							large
-							source={{uri: photoBase64}}
-						/>
+				</Image>
+				<Content style={{backgroundColor: 'white', borderTopColor: 'red', borderTopWidth: 2}}>
+					<View style={{flex: 1, flexDirection: 'row', alignSelf: 'flex-start', padding: 15}}>
 						<H2>{name}</H2>
 					</View>
-
+					<Divider/>
 					<Button small full transparent onPress={() => this.setState({isMembersVisible: !this.state.isMembersVisible})}>
-						<Text>Участники проекта: {members.length}/{maxMembers} <Icon style={{fontSize: 15}} name={this.state.isMembersVisible ? 'arrow-up' : 'arrow-down'}/></Text>
+						<View style={{flex: 1, flexDirection: 'row', alignContent: 'space-between'}}>
+							<View style={{flex: 1, flexDirection: 'row', alignSelf: 'baseline'}}>
+								<Text style={{color: 'black', textAlign: 'center'}}><Icon style={{fontSize: 18, color: 'black'}} name="md-people"/>  Участники: ({members.length}/{maxMembers})</Text>
+							</View>
+							<Icon style={{fontSize: 21, color: 'black'}} name={this.state.isMembersVisible ? 'md-arrow-dropup' : 'md-arrow-dropdown'}/>
+						</View>
 					</Button>
 					{this.state.isMembersVisible &&
-						<Text>Вместо участников пока ключевые слова: {keywords}</Text>
-					}
-
-					<Button small full transparent onPress={() => this.setState({isVacancyVisible: !this.state.isVacancyVisible})}>
-						<Text>Вакансии: <Icon style={{fontSize: 15}} name={this.state.isVacancyVisible ? 'arrow-up' : 'arrow-down'}/></Text>
-					</Button>
-					{this.state.isVacancyVisible &&
 						<FlatList
 							style={{flex: 1}}
 							data={vacancies}
@@ -104,21 +96,25 @@ class ProjectInfo extends Component {
 							keyExtractor={item => item.key}
 						/>
 					}
-
-					<H3>Описание:</H3>
-					<Text>{description}</Text>
-					<View style={{flex: 1}}/>
-
-					{/* <LinearGradient
-						colors={PROJECTS_LIST_GRADIENT_COLORS}
-						style={{flex: 1}}
-					>
-						<Button full transparent>
-							<Text style={{color: 'white', fontWeight: 'bold', fontSize: 18}}>Отправить заявку</Text>
-						</Button>
-					</LinearGradient> */}
+					<Divider/>
+					<View style={{padding: 15}}>
+						<Text>{description}</Text>
+					</View>
+					<View style={{padding: 15}}>
+						<Text>Тут будет куратор</Text>
+					</View>
+					<View style={{flex: 1, flexDirection: 'row', alignContent: 'space-between', flexWrap: 'wrap', paddingLeft: 15}}>
+						{
+							keywords.split(', ').map((keyword, index) => {
+								return (
+									<Button style={{margin: 3}} key={index} small danger>
+										<Text style={{color: 'white'}}>{keyword}</Text>
+									</Button>
+								);
+							})
+						}
+					</View>
 				</Content>
-				</LinearGradient>
 			</Container>);
 	}
 }
