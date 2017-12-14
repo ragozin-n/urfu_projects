@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {ListItem, Right, Left, Button, Icon, Text} from 'native-base';
+import {ListItem, Right, Left, Button, Icon, Text, Body} from 'native-base';
 import {connect} from 'react-redux';
 import {Alert} from 'react-native';
 import {Actions} from 'react-native-router-flux';
@@ -32,13 +32,15 @@ class VacancyListItem extends Component {
 		const {description, skills, name, projectUid, vacancyUid} = this.props;
 
 		return (
-			<ListItem onPress={() => this.handleVacancyPress({description, skills, projectUid, vacancyUid})}>
+			<ListItem noBorder avatar onPress={() => this.handleVacancyPress({description, skills, projectUid, vacancyUid})}>
 				<Left>
 					<Button small transparent>
 						<Icon name={this.state.isSelected ? 'checkmark-circle' : 'radio-button-off'}/>
 					</Button>
 				</Left>
-				<Text>{name}</Text>
+				<Body>
+					<Text>{name}</Text>
+				</Body>
 				<Right/>
 			</ListItem>
 		);

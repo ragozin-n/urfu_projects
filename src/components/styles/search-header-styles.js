@@ -16,6 +16,9 @@ export default StyleSheet.create({
 	},
 	headerStyle: {
 		marginTop: (Platform.OS === 'android') ? 15 : 0,
-		backgroundColor: 'transparent'
+		backgroundColor: 'transparent',
+		elevation: 0,
+		shadowOpacity: 0,
+		shadowColor: 'transparent'
 	}
 });

@@ -58,6 +58,7 @@ class ProjectsList extends Component {
 						tabBarUnderlineStyle={tabBarUnderlineStyle}
 						initialPage={this.state.initTab}
 						onChangeTab={({i}) => this.setState({activeTab: i})}
+						style={{shadowOpacity: 0, elevation: 0, shadowColor: 'transparent'}}
 					>
 						<Tab
 							heading={

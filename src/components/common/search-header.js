@@ -68,7 +68,7 @@ class SearchHeader extends Component {
 
 		if (this.state.isHeaderSearch) {
 			return (
-				<Header hasTabs searchBar style={headerStyle}>
+				<Header noShadow hasTabs searchBar style={headerStyle}>
 					<Animated.View
 						style={{
 							flex: 1,

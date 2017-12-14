@@ -18,15 +18,22 @@ import {
 } from 'native-base';
 import {connect} from 'react-redux';
 import _ from 'lodash';
-import {getCuratorBio} from '../actions/projects-actions';
 import {Actions} from 'react-native-router-flux';
+import {THUMBNAIL_BORDER_COLOR} from './styles/colors';
 import VacancyListItem from './common/vacancy-list-item';
+import MemberListItem from './common/member-list-item';
 import Divider from './common/divider';
 
 class ProjectInfo extends Component {
 	state = {
 		isMembersVisible: false,
 		curator: {}
+	}
+
+	renderMember = member => {
+		return (
+			<MemberListItem uid={member.key}/>
+		);
 	}
 
 	renderVacancy = (vacancy, uid) => {
@@ -46,10 +53,10 @@ class ProjectInfo extends Component {
 	}
 
 	componentWillMount() {
-		console.log(_.isEmpty(this.state.curator));
 		if (_.isEmpty(this.state.curator)) {
-			firebase.database().ref(`/users/${uid}`).once('value')
-				.then(bio => this.setState({curator: bio}));
+			firebase.database().ref(`/users/${this.props.currentProject.createdBy}`).once('value', bio => {
+				this.setState({curator: bio.val()});
+			});
 		}
 	}
 
@@ -57,7 +64,6 @@ class ProjectInfo extends Component {
 		const {name, description, photoBase64, keywords, maxMembers, uid} = this.props.currentProject;
 		const vacancies = _.map(this.props.currentProject.vacancies, (value, key) => ({key, value}));
 		const members = _.map(this.props.currentProject.members, (value, key) => ({key, value}));
-		console.log(this.state.curator);
 
 		return (
 			<Container style={{flex: 1}}>
@@ -65,7 +71,7 @@ class ProjectInfo extends Component {
 					resizeMode="cover"
 					source={{uri: photoBase64}}
 				>
-					<Header style={{marginTop: (Platform.OS === 'android') ? 15 : 0, backgroundColor: 'transparent', marginBottom: 100}}>
+					<Header noShadow style={{marginTop: (Platform.OS === 'android') ? 15 : 0, backgroundColor: 'transparent', marginBottom: 100, elevation: 0, shadowOpacity: 0, shadowColor: 'transparent'}}>
 						<Left>
 							<Button small transparent onPress={() => Actions.main()}>
 								<Icon name="arrow-back"/>
@@ -80,34 +86,54 @@ class ProjectInfo extends Component {
 						<H2>{name}</H2>
 					</View>
 					<Divider/>
-					<Button small full transparent onPress={() => this.setState({isMembersVisible: !this.state.isMembersVisible})}>
+					<Button style={{marginTop: 5, marginBottom: 5}} small full transparent onPress={() => this.setState({isMembersVisible: !this.state.isMembersVisible})}>
 						<View style={{flex: 1, flexDirection: 'row', alignContent: 'space-between'}}>
 							<View style={{flex: 1, flexDirection: 'row', alignSelf: 'baseline'}}>
-								<Text style={{color: 'black', textAlign: 'center'}}><Icon style={{fontSize: 18, color: 'black'}} name="md-people"/>  Участники: ({members.length}/{maxMembers})</Text>
+								<Text style={{color: 'black', textAlign: 'center'}}><Icon style={{fontSize: 18, color: 'black'}} name="md-people"/>  Участники: ({members.length}/{vacancies.length})</Text>
 							</View>
 							<Icon style={{fontSize: 21, color: 'black'}} name={this.state.isMembersVisible ? 'md-arrow-dropup' : 'md-arrow-dropdown'}/>
 						</View>
 					</Button>
 					{this.state.isMembersVisible &&
-						<FlatList
-							style={{flex: 1}}
-							data={vacancies}
-							renderItem={({item}) => this.renderVacancy(item, uid)}
-							keyExtractor={item => item.key}
-						/>
+						<View>
+							<FlatList
+								style={{flex: 1}}
+								data={members}
+								renderItem={({item}) => this.renderMember(item)}
+								keyExtractor={item => item.key}
+							/>
+							<FlatList
+								style={{flex: 1}}
+								data={vacancies}
+								renderItem={({item}) => this.renderVacancy(item, uid)}
+								keyExtractor={item => item.key}
+							/>
+						</View>
 					}
 					<Divider/>
 					<View style={{padding: 15}}>
 						<Text>{description}</Text>
 					</View>
-					<View style={{padding: 15}}>
-						<Text>Тут будет куратор</Text>
+					<View style={{flex: 1, flexDirection: 'row', margin: 15, alignItems: 'center'}}>
+						<Thumbnail
+							small
+							source={{uri: this.state.curator.photoBase64}}
+							style={{
+								borderColor: THUMBNAIL_BORDER_COLOR,
+								borderWidth: 2,
+								overlayColor: 'white'
+							}}
+						/>
+						<View style={{flex: 1, flexDirection: 'column', alignItems: 'flex-start', marginLeft: 10}}>
+							<Text>{this.state.curator.name}</Text>
+							<Text style={{color: 'grey'}}>Куратор</Text>
+						</View>
 					</View>
 					<View style={{flex: 1, flexDirection: 'row', alignContent: 'space-between', flexWrap: 'wrap', paddingLeft: 15}}>
 						{
 							keywords.split(', ').map((keyword, index) => {
 								return (
-									<Button style={{margin: 3}} key={index} small danger>
+									<Button key={index} style={{margin: 3}} small danger>
 										<Text style={{color: 'white'}}>{keyword}</Text>
 									</Button>
 								);

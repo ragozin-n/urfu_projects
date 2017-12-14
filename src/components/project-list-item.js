@@ -56,7 +56,7 @@ class ProjectListItem extends Component {
 			<Animated.View
 				style={{opacity: this.state.opacityAnimation}}
 			>
-				<ListItem avatar style={projectListItem} onPress={this.handleRowPress}>
+				<ListItem noBorder avatar style={projectListItem} onPress={this.handleRowPress}>
 					<Left>
 						<Thumbnail
 							source={{uri: photoBase64}}
@@ -71,11 +71,10 @@ class ProjectListItem extends Component {
 						<Text>{name}</Text>
 						<Text note>{description}</Text>
 					</Body>
-					{/* Fix for https://github.com/GeekyAnts/NativeBase/issues/672 */}
 					<Right>
 						<Button small transparent>
 							{/* Да, отступ в пробел это жестко, а все потому, что лень делать stateless component */}
-							<Text note>{members.length}/{maxMembers}{' '}<Icon style={{fontSize: 14}} name="md-person"/></Text>
+							<Text note>{members.length}/{vacancies.length}{' '}<Icon style={{fontSize: 14}} name="md-person"/></Text>
 						</Button>
 					</Right>
 				</ListItem>
