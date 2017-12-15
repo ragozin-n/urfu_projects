@@ -19,10 +19,11 @@ import {
 import {connect} from 'react-redux';
 import _ from 'lodash';
 import {Actions} from 'react-native-router-flux';
-import {THUMBNAIL_BORDER_COLOR} from './styles/colors';
+import {THUMBNAIL_BORDER_COLOR, PROJECTS_LIST_GRADIENT_COLORS} from './styles/colors';
 import VacancyListItem from './common/vacancy-list-item';
 import MemberListItem from './common/member-list-item';
 import Divider from './common/divider';
+import {LinearGradient} from 'expo';
 
 class ProjectInfo extends Component {
 	state = {
@@ -53,6 +54,7 @@ class ProjectInfo extends Component {
 	}
 
 	componentWillMount() {
+		// Download curator info
 		if (_.isEmpty(this.state.curator)) {
 			firebase.database().ref(`/users/${this.props.currentProject.createdBy}`).once('value', bio => {
 				this.setState({curator: bio.val()});
@@ -71,7 +73,7 @@ class ProjectInfo extends Component {
 					resizeMode="cover"
 					source={{uri: photoBase64}}
 				>
-					<Header noShadow style={{marginTop: (Platform.OS === 'android') ? 15 : 0, backgroundColor: 'transparent', marginBottom: 100, elevation: 0, shadowOpacity: 0, shadowColor: 'transparent'}}>
+					<Header noShadow style={{marginTop: (Platform.OS === 'android') ? 15 : 0, backgroundColor: 'transparent', marginBottom: 100, elevation: 0, shadowOpacity: 0, shadowColor: 'transparent', borderBottomWidth: 0}}>
 						<Left>
 							<Button small transparent onPress={() => Actions.main()}>
 								<Icon name="arrow-back"/>

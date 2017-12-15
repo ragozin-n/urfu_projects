@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
-import {View} from 'react-native';
+import {View, FlatList} from 'react-native';
 import {connect} from 'react-redux';
 import _ from 'lodash';
 import {
 	Button,
 	Text,
 	Container,
-	Content
+	Content,
+	ListItem,
+	Separator
 } from 'native-base';
 import {Actions} from 'react-native-router-flux';
 import faker from 'faker';

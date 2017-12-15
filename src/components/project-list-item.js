@@ -67,11 +67,11 @@ class ProjectListItem extends Component {
 							}}
 						/>
 					</Left>
-					<Body>
+					<Body style={{borderBottomWidth: 0}}>
 						<Text>{name}</Text>
 						<Text note>{description}</Text>
 					</Body>
-					<Right>
+					<Right style={{borderBottomWidth: 0}}>
 						<Button small transparent>
 							{/* Да, отступ в пробел это жестко, а все потому, что лень делать stateless component */}
 							<Text note>{members.length}/{vacancies.length}{' '}<Icon style={{fontSize: 14}} name="md-person"/></Text>

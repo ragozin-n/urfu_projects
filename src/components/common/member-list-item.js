@@ -33,10 +33,11 @@ class MemberListItem extends Component {
 						}}
 					/>
 				</Left>
-				<Body>
+				<Body style={{borderBottomWidth: 0}}>
 					<Text>{name}</Text>
+					<Text note>Тут телефон?</Text>
 				</Body>
-				<Right/>
+				<Right style={{borderBottomWidth: 0}}/>
 			</ListItem>
 		);
 	}

@@ -21,7 +21,8 @@ export default StyleSheet.create({
 		paddingRight: 0,
 		marginRight: 0,
 		backgroundColor: PROJECTS_LIST_ITEM_BACKGROUND_COLOR,
-		borderBottomWidth: 0
+		borderBottomWidth: 0,
+		borderColor: 'transparent'
 	},
 	tabBarUnderlineStyle: {
 		backgroundColor: ICON_ACTIVE_COLOR
