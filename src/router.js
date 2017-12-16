@@ -4,6 +4,7 @@ import LoginForm from './components/login-form';
 import ProjectsList from './components/projects-list';
 import ProjectCreateForm from './components/project-create-form';
 import ProjectInfo from './components/project-info';
+import AppliesForm from './components/applies-form';
 
 const RouterComponent = () => {
 	return (
@@ -36,6 +37,13 @@ const RouterComponent = () => {
 					<Scene
 						key="projectInfo"
 						component={ProjectInfo}
+						panHandlers={null}
+						hideNavBar
+					/>
+
+					<Scene
+						key="appliesForm"
+						component={AppliesForm}
 						panHandlers={null}
 						hideNavBar
 					/>
