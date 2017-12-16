@@ -68,7 +68,7 @@ class ProjectListItem extends Component {
 							<Counter
 								light
 								many={vacancies.filter(vacancy => vacancy.value.employedBy !== '').length}
-								of={vacancies.filter(vacancy => vacancy.value.employedBy === '').length}
+								of={vacancies.length}
 							/>
 						</Button>
 					</Right>

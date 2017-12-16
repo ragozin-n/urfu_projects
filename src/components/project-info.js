@@ -21,6 +21,7 @@ import {connect} from 'react-redux';
 import _ from 'lodash';
 import {Actions} from 'react-native-router-flux';
 import {getCandidates} from '../actions/projects-actions';
+import {LinearGradient} from 'expo';
 import {THUMBNAIL_BORDER_COLOR} from './styles/colors';
 import VacancyListItem from './common/vacancy-list-item';
 import MemberListItem from './common/member-list-item';
@@ -81,6 +82,11 @@ class ProjectInfo extends Component {
 					resizeMode="cover"
 					source={{uri: photoBase64}}
 				>
+				<LinearGradient
+					colors={['rgba(0,0,0, 0.4)', 'transparent']}
+					start={[0, 0]}
+					end={[0, 1]}
+				>
 					<Header noShadow style={{marginTop: (Platform.OS === 'android') ? 15 : 0, backgroundColor: 'transparent', marginBottom: 100, elevation: 0, shadowOpacity: 0, shadowColor: 'transparent', borderBottomWidth: 0}}>
 						<Left>
 							<Button small transparent onPress={() => Actions.main()}>
@@ -90,6 +96,7 @@ class ProjectInfo extends Component {
 						<Body/>
 						<Right/>
 					</Header>
+				</LinearGradient>					
 				</Image>
 				<Content style={{backgroundColor: 'white', borderTopColor: 'red', borderTopWidth: 2}}>
 					<View style={{flex: 1, flexDirection: 'row', alignSelf: 'flex-start', padding: 15}}>
@@ -101,7 +108,7 @@ class ProjectInfo extends Component {
 							<View style={{flex: 1, flexDirection: 'row', alignSelf: 'baseline'}}>
 								<Counter
 									many={vacancies.filter(vacancy => vacancy.value.employedBy !== '').length}
-									of={vacancies.filter(vacancy => vacancy.value.employedBy === '').length}
+									of={vacancies.length}
 								/>
 							</View>
 							<Icon style={{fontSize: 21, color: 'black'}} name={this.state.isMembersVisible ? 'md-arrow-dropup' : 'md-arrow-dropdown'}/>
@@ -150,7 +157,7 @@ class ProjectInfo extends Component {
 				<Fab
 					active={this.state.active}
 					direction="down"
-					containerStyle={{flex: 1, top: 160}}
+					containerStyle={{flex: 1, top: 145}}
 					style={{ backgroundColor: 'red'}}
 					position="topRight"
 					onPress={() => this.setState({active: !this.state.active})}
