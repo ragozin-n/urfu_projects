@@ -82,21 +82,21 @@ class ProjectInfo extends Component {
 					resizeMode="cover"
 					source={{uri: photoBase64}}
 				>
-				<LinearGradient
-					colors={['rgba(0,0,0, 0.4)', 'transparent']}
-					start={[0, 0]}
-					end={[0, 1]}
-				>
-					<Header noShadow style={{marginTop: (Platform.OS === 'android') ? 15 : 0, backgroundColor: 'transparent', marginBottom: 100, elevation: 0, shadowOpacity: 0, shadowColor: 'transparent', borderBottomWidth: 0}}>
-						<Left>
-							<Button small transparent onPress={() => Actions.main()}>
-								<Icon style={{color: 'white'}} name="arrow-back"/>
-							</Button>
-						</Left>
-						<Body/>
-						<Right/>
-					</Header>
-				</LinearGradient>					
+					<LinearGradient
+						colors={['rgba(0,0,0, 0.2)', 'transparent']}
+						start={[0, 0]}
+						end={[0, 1]}
+					>
+						<Header noShadow style={{marginTop: (Platform.OS === 'android') ? 15 : 0, backgroundColor: 'transparent', marginBottom: 100, elevation: 0, shadowOpacity: 0, shadowColor: 'transparent', borderBottomWidth: 0}}>
+							<Left>
+								<Button small transparent onPress={() => Actions.main()}>
+									<Icon style={{color: 'white'}} name="arrow-back"/>
+								</Button>
+							</Left>
+							<Body/>
+							<Right/>
+						</Header>
+					</LinearGradient>
 				</Image>
 				<Content style={{backgroundColor: 'white', borderTopColor: 'red', borderTopWidth: 2}}>
 					<View style={{flex: 1, flexDirection: 'row', alignSelf: 'flex-start', padding: 15}}>
