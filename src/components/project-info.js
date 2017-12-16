@@ -146,6 +146,7 @@ class ProjectInfo extends Component {
 						}
 					</View>
 				</Content>
+				{this.props.uid === this.props.currentProject.createdBy &&
 				<Fab
 					active={this.state.active}
 					direction="down"
@@ -158,7 +159,7 @@ class ProjectInfo extends Component {
 					<Button style={{backgroundColor: '#34A34F'}} onPress={() => this.handleFabButton()}>
 						<Icon name="mail"/>
 					</Button>
-				</Fab>
+				</Fab>}
 			</Container>);
 	}
 }
