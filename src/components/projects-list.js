@@ -31,7 +31,8 @@ class ProjectsList extends Component {
 	}
 
 	renderRow(project) {
-		return <ProjectListItem project={project} applyToProject={this.props.applyToProject}/>;
+		const {isCurator, uid} = this.props;
+		return <ProjectListItem project={project} applyToProject={this.props.applyToProject} isCurator={isCurator} uid={uid}/>;
 	}
 
 	componentDidMount() {

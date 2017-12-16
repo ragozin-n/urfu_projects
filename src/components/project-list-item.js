@@ -22,7 +22,8 @@ class ProjectListItem extends Component {
 	}
 
 	handleRowPress = () => {
-		Actions.projectInfo({currentProject: this.props.project});
+		const {isCurator, uid} = this.props;
+		Actions.projectInfo({currentProject: this.props.project, isCurator, uid});
 	}
 
 	componentDidMount() {

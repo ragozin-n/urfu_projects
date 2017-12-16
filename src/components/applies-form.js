@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Platform} from 'react-native';
+import {View, Platform, FlatList} from 'react-native';
 import firebase from 'firebase';
 import {
 	Container,
@@ -15,18 +15,24 @@ import {
 	Thumbnail,
 	H2,
 	H3,
-	Fab
+	Fab,
+	ListItem
 } from 'native-base';
 import {connect} from 'react-redux';
+import ApplyListItem from './common/apply-list-item';
 import _ from 'lodash';
 import {Actions} from 'react-native-router-flux';
 import {LinearGradient} from 'expo';
 import {PROJECTS_LIST_GRADIENT_COLORS} from './styles/colors';
 
 class AppliesForm extends Component {
+	renderApply = apply => {
+		return (
+			<ApplyListItem item={apply}/>
+		);
+	}
 
 	render() {
-		const vacancies = _.map(this.props.currentProject.vacancies, (value, key) => ({key, value}));
 		return (
 			<Container style={{flex: 1}}>
 				<LinearGradient
@@ -36,18 +42,24 @@ class AppliesForm extends Component {
 				>
 					<Header noShadow style={{marginTop: (Platform.OS === 'android') ? 15 : 0, backgroundColor: 'transparent', elevation: 0, shadowOpacity: 0, shadowColor: 'transparent', borderBottomWidth: 0}}>
 						<Left>
-							<Button small transparent onPress={() => Actions.projectInfo({currentProject: this.props.currentProject})}>
-								<Icon name="arrow-back"/>
+							<Button small transparent onPress={() => Actions.projectInfo({currentProject: this.props.currentProject, isCurator: this.props.isCurator, uid: this.props.uid})}>
+								<Icon style={{color: 'white'}} name="arrow-back"/>
 							</Button>
 						</Left>
 						<Body style={{flex: 3}}>
-							<Title>Заявки на участие</Title>
+							<Title style={{color: 'white'}}>Заявки на участие</Title>
 						</Body>
 						<Right/>
 					</Header>
 				</LinearGradient>
-				<Content/>
-
+				<Content>
+					<FlatList
+						style={{flex: 1}}
+						data={this.props.applies}
+						renderItem={({item}) => this.renderApply(item)}
+						keyExtractor={(item, index) => index}
+					/>
+				</Content>
 			</Container>);
 	}
 }

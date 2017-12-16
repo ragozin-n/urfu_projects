@@ -124,32 +124,39 @@ export const projectsFilter = (searchString, arr) => {
 	};
 };
 
-export const getCandidates = ({uid, isCurator}) => {
+export const getCandidates = ({uid, isCurator, currentProject}) => {
 	if (!isCurator) {
 		throw new Error(`${uid} trying to fetch curator events, while isCurator field is false`);
 	}
-
 	return dispatch => {
-		// Не понимаю как сделать сложный запрос пока
-		firebase.database().ref(`/events`).orderByChild('createdBy').equalTo(uid).on('value', snapshot => {
-			const projects = _.map(snapshot.val(), (value, key) => ({key, value}));
-			const curatorProjects = [];
-			projects.forEach(project => {
-				const vacancies = _.map(project.value.vacancies, (value, key) => ({key, value}));
-				vacancies.forEach(vacancy => {
-					const candidates = _.map(vacancy.value.candidates, (value, key) => ({key, value}));
-					candidates.forEach(candidate => {
-						curatorProjects.push(
-							{
-								project,
-								vacancy,
-								candidate
-							}
-						);
-					});
-				});
-			});
-			dispatch({type: CURATOR_PROJECT_FETCH, payload: curatorProjects});
+		_searchForCandidates(uid)
+		.then(projects => {
+			dispatch({type: CURATOR_PROJECT_FETCH, payload: projects});
+			Actions.appliesForm({applies: projects, currentProject});
 		});
 	};
 };
+
+const _searchForCandidates = uid => new Promise(resolve => {
+	// Не понимаю как сделать сложный запрос пока
+	firebase.database().ref(`/events`).orderByChild('createdBy').equalTo(uid).on('value', snapshot => {
+		const projects = _.map(snapshot.val(), (value, key) => ({key, value}));
+		const curatorProjects = [];
+		projects.forEach(project => {
+			const vacancies = _.map(project.value.vacancies, (value, key) => ({key, value}));
+			vacancies.forEach(vacancy => {
+				const candidates = _.map(vacancy.value.candidates, (value, key) => ({key, value}));
+				candidates.forEach(candidate => {
+					curatorProjects.push(
+						{
+							project,
+							vacancy,
+							candidate
+						}
+					);
+				});
+			});
+		});
+		resolve(curatorProjects);
+	});
+});

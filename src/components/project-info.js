@@ -20,6 +20,7 @@ import {
 import {connect} from 'react-redux';
 import _ from 'lodash';
 import {Actions} from 'react-native-router-flux';
+import {getCandidates} from '../actions/projects-actions';
 import {THUMBNAIL_BORDER_COLOR} from './styles/colors';
 import VacancyListItem from './common/vacancy-list-item';
 import MemberListItem from './common/member-list-item';
@@ -31,6 +32,11 @@ class ProjectInfo extends Component {
 		isMembersVisible: false,
 		curator: {},
 		active: false
+	}
+
+	handleFabButton = () => {
+		const {isCurator, uid, currentProject} = this.props;
+		this.props.getCandidates({uid, isCurator, currentProject});
 	}
 
 	renderVacancy = (vacancy, uid) => {
@@ -78,7 +84,7 @@ class ProjectInfo extends Component {
 					<Header noShadow style={{marginTop: (Platform.OS === 'android') ? 15 : 0, backgroundColor: 'transparent', marginBottom: 100, elevation: 0, shadowOpacity: 0, shadowColor: 'transparent', borderBottomWidth: 0}}>
 						<Left>
 							<Button small transparent onPress={() => Actions.main()}>
-								<Icon name="arrow-back"/>
+								<Icon style={{color: 'white'}} name="arrow-back"/>
 							</Button>
 						</Left>
 						<Body/>
@@ -102,14 +108,12 @@ class ProjectInfo extends Component {
 						</View>
 					</Button>
 					{this.state.isMembersVisible &&
-						<View>
-							<FlatList
-								style={{flex: 1}}
-								data={vacancies}
-								renderItem={({item}) => this.renderVacancy(item, uid)}
-								keyExtractor={item => item.key}
-							/>
-						</View>
+						<FlatList
+							style={{flex: 1}}
+							data={vacancies}
+							renderItem={({item}) => this.renderVacancy(item, uid)}
+							keyExtractor={item => item.key}
+						/>
 					}
 					<Divider/>
 					<View style={{padding: 15}}>
@@ -146,12 +150,12 @@ class ProjectInfo extends Component {
 					active={this.state.active}
 					direction="down"
 					containerStyle={{flex: 1, top: 160}}
-					style={{ backgroundColor: '#5067FF'}}
+					style={{ backgroundColor: 'red'}}
 					position="topRight"
 					onPress={() => this.setState({active: !this.state.active})}
 				>
 					<Icon name="md-more"/>
-					<Button style={{backgroundColor: '#34A34F'}} onPress={() => Actions.appliesForm({currentProject: this.props.currentProject})}>
+					<Button style={{backgroundColor: '#34A34F'}} onPress={() => this.handleFabButton()}>
 						<Icon name="mail"/>
 					</Button>
 				</Fab>
@@ -159,4 +163,4 @@ class ProjectInfo extends Component {
 	}
 }
 
-export default connect(null, {})(ProjectInfo);
+export default connect(null, {getCandidates})(ProjectInfo);
