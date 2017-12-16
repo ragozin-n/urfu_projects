@@ -20,11 +20,11 @@ import {
 import {connect} from 'react-redux';
 import _ from 'lodash';
 import {Actions} from 'react-native-router-flux';
-import {THUMBNAIL_BORDER_COLOR, PROJECTS_LIST_GRADIENT_COLORS} from './styles/colors';
+import {THUMBNAIL_BORDER_COLOR} from './styles/colors';
 import VacancyListItem from './common/vacancy-list-item';
 import MemberListItem from './common/member-list-item';
+import Counter from './common/counter';
 import Divider from './common/divider';
-import {LinearGradient} from 'expo';
 
 class ProjectInfo extends Component {
 	state = {
@@ -93,7 +93,10 @@ class ProjectInfo extends Component {
 					<Button style={{marginTop: 5, marginBottom: 5}} small full transparent onPress={() => this.setState({isMembersVisible: !this.state.isMembersVisible})}>
 						<View style={{flex: 1, flexDirection: 'row', alignContent: 'space-between'}}>
 							<View style={{flex: 1, flexDirection: 'row', alignSelf: 'baseline'}}>
-								<Text style={{color: 'black', textAlign: 'center'}}><Icon style={{fontSize: 18, color: 'black'}} name="md-people"/>  Участники: ({vacancies.filter(vacancy => vacancy.value.employedBy !== '').length}/{vacancies.filter(vacancy => vacancy.value.employedBy === '').length})</Text>
+								<Counter
+									many={vacancies.filter(vacancy => vacancy.value.employedBy !== '').length}
+									of={vacancies.filter(vacancy => vacancy.value.employedBy === '').length}
+								/>
 							</View>
 							<Icon style={{fontSize: 21, color: 'black'}} name={this.state.isMembersVisible ? 'md-arrow-dropup' : 'md-arrow-dropdown'}/>
 						</View>

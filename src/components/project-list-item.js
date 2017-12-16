@@ -12,6 +12,7 @@ import {
 	Icon
 } from 'native-base';
 import _ from 'lodash';
+import Counter from './common/counter';
 import {THUMBNAIL_BORDER_COLOR} from './styles/colors';
 import styles from './styles/projects-list-styles';
 
@@ -63,7 +64,11 @@ class ProjectListItem extends Component {
 					</Body>
 					<Right style={{borderBottomWidth: 0}}>
 						<Button small transparent>
-							<Text note>{`${vacancies.filter(vacancy => vacancy.value.employedBy !== '').length}/${vacancies.filter(vacancy => vacancy.value.employedBy === '').length} `}<Icon style={{fontSize: 14}} name="md-person"/></Text>
+							<Counter
+								light
+								many={vacancies.filter(vacancy => vacancy.value.employedBy !== '').length}
+								of={vacancies.filter(vacancy => vacancy.value.employedBy === '').length}
+							/>
 						</Button>
 					</Right>
 				</ListItem>

@@ -115,7 +115,7 @@ export const projectsFilter = (searchString, arr) => {
 	const filteredProjects = arr.filter(project =>
 		project.keywords.toLowerCase().includes(searchString.toLowerCase()) ||
 		project.name.toLowerCase().includes(searchString.toLowerCase()) ||
-		project.skills.includes(searchString.toLowerCase())
+		project.keywords.includes(searchString.toLowerCase())
 	);
 
 	return {
