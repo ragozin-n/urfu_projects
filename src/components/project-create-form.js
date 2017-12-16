@@ -26,7 +26,7 @@ class ProjectCreateForm extends Component {
 		const {isCurator} = this.props.user;
 		const {uid} = this.props._token;
 		faker.locale = 'ru';
-		this.props.getCandidates({uid, isCurator});
+		//this.props.getCandidates({uid, isCurator});
 	}
 
 	// Handlers
@@ -86,7 +86,7 @@ class ProjectCreateForm extends Component {
 				<Content>
 					{isCurator &&
 						<View>
-							<Text>Тут будут заявки... А пока они просто пишутся в консоль.</Text>
+							<Text>Тут ничего нет.</Text>
 							{/* {this.props._curatorProjects.map((project, index) => {
 								return (<Text key={index}>{`Project: ${project.projectUid}\nVacancy: ${project.vacancyUid}\nCandidateUid: ${project.candidateUid}\n\n\n`}</Text>);
 							}) || 'Пусто'} */}

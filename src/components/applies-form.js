@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Platform, FlatList} from 'react-native';
+import {View, Platform, FlatList, Image} from 'react-native';
 import firebase from 'firebase';
 import {
 	Container,
@@ -59,6 +59,16 @@ class AppliesForm extends Component {
 						renderItem={({item}) => this.renderApply(item)}
 						keyExtractor={(item, index) => index}
 					/>
+					{!this.props.applies.length > 0 &&
+						<View style={{flex: 1, alignItems: 'center', paddingTop: 50}}>
+							<Text style={{textAlign: 'center', marginBottom: 30}}>{`На текущий момент заявок в проект \n${this.props.currentProject.name}\nнет.\n\nЗагляните сюда чуть позже.`}</Text>
+							<Image
+								style={{height: 400}}
+								source={require('../images/jdun.png')}
+								resizeMode="contain"
+							/>
+						</View>
+					}
 				</Content>
 			</Container>);
 	}

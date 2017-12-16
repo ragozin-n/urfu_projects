@@ -5,8 +5,7 @@ import {
 	PROJECTS_FETCH_SUCCESS,
 	PROJECTS_FILTER,
 	APPLY_TO_PROJECT_SUCCESS,
-	CURATOR_PROJECT_FETCH,
-	CURATOR_BIO_FETCH
+	CURATOR_PROJECT_FETCH
 } from './types';
 
 // Curator create project
@@ -44,6 +43,7 @@ export const projectCreate = ({name, description, photoBase64, maxMembers, keywo
 	};
 };
 
+// DEPRECATED
 // Students apply for project
 export const applyToProject = ({projectUid, vacancyUid}) => {
 	return dispatch => {
@@ -112,10 +112,11 @@ export const projectsFilter = (searchString, arr) => {
 		};
 	}
 
-	const filteredProjects = arr.filter(project =>
-		project.keywords.toLowerCase().includes(searchString.toLowerCase()) ||
-		project.name.toLowerCase().includes(searchString.toLowerCase()) ||
-		project.keywords.includes(searchString.toLowerCase())
+	const filteredProjects = arr.filter(
+		project =>
+			project.keywords.toLowerCase().includes(searchString.toLowerCase()) ||
+			project.name.toLowerCase().includes(searchString.toLowerCase()) ||
+			project.keywords.includes(searchString.toLowerCase())
 	);
 
 	return {
@@ -131,8 +132,14 @@ export const getCandidates = ({uid, isCurator, currentProject}) => {
 	return dispatch => {
 		_searchForCandidates(uid)
 		.then(projects => {
-			dispatch({type: CURATOR_PROJECT_FETCH, payload: projects});
-			Actions.appliesForm({applies: projects, currentProject});
+			const currentProjectCandidates =
+				projects.filter(
+					project =>
+						project.project.value.name === currentProject.name &&
+						project.project.value.createdBy === currentProject.createdBy
+				);
+			dispatch({type: CURATOR_PROJECT_FETCH, payload: currentProjectCandidates});
+			Actions.appliesForm({applies: currentProjectCandidates, currentProject, uid});
 		});
 	};
 };

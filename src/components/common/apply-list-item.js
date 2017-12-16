@@ -1,12 +1,15 @@
 import React, {Component} from 'react';
+import Divider from '../common/divider';
 import {ListItem, Right, Left, Button, Icon, Text, Thumbnail, Body} from 'native-base';
+import {View} from 'react-native';
 import {connect} from 'react-redux';
 import firebase from 'firebase';
 import {THUMBNAIL_BORDER_COLOR} from '../styles/colors';
 
 class ApplyListItem extends Component {
 	state = {
-		user: {}
+		user: {},
+		isFullView: false
 	}
 
 	componentWillMount() {
@@ -17,12 +20,17 @@ class ApplyListItem extends Component {
 		}
 	}
 
+	handleApplyToVacancy = ({project, vacancy}) => {
+		//
+	}
+
 	render() {
-		const {photoBase64, name} = this.state.user;
+		const {photoBase64, name, skills} = this.state.user;
+		const {project, vacancy} = this.props.item;
 
 		return (
-			<ListItem noBorder avatar>
-				<Left>
+			<ListItem noBorder avatar style={{marginLeft: 0, paddingLeft: 15}} onPress={() => this.setState({isFullView: !this.state.isFullView})}>
+				<Left style={{position: 'absolute', top: 15, left: 10}}>
 					<Thumbnail
 						small
 						source={{uri: photoBase64}}
@@ -33,9 +41,20 @@ class ApplyListItem extends Component {
 						}}
 					/>
 				</Left>
-				<Body style={{borderBottomWidth: 0}}>
+				<Body style={{borderBottomWidth: 0, marginLeft: 45}}>
 					<Text>{name}</Text>
-					<Text note>{`${this.props.item.project.value.name}|${this.props.item.vacancy.value.name}`}</Text>
+					<Text note>{`${vacancy.value.name} в ${project.value.name}`}</Text>
+					{this.state.isFullView &&
+						<View style={{marginTop: 10}}>
+							<Text note>{`Требования проекта: ${project.value.keywords}`}</Text>
+							<Text note>{`Требования вакансии: ${vacancy.value.skills}`}</Text>
+							<Text note>{`Умения ${name}: ${skills}`}</Text>
+							<Button success full onPress={() => this.handleApplyToVacancy({project, vacancy})}>
+								<Text>Принять</Text>
+							</Button>
+							<Divider style={{marginTop: 10}}/>
+						</View>
+					}
 				</Body>
 				<Right style={{borderBottomWidth: 0}}/>
 			</ListItem>
