@@ -34,8 +34,9 @@ class ProjectsList extends Component {
 		return <ProjectListItem project={project} applyToProject={this.props.applyToProject}/>;
 	}
 
-	componentWillMount() {
-		this.props.projectsFetch();
+	componentDidMount() {
+		const {isCurator, uid} = this.props;
+		this.props.projectsFetch({isCurator, uid});
 	}
 
 	render() {
@@ -101,7 +102,10 @@ const mapStateToProps = state => {
 		return {...val, uid};
 	});
 
-	return {projects};
+	const {isCurator} = state.auth.user;
+	const {uid} = state.auth._token;
+
+	return {projects, isCurator, uid};
 };
 
 export default connect(mapStateToProps, {projectsFetch, applyToProject})(ProjectsList);

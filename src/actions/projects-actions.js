@@ -79,14 +79,27 @@ export const applyToProject = ({projectUid, vacancyUid}) => {
 };
 
 // Get global events from database with callback
-export const projectsFetch = () => {
+export const projectsFetch = ({isCurator, uid}) => {
+	const eventsRef = firebase.database().ref(`/events`);
+
 	return dispatch => {
-		firebase.database().ref(`/events`)
+		eventsRef
 			.on('value', snapshot => {
-				dispatch({
-					type: PROJECTS_FETCH_SUCCESS,
-					payload: snapshot.val()
-				});
+				if (isCurator) {
+					const initProjects = _.map(snapshot.val(), (val, uid) => {
+						return {...val, uid};
+					}).filter(project => project.createdBy === uid);
+					dispatch({
+						type: PROJECTS_FETCH_SUCCESS,
+						projects: snapshot.val(),
+						initProjects
+					});
+				} else {
+					dispatch({
+						type: PROJECTS_FETCH_SUCCESS,
+						projects: snapshot.val()
+					});
+				}
 			});
 	};
 };
@@ -95,14 +108,14 @@ export const projectsFetch = () => {
 export const projectsFilter = (searchString, arr) => {
 	if (!searchString) {
 		return {
-			type: PROJECTS_FILTER,
-			payload: arr
+			type: PROJECTS_FILTER
 		};
 	}
 
 	const filteredProjects = arr.filter(project =>
 		project.keywords.toLowerCase().includes(searchString.toLowerCase()) ||
-		project.name.toLowerCase().includes(searchString.toLowerCase())
+		project.name.toLowerCase().includes(searchString.toLowerCase()) ||
+		project.skills.includes(searchString.toLowerCase())
 	);
 
 	return {
@@ -128,9 +141,9 @@ export const getCandidates = ({uid, isCurator}) => {
 					candidates.forEach(candidate => {
 						curatorProjects.push(
 							{
-								projectUid: project.key,
-								vacancyUid: vacancy.key,
-								candidateUid: candidate.key
+								project,
+								vacancy,
+								candidate
 							}
 						);
 					});

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Alert, Animated, Easing} from 'react-native';
+import {Animated, Easing} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import {
 	ListItem,
@@ -18,16 +18,6 @@ import styles from './styles/projects-list-styles';
 class ProjectListItem extends Component {
 	state = {
 		opacityAnimation: new Animated.Value(0)
-	}
-
-	handleApplyAction = (description, skills, projectUid, vacancyUid) => {
-		Alert.alert(
-			`${description}`,
-			`${skills} ЗДЕСЬ БУДЕТ ТИПО ДОСТУПНОСТЬ И ВОЗМОЖНОСТЬ ДОБАВЛЕНИЯ`,
-			[{text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-				{text: 'Apply', onPress: () => this.props.applyToProject({projectUid, vacancyUid})}],
-			{cancelable: true}
-		);
 	}
 
 	handleRowPress = () => {
@@ -73,8 +63,7 @@ class ProjectListItem extends Component {
 					</Body>
 					<Right style={{borderBottomWidth: 0}}>
 						<Button small transparent>
-							{/* Да, отступ в пробел это жестко, а все потому, что лень делать stateless component */}
-							<Text note>{members.length}/{vacancies.length}{' '}<Icon style={{fontSize: 14}} name="md-person"/></Text>
+							<Text note>{`${vacancies.filter(vacancy => vacancy.value.employedBy !== '').length}/${vacancies.filter(vacancy => vacancy.value.employedBy === '').length} `}<Icon style={{fontSize: 14}} name="md-person"/></Text>
 						</Button>
 					</Right>
 				</ListItem>

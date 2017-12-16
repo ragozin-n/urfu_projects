@@ -80,16 +80,16 @@ class ProjectCreateForm extends Component {
 
 	render() {
 		const {isCurator} = this.props.user;
-
+		console.log(this.props._curatorProjects);
 		return (
 			<Container>
 				<Content>
 					{isCurator &&
 						<View>
-							<Text>Заявки в мои проекты: </Text>
-							{this.props._curatorProjects.map((project, index) => {
+							<Text>Тут будут заявки... А пока они просто пишутся в консоль.</Text>
+							{/* {this.props._curatorProjects.map((project, index) => {
 								return (<Text key={index}>{`Project: ${project.projectUid}\nVacancy: ${project.vacancyUid}\nCandidateUid: ${project.candidateUid}\n\n\n`}</Text>);
-							}) || 'Пусто'}
+							}) || 'Пусто'} */}
 						</View>
 					}
 				</Content>

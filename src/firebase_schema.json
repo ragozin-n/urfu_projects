@@ -12,16 +12,13 @@
 						"skills": {
 							"skill_hash": true
 						},
+						"employedBy": "",
 						"candidates": {
 							"user_hash": true
 						}
 					}
 				},
 				"keywords": "blah blah blah",
-				"maxMembers": 10,
-				"members": {
-					"user_hash": true
-				},
 				"createdBy": "user_hash"
 			}
 		},
@@ -31,7 +28,7 @@
 				"photoBase64": "data...",
 				"isCurator": "flag",
 				"skills": {
-					"skill_hash": "skill_hash"
+					"skill_hash": true
 				},
 				"achievements": {
 					"achievemen_hash": true

@@ -16,8 +16,7 @@ const loginUserSuccess = (dispatch, user) => {
 		type: LOGIN_USER_SUCCESS,
 		payload: user
 	});
-	fetchUserBio(dispatch);
-	Actions.main();
+	fetchUserBio(dispatch).then(() => Actions.main());
 };
 
 // Helper for alert error on device
@@ -69,7 +68,7 @@ export const loginUser = ({email, password}) => {
 };
 
 // Listen to user information updates
-const fetchUserBio = dispatch => {
+const fetchUserBio = dispatch => new Promise(resolve => {
 	const {uid} = firebase.auth().currentUser;
 	firebase.database().ref(`/users/${uid}`)
 	.on('value', snapshot => {
@@ -77,5 +76,6 @@ const fetchUserBio = dispatch => {
 			type: FETCH_USER_BIO,
 			payload: snapshot.val()
 		});
+		resolve(snapshot.val());
 	});
-};
+});

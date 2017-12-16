@@ -26,6 +26,7 @@ export default (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				...INITIAL_STATE,
+				loading: true,
 				_token: action.payload
 			};
 		case LOGIN_USER_FAIL:
@@ -33,7 +34,7 @@ export default (state = INITIAL_STATE, action) => {
 		case LOGIN_USER:
 			return {...state, loading: true, error: ''};
 		case FETCH_USER_BIO:
-			return {...state, user: action.payload};
+			return {...state, loading: false, user: action.payload};
 		default:
 			return state;
 	}

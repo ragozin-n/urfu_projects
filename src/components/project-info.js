@@ -14,7 +14,8 @@ import {
 	Right,
 	Thumbnail,
 	H2,
-	H3
+	H3,
+	Fab
 } from 'native-base';
 import {connect} from 'react-redux';
 import _ from 'lodash';
@@ -28,20 +29,22 @@ import {LinearGradient} from 'expo';
 class ProjectInfo extends Component {
 	state = {
 		isMembersVisible: false,
-		curator: {}
-	}
-
-	renderMember = member => {
-		return (
-			<MemberListItem uid={member.key}/>
-		);
+		curator: {},
+		active: false
 	}
 
 	renderVacancy = (vacancy, uid) => {
-		const {name, description, skills, candidates} = vacancy.value;
+		const {name, description, skills, candidates, employedBy} = vacancy.value;
 		const {key} = vacancy;
 		const currentUserUid = firebase.auth().currentUser.uid;
 		const _candidates = _.map(candidates, (value, key) => ({key, value}));
+
+		// Если вакансия занята, то рисуем фото
+		if (employedBy) {
+			return (
+				<MemberListItem uid={employedBy}/>
+			);
+		}
 
 		// Run throw candidates array and search current user id in it
 		const isAlreadyApplied = _candidates.filter(item =>
@@ -63,9 +66,8 @@ class ProjectInfo extends Component {
 	}
 
 	render() {
-		const {name, description, photoBase64, keywords, maxMembers, uid} = this.props.currentProject;
+		const {name, description, photoBase64, keywords, uid} = this.props.currentProject;
 		const vacancies = _.map(this.props.currentProject.vacancies, (value, key) => ({key, value}));
-		const members = _.map(this.props.currentProject.members, (value, key) => ({key, value}));
 
 		return (
 			<Container style={{flex: 1}}>
@@ -91,19 +93,13 @@ class ProjectInfo extends Component {
 					<Button style={{marginTop: 5, marginBottom: 5}} small full transparent onPress={() => this.setState({isMembersVisible: !this.state.isMembersVisible})}>
 						<View style={{flex: 1, flexDirection: 'row', alignContent: 'space-between'}}>
 							<View style={{flex: 1, flexDirection: 'row', alignSelf: 'baseline'}}>
-								<Text style={{color: 'black', textAlign: 'center'}}><Icon style={{fontSize: 18, color: 'black'}} name="md-people"/>  Участники: ({members.length}/{vacancies.length})</Text>
+								<Text style={{color: 'black', textAlign: 'center'}}><Icon style={{fontSize: 18, color: 'black'}} name="md-people"/>  Участники: ({vacancies.filter(vacancy => vacancy.value.employedBy !== '').length}/{vacancies.filter(vacancy => vacancy.value.employedBy === '').length})</Text>
 							</View>
 							<Icon style={{fontSize: 21, color: 'black'}} name={this.state.isMembersVisible ? 'md-arrow-dropup' : 'md-arrow-dropdown'}/>
 						</View>
 					</Button>
 					{this.state.isMembersVisible &&
 						<View>
-							<FlatList
-								style={{flex: 1}}
-								data={members}
-								renderItem={({item}) => this.renderMember(item)}
-								keyExtractor={item => item.key}
-							/>
 							<FlatList
 								style={{flex: 1}}
 								data={vacancies}
@@ -143,6 +139,24 @@ class ProjectInfo extends Component {
 						}
 					</View>
 				</Content>
+				<Fab
+					active={this.state.active}
+					direction="down"
+					containerStyle={{flex: 1, top: 160}}
+					style={{ backgroundColor: '#5067FF'}}
+					position="topRight"
+					onPress={() => this.setState({ active: !this.state.active })}>
+					<Icon name="md-more"/>
+					<Button style={{ backgroundColor: '#34A34F' }}>
+						<Icon name="logo-whatsapp" />
+					</Button>
+					<Button style={{ backgroundColor: '#3B5998' }}>
+						<Icon name="logo-facebook" />
+					</Button>
+					<Button disabled style={{ backgroundColor: '#DD5144' }}>
+						<Icon name="mail" />
+					</Button>
+				</Fab>
 			</Container>);
 	}
 }
