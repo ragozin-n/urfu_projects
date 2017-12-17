@@ -21,7 +21,7 @@ import {connect} from 'react-redux';
 import _ from 'lodash';
 import {Actions} from 'react-native-router-flux';
 import {getCandidates} from '../actions/projects-actions';
-import {LinearGradient} from 'expo';
+import {LinearGradient, Audio, Constants} from 'expo';
 import {THUMBNAIL_BORDER_COLOR} from './styles/colors';
 import VacancyListItem from './common/vacancy-list-item';
 import MemberListItem from './common/member-list-item';
@@ -33,6 +33,30 @@ class ProjectInfo extends Component {
 		isMembersVisible: false,
 		curator: {},
 		active: false
+	}
+
+	handleDropDown = async () => {
+		try {
+			await Audio.setIsEnabledAsync(true);
+			await Expo.Audio.setAudioModeAsync({
+				playsInSilentModeIOS: true,
+				allowsRecordingIOS: false,
+				interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+				shouldDuckAndroid: false,
+				interruptionModeAndroid: Audio.INTERRUPTION_MODE_IOS_DUCK_OTHERS
+			});
+			const sound = new Audio.Sound();
+			if (this.state.isMembersVisible) {
+				await sound.loadAsync(require('../sounds/sha.mp3'));
+			} else {
+				await sound.loadAsync(require('../sounds/ta.mp3'));
+			}
+			await sound.setVolumeAsync(1);
+			await sound.playAsync();
+		} catch (err) {
+			console.log(err);
+		}
+		this.setState({isMembersVisible: !this.state.isMembersVisible});
 	}
 
 	handleFabButton = () => {
@@ -103,7 +127,7 @@ class ProjectInfo extends Component {
 						<H2>{name}</H2>
 					</View>
 					<Divider/>
-					<Button style={{marginTop: 5, marginBottom: 5}} small full transparent onPress={() => this.setState({isMembersVisible: !this.state.isMembersVisible})}>
+					<Button style={{marginTop: 5, marginBottom: 5}} small full transparent onPress={() => this.handleDropDown()}>
 						<View style={{flex: 1, flexDirection: 'row', alignContent: 'space-between'}}>
 							<View style={{flex: 1, flexDirection: 'row', alignSelf: 'baseline'}}>
 								<Counter

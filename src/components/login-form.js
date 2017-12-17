@@ -19,7 +19,7 @@ import {
 	ScrollView
 } from 'react-native';
 // eslint-disable-next-line import/named
-import {LinearGradient} from 'expo';
+import {LinearGradient, Audio} from 'expo';
 import {
 	emailChanged,
 	passwordChanged,
@@ -67,7 +67,24 @@ class LoginForm extends Component {
 		);
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
+		try {
+			await Audio.setIsEnabledAsync(true);
+			await Expo.Audio.setAudioModeAsync({
+				playsInSilentModeIOS: true,
+				allowsRecordingIOS: false,
+				interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+				shouldDuckAndroid: false,
+				interruptionModeAndroid: Audio.INTERRUPTION_MODE_IOS_DUCK_OTHERS
+			});
+			const sound = new Audio.Sound();
+			await sound.loadAsync(require('../sounds/background-music.mp3'));
+			await sound.setIsLoopingAsync(true);
+			await sound.setVolumeAsync(0.5);
+			await sound.playAsync();
+		} catch (err) {
+			console.log(err);
+		}
 		Animated.timing(
 			this.state.fadeAnimation,
 			{
