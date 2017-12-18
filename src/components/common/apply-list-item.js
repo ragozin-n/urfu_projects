@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import Divider from '../common/divider';
-import {ListItem, Right, Left, Button, Icon, Text, Thumbnail, Body} from 'native-base';
+import {ListItem, Right, Left, Button, Icon, Text, Thumbnail, Body, Toast} from 'native-base';
+import {hireStudentToProject, _updateProject} from '../../actions/projects-actions';
+import {Actions} from 'react-native-router-flux';
 import {View} from 'react-native';
 import {connect} from 'react-redux';
 import firebase from 'firebase';
@@ -21,7 +23,21 @@ class ApplyListItem extends Component {
 	}
 
 	handleApplyToVacancy = ({project, vacancy}) => {
-		//
+		try {
+			this.props.hireStudentToProject({
+				projectUid: project.key,
+				vacancyUid: vacancy.key,
+				studentUid: this.props.item.candidate.key
+			});
+		} catch (err) {
+			debugger;
+			Toast.show({
+				text: err.message,
+				position: 'bottom',
+				buttonText: 'Okay'
+			});
+		}
+		Actions.main();
 	}
 
 	render() {
@@ -62,4 +78,4 @@ class ApplyListItem extends Component {
 	}
 }
 
-export default connect(null, {})(ApplyListItem);
+export default connect(null, {hireStudentToProject})(ApplyListItem);

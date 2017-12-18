@@ -32,6 +32,12 @@ class AppliesForm extends Component {
 		);
 	}
 
+	handleBackAction = () => {
+		const {currentProject, uid} = this.props;
+		// Здесь почему-то теряестя поле isCurator.
+		Actions.projectInfo({currentProject, isCurator: true, uid});
+	}
+
 	render() {
 		return (
 			<Container style={{flex: 1}}>
@@ -42,7 +48,7 @@ class AppliesForm extends Component {
 				>
 					<Header noShadow style={{marginTop: (Platform.OS === 'android') ? 15 : 0, backgroundColor: 'transparent', elevation: 0, shadowOpacity: 0, shadowColor: 'transparent', borderBottomWidth: 0}}>
 						<Left>
-							<Button small transparent onPress={() => Actions.projectInfo({currentProject: this.props.currentProject, isCurator: this.props.isCurator, uid: this.props.uid})}>
+							<Button small transparent onPress={this.handleBackAction}>
 								<Icon style={{color: 'white'}} name="arrow-back"/>
 							</Button>
 						</Left>

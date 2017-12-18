@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {ListItem, Right, Left, Button, Icon, Text, Body, Thumbnail} from 'native-base';
+import {ListItem, Right, Left, Button, Toast, Text, Body, Thumbnail} from 'native-base';
 import {connect} from 'react-redux';
 import {Alert} from 'react-native';
 import {Actions} from 'react-native-router-flux';
@@ -12,7 +12,16 @@ class VacancyListItem extends Component {
 
 	handleApplyAction = ({projectUid, vacancyUid}) => {
 		this.setState({isSelected: true});
-		this.props.applyToProject({projectUid, vacancyUid});
+		try {
+			this.props.applyToProject({projectUid, vacancyUid});
+		} catch (err) {
+			debugger;
+			Toast.show({
+				text: err.message,
+				position: 'bottom',
+				buttonText: 'Okay'
+			});
+		}
 		Actions.main();
 	}
 

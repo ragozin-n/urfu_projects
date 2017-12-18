@@ -5,7 +5,10 @@ import {
 	PROJECTS_FETCH_SUCCESS,
 	PROJECTS_FILTER,
 	APPLY_TO_PROJECT_SUCCESS,
-	CURATOR_PROJECT_FETCH
+	CURATOR_PROJECT_FETCH,
+	USER_HIRED,
+	PROJECT_UPDATE,
+	ERROR
 } from './types';
 
 // Curator create project
@@ -43,38 +46,54 @@ export const projectCreate = ({name, description, photoBase64, maxMembers, keywo
 	};
 };
 
-// DEPRECATED
 // Students apply for project
 export const applyToProject = ({projectUid, vacancyUid}) => {
 	return dispatch => {
-		// 3 steps to apply to projectUid project.
-		// 1. Update candidates array in projectUid
 		const {uid} = firebase.auth().currentUser;
 
-		const projectRef = firebase.database().ref(`/events/${projectUid}/vacancies/${vacancyUid}/candidates`);
-		console.log({[uid]: true});
-		projectRef.update(
-			{
-				[uid]: true
-			}
-		);
+		// 1. Verify user
+		_isUserCanApplyToProject(uid, projectUid)
+			.then(() => {
+				const projectRef = firebase.database().ref(`/events/${projectUid}/vacancies/${vacancyUid}/candidates`);
+				console.log({[uid]: true});
+				projectRef.update(
+					{
+						[uid]: true
+					}
+				);
 
-		// 2. Verify for myProjects length
-		const userAllProjectsRef = firebase.database().ref(`/users/${uid}/myProjects/`);
+				const userProjectRef = firebase.database().ref(`/users/${uid}/myProjects/`);
+				userProjectRef.update(
+					{
+						[projectUid]: false
+					}
+				);
 
-		userAllProjectsRef.once('value', data => {
-			console.log(data.val());
-		});
+				dispatch({type: APPLY_TO_PROJECT_SUCCESS});
+			}, err => dispatch({type: ERROR, payload: err}));
+	};
+};
 
-		// 3. Update currentUser.myProjects array
-		const userThisProjectRef = firebase.database().ref(`/users/${uid}/myProjects/${projectUid}`);
-		userThisProjectRef.update(
-			{
-				[vacancyUid]: true
-			}
-		);
-
-		dispatch({type: APPLY_TO_PROJECT_SUCCESS});
+// Curator hire student to his project
+export const hireStudentToProject = ({projectUid, vacancyUid, studentUid}) => {
+	// 1. Student is open for hire
+	return dispatch => {
+		_isUserCanApplyToProject(studentUid, projectUid)
+			.then(() => {
+				// 2. If student open for hire set /myProjects/projectUid value to true, whick means student current project is projectUid
+				firebase.database().ref(`/users/${studentUid}/myProjects`)
+					.update({
+						[projectUid]: true
+					});
+				// 3. Close curent vacancy (set value to null delete key)
+				const vacancy = firebase.database().ref(`/events/${projectUid}/vacancies/${vacancyUid}`);
+				vacancy
+					.update({
+						employedBy: studentUid
+					});
+				vacancy.child('candidates').remove();
+				dispatch({type: USER_HIRED});
+			}, err => dispatch({type: ERROR, payload: err}));
 	};
 };
 
@@ -112,6 +131,7 @@ export const projectsFilter = (searchString, arr) => {
 		};
 	}
 
+	// Fast-filter
 	const filteredProjects = arr.filter(
 		project =>
 			project.keywords.toLowerCase().includes(searchString.toLowerCase()) ||
@@ -146,13 +166,15 @@ export const getCandidates = ({uid, isCurator, currentProject}) => {
 
 const _searchForCandidates = uid => new Promise(resolve => {
 	// Не понимаю как сделать сложный запрос пока
-	firebase.database().ref(`/events`).orderByChild('createdBy').equalTo(uid).on('value', snapshot => {
+	firebase.database().ref(`/events`).orderByChild('createdBy').equalTo(uid).once('value', snapshot => {
 		const projects = _.map(snapshot.val(), (value, key) => ({key, value}));
 		const curatorProjects = [];
 		projects.forEach(project => {
 			const vacancies = _.map(project.value.vacancies, (value, key) => ({key, value}));
+			// debugger;
 			vacancies.forEach(vacancy => {
 				const candidates = _.map(vacancy.value.candidates, (value, key) => ({key, value}));
+				// debugger;
 				candidates.forEach(candidate => {
 					curatorProjects.push(
 						{
@@ -165,5 +187,26 @@ const _searchForCandidates = uid => new Promise(resolve => {
 			});
 		});
 		resolve(curatorProjects);
+	});
+});
+
+const _isUserCanApplyToProject = (uid, projectUid) => new Promise((resolve, reject) => {
+	firebase.database().ref(`/users/${uid}/myProjects`).once('value', snapshot => {
+		const userApplies = _.map(snapshot.val(), (value, key) => ({key, value}));
+		if (userApplies.length === 3 && userApplies[projectUid].value === undefined) {
+			reject(new Error('Max applies count reached.'));
+		}
+		if (userApplies.filter(project => project.value === true && project.key !== projectUid).length > 0) {
+			reject(new Error('User already in project.'));
+		}
+		resolve(userApplies);
+	});
+});
+
+export const _updateProject = projectUid => new Promise(resolve => {
+	firebase.database().ref(`/events/${projectUid}`).once('value', snapshot => {
+		const project = snapshot.val();
+		project.uid = projectUid;
+		resolve(project);
 	});
 });

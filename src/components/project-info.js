@@ -61,6 +61,7 @@ class ProjectInfo extends Component {
 
 	handleFabButton = () => {
 		const {isCurator, uid, currentProject} = this.props;
+
 		this.props.getCandidates({uid, isCurator, currentProject});
 	}
 

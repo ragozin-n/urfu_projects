@@ -99,9 +99,7 @@ class ProjectsList extends Component {
 }
 
 const mapStateToProps = state => {
-	const projects = _.map(state.projects.filteredProjects, (val, uid) => {
-		return {...val, uid};
-	});
+	const projects = state.projects.filteredProjects;
 
 	const {isCurator} = state.auth.user;
 	const {uid} = state.auth._token;

@@ -19,8 +19,12 @@ export const APPLY_TO_PROJECT_SUCCESS = 'apply_to_project_success';
 export const APPLY_TO_PROJECT_REJECTED = 'apply_to_project_rejected';
 export const CURATOR_PROJECT_FETCH = 'curator_project_fetch';
 export const CURATOR_BIO_FETCH = 'curator_bio_fetch';
+export const PROJECT_UPDATE = 'project_update';
 
 // User customization
 export const USER_BIO_UPDATE = 'user_bio_update';
 export const USER_ACHIEVEMENTS_UPDATE = 'user_achievement_update';
 export const USER_HISTORY_UPDATE = 'user_history_update';
+export const USER_HIRED = 'user_hired';
+
+export const ERROR = 'error';
