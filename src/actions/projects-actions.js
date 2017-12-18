@@ -191,6 +191,15 @@ const _searchForCandidates = uid => new Promise(resolve => {
 });
 
 const _isUserCanApplyToProject = (uid, projectUid) => new Promise((resolve, reject) => {
+
+	// Check for user status
+	firebase.database().ref(`/users/${uid}`).once('value', snapshot => {
+		if (snapshot.val().isCurator) {
+			reject(new Error('Curators dont have persimmisions to apply'));
+		}
+	});
+
+	// Check for student status
 	firebase.database().ref(`/users/${uid}/myProjects`).once('value', snapshot => {
 		const userApplies = _.map(snapshot.val(), (value, key) => ({key, value}));
 		if (userApplies.length === 3 && userApplies[projectUid].value === undefined) {

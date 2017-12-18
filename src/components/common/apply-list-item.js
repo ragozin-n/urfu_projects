@@ -23,20 +23,11 @@ class ApplyListItem extends Component {
 	}
 
 	handleApplyToVacancy = ({project, vacancy}) => {
-		try {
-			this.props.hireStudentToProject({
-				projectUid: project.key,
-				vacancyUid: vacancy.key,
-				studentUid: this.props.item.candidate.key
-			});
-		} catch (err) {
-			debugger;
-			Toast.show({
-				text: err.message,
-				position: 'bottom',
-				buttonText: 'Okay'
-			});
-		}
+		this.props.hireStudentToProject({
+			projectUid: project.key,
+			vacancyUid: vacancy.key,
+			studentUid: this.props.item.candidate.key
+		});
 		Actions.main();
 	}
 

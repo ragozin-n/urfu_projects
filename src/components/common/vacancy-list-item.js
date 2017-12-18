@@ -12,16 +12,7 @@ class VacancyListItem extends Component {
 
 	handleApplyAction = ({projectUid, vacancyUid}) => {
 		this.setState({isSelected: true});
-		try {
-			this.props.applyToProject({projectUid, vacancyUid});
-		} catch (err) {
-			debugger;
-			Toast.show({
-				text: err.message,
-				position: 'bottom',
-				buttonText: 'Okay'
-			});
-		}
+		this.props.applyToProject({projectUid, vacancyUid});
 		Actions.main();
 	}
 
