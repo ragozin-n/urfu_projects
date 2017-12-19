@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "expo": "^22.0.2",
+    "fast-filter": "^1.0.4",
     "firebase": "^4.6.2",
     "lodash": "^4.17.4",
     "native-base": "^2.3.3",

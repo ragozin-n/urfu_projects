@@ -1,5 +1,6 @@
 import firebase from 'firebase';
 import {Actions} from 'react-native-router-flux';
+import fastFilter from 'fast-filter';
 import {
 	PROJECT_CREATE,
 	PROJECTS_FETCH_SUCCESS,
@@ -142,8 +143,8 @@ export const projectsFilter = (searchString, arr) => {
 			type: PROJECTS_FILTER
 		};
 	}
-	// TODO: Fast-filter
-	const filteredProjects = arr.filter(
+
+	const filteredProjects = fastFilter(arr,
 		project =>
 			project.keywords.toLowerCase().includes(searchString.toLowerCase()) ||
 			project.name.toLowerCase().includes(searchString.toLowerCase()) ||
