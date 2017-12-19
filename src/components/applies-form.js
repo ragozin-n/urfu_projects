@@ -26,9 +26,9 @@ import {LinearGradient} from 'expo';
 import {PROJECTS_LIST_GRADIENT_COLORS} from './styles/colors';
 
 class AppliesForm extends Component {
-	renderApply = apply => {
+	renderApply = (apply, currentProject) => {
 		return (
-			<ApplyListItem item={apply}/>
+			<ApplyListItem item={apply} currentProject={currentProject}/>
 		);
 	}
 
@@ -62,7 +62,7 @@ class AppliesForm extends Component {
 					<FlatList
 						style={{flex: 1}}
 						data={this.props.applies}
-						renderItem={({item}) => this.renderApply(item)}
+						renderItem={({item}) => this.renderApply(item, this.props.currentProject)}
 						keyExtractor={(item, index) => index}
 					/>
 					{!this.props.applies.length > 0 &&

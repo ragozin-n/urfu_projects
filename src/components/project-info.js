@@ -51,7 +51,7 @@ class ProjectInfo extends Component {
 			} else {
 				await sound.loadAsync(require('../sounds/ta.mp3'));
 			}
-			await sound.setVolumeAsync(1);
+			await sound.setVolumeAsync(0.5);
 			await sound.playAsync();
 		} catch (err) {
 			console.log(err);

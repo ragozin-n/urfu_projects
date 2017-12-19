@@ -41,7 +41,7 @@ class ProjectListItem extends Component {
 	render() {
 		const {name, description, photoBase64, keywords, maxMembers, uid} = this.props.project;
 		const vacancies = _.map(this.props.project.vacancies, (value, key) => ({key, value}));
-		const members = _.map(this.props.project.members, (value, key) => ({key, value}));
+		//const members = _.map(this.props.project.members, (value, key) => ({key, value}));
 		const {projectListItem} = styles;
 
 		return (

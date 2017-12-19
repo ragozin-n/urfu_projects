@@ -22,10 +22,10 @@ class ApplyListItem extends Component {
 		}
 	}
 
-	handleApplyToVacancy = ({project, vacancy}) => {
+	handleApplyToVacancy = ({vacancy}) => {
 		this.props.hireStudentToProject({
-			projectUid: project.key,
-			vacancyUid: vacancy.key,
+			projectUid: this.props.currentProject.uid,
+			vacancyUid: vacancy.uid,
 			studentUid: this.props.item.candidate.key
 		});
 		Actions.main();
@@ -33,8 +33,7 @@ class ApplyListItem extends Component {
 
 	render() {
 		const {photoBase64, name, skills} = this.state.user;
-		const {project, vacancy} = this.props.item;
-
+		const {vacancy} = this.props.item;
 		return (
 			<ListItem noBorder avatar style={{marginLeft: 0, paddingLeft: 15}} onPress={() => this.setState({isFullView: !this.state.isFullView})}>
 				<Left style={{position: 'absolute', top: 15, left: 10}}>
@@ -50,13 +49,13 @@ class ApplyListItem extends Component {
 				</Left>
 				<Body style={{borderBottomWidth: 0, marginLeft: 45}}>
 					<Text>{name}</Text>
-					<Text note>{`${vacancy.value.name} в ${project.value.name}`}</Text>
+					<Text note>{`${vacancy.name} в ${this.props.currentProject.name}`}</Text>
 					{this.state.isFullView &&
 						<View style={{marginTop: 10}}>
-							<Text note>{`Требования проекта: ${project.value.keywords}`}</Text>
-							<Text note>{`Требования вакансии: ${vacancy.value.skills}`}</Text>
+							<Text note>{`Требования проекта: ${this.props.currentProject.keywords}`}</Text>
+							<Text note>{`Требования вакансии: ${vacancy.skills}`}</Text>
 							<Text note>{`Умения ${name}: ${skills}`}</Text>
-							<Button success full onPress={() => this.handleApplyToVacancy({project, vacancy})}>
+							<Button success full onPress={() => this.handleApplyToVacancy({vacancy})}>
 								<Text>Принять</Text>
 							</Button>
 							<Divider style={{marginTop: 10}}/>

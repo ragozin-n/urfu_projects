@@ -13,7 +13,7 @@ const playErrorSound = async () => {
 	});
 	const sound = new Audio.Sound();
 	await sound.loadAsync(require('../sounds/error.mp3'));
-	await sound.setVolumeAsync(1);
+	await sound.setVolumeAsync(0.6);
 	await sound.playAsync();
 };
 

@@ -81,7 +81,7 @@ class LoginForm extends Component {
 			await sound.loadAsync(require('../sounds/background-music.mp3'));
 			await sound.setIsLoopingAsync(true);
 			await sound.setVolumeAsync(0.5);
-			//await sound.playAsync();
+			await sound.playAsync();
 		} catch (err) {
 			console.log(err);
 		}
