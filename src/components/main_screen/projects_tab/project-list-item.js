@@ -11,7 +11,7 @@ import {
 	Button
 } from 'native-base';
 import _ from 'lodash';
-import Counter from '../../common/counter';
+import Counter from '../../common/Counter/counter';
 import {THUMBNAIL_BORDER_COLOR} from '../../styles';
 import styles from './styles';
 

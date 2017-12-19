@@ -22,8 +22,8 @@ import {Actions} from 'react-native-router-flux';
 import {LinearGradient, Audio} from 'expo';
 import {getCandidates} from '../../../../actions/projects-actions';
 import {THUMBNAIL_BORDER_COLOR} from '../../../styles';
-import Counter from '../../../common/counter';
-import Divider from '../../../common/divider';
+import Counter from '../../../common/Counter/counter';
+import Divider from '../../../common/Divider/divider';
 import VacancyListItem from './vacancy-list-item';
 import MemberListItem from './member-list-item';
 
@@ -195,7 +195,7 @@ class ProjectInfo extends Component {
 						active={this.state.active}
 						direction="down"
 						containerStyle={{flex: 1, top: 145}}
-						style={{ backgroundColor: 'red'}}
+						style={{backgroundColor: 'red'}}
 						position="topRight"
 						onPress={() => this.setState({active: !this.state.active})}
 					>

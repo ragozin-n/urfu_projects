@@ -13,7 +13,7 @@ import {View} from 'react-native';
 import {connect} from 'react-redux';
 import firebase from 'firebase';
 import {hireStudentToProject} from '../../../../actions/projects-actions';
-import Divider from '../../../common/divider';
+import Divider from '../../../common/Divider/divider';
 import {THUMBNAIL_BORDER_COLOR} from '../../../styles/colors';
 
 class ApplyListItem extends Component {

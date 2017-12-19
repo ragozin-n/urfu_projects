@@ -87,7 +87,7 @@ class LoginForm extends Component {
 				interruptionModeAndroid: Audio.INTERRUPTION_MODE_IOS_DUCK_OTHERS
 			});
 			const sound = new Audio.Sound();
-			await sound.loadAsync(require('../sounds/background-music.mp3'));
+			await sound.loadAsync(require('../../sounds/background-music.mp3'));
 			await sound.setIsLoopingAsync(true);
 			await sound.setVolumeAsync(0.5);
 			await sound.playAsync();
@@ -168,9 +168,9 @@ class LoginForm extends Component {
 							{this.renderButton()}
 						</Form>
 					</Animated.View>
-				{/* <Button transparent light style={passwordRestoreStyle}>
-					<Text uppercase={false} style={passwordRestoreTextStyle}>Забыли пароль?</Text>
-				</Button>				 */}
+					{/* <Button transparent light style={passwordRestoreStyle}>
+						<Text uppercase={false} style={passwordRestoreTextStyle}>Забыли пароль?</Text>
+					</Button>				 */}
 				</Content>
 			</LinearGradient>
 		);

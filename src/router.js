@@ -2,9 +2,9 @@ import React from 'react';
 import {Scene, Router} from 'react-native-router-flux';
 import LoginForm from './components/login_screen/login-form';
 import ProjectsList from './components/main_screen/projects_tab/projects-list';
-import ProjectCreateForm from './components/project-create-form';
-import ProjectInfo from './components/project-info';
-import AppliesForm from './components/applies-form';
+import ProjectCreateForm from './components/main_screen/settings_tab/project-create-form';
+import ProjectInfo from './components/main_screen/projects_tab/projects_info_section/project-info';
+import AppliesForm from './components/main_screen/projects_tab/projects_applies_section/applies-form';
 
 const RouterComponent = () => {
 	return (

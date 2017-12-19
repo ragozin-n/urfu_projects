@@ -7,11 +7,10 @@ import {
 	APPLY_TO_PROJECT_SUCCESS,
 	CURATOR_PROJECT_FETCH,
 	USER_HIRED,
-	PROJECT_UPDATE,
 	ERROR
 } from './types';
 
-// Curator create project
+// Событие создания проекта куратором
 export const projectCreate = ({name, description, photoBase64, maxMembers, keywords, vacancies}) => {
 	return dispatch => {
 		const currentEventKey = firebase.database().ref(`/events`).push().key;
@@ -46,18 +45,18 @@ export const projectCreate = ({name, description, photoBase64, maxMembers, keywo
 	};
 };
 
-// Students apply for project
+// Событие оставления заявки студента на вакансию в проекте
 export const applyToProject = ({projectUid, vacancyUid}) => {
 	return dispatch => {
-		debugger;
 		const {uid} = firebase.auth().currentUser;
 
-		// 1. Verify user
+		// Верифицируем возможность пользователя оставить заявку
 		_isUserCanApplyToProject(uid, projectUid)
 			.then(() => {
-				debugger;
+				// Если все хорошо, то
 				const projectRef = firebase.database().ref(`/events/${projectUid}/vacancies/${vacancyUid}/candidates`);
-				console.log({[uid]: true});
+
+				// Записываем uid пользователя в массив кандидатов проекта
 				projectRef.update(
 					{
 						[uid]: true
@@ -65,6 +64,8 @@ export const applyToProject = ({projectUid, vacancyUid}) => {
 				);
 
 				const userProjectRef = firebase.database().ref(`/users/${uid}/myProjects/`);
+
+				// Записываем uid проекта в пользовательский массив проектов
 				userProjectRef.update(
 					{
 						[projectUid]: false
@@ -72,23 +73,30 @@ export const applyToProject = ({projectUid, vacancyUid}) => {
 				);
 
 				dispatch({type: APPLY_TO_PROJECT_SUCCESS});
-			}, err => dispatch({type: ERROR, payload: err}));
+			},
+				err => dispatch({type: ERROR, payload: err})
+			);
 	};
 };
 
-// Curator hire student to his project
+// Событие принятия студента в проект куратором
 export const hireStudentToProject = ({projectUid, vacancyUid, studentUid}) => {
-	// 1. Student is open for hire
 	return dispatch => {
+		// Проверим, может ли студент быть принят в проект
 		_isUserCanApplyToProject(studentUid, projectUid)
 			.then(() => {
-				// 2. If student open for hire set /myProjects/projectUid value to true, whick means student current project is projectUid
-				debugger;
-				firebase.database().ref(`/users/${studentUid}/myProjects`)
+				// Если студент имеет возможность быть принятым в проект
+				// установим значение /myProjects/projectUid : true
+				// Это обозначает текущий активный проект студента
+				firebase
+					.database()
+					.ref(`/users/${studentUid}/myProjects`)
 					.update({
 						[projectUid]: true
 					});
-				// 3. Close curent vacancy (set value to null delete key)
+
+				// Закроем текущую вакансию, путем
+				// удаления массива кандидатов и обновления поля employedBy
 				const vacancy = firebase.database().ref(`/events/${projectUid}/vacancies/${vacancyUid}`);
 				vacancy
 					.update({
@@ -100,7 +108,7 @@ export const hireStudentToProject = ({projectUid, vacancyUid, studentUid}) => {
 	};
 };
 
-// Get global events from database with callback
+// Подписчик на список всех проектов
 export const projectsFetch = ({isCurator, uid}) => {
 	const eventsRef = firebase.database().ref(`/events`);
 
@@ -127,15 +135,14 @@ export const projectsFetch = ({isCurator, uid}) => {
 	};
 };
 
-// Filter projects
+// Событие фильтрации проектов
 export const projectsFilter = (searchString, arr) => {
 	if (!searchString) {
 		return {
 			type: PROJECTS_FILTER
 		};
 	}
-
-	// Fast-filter
+	// TODO: Fast-filter
 	const filteredProjects = arr.filter(
 		project =>
 			project.keywords.toLowerCase().includes(searchString.toLowerCase()) ||
@@ -149,6 +156,7 @@ export const projectsFilter = (searchString, arr) => {
 	};
 };
 
+// Событие запроса списка кандидатов на конкретный проект
 export const getCandidates = ({uid, isCurator, currentProject}) => {
 	if (!isCurator) {
 		throw new Error(`${uid} trying to fetch curator events, while isCurator field is false`);
@@ -176,70 +184,99 @@ async function filter(arr, callback) {
 	}))).filter(i => i !== undefined);
 }
 
+// Хелпер для запроса кандидатов у базы данных
 const _searchForCandidates = ({projectUid}) => new Promise(resolve => {
 	const candidates = [];
 	// Просто ужасная функция, но иначе на текущий момент в firebase нельзя. Слишком вложенные данные.
 
 	// Берем свободные вакансии
-	firebase.database().ref(`/events/${projectUid}/vacancies`).orderByChild('employedBy').equalTo('').once('value', snapshot => {
-		// Для каждой вакансии
-		snapshot.forEach(vacancy => {
-			const _vacancy = vacancy.val();
-			// Добавляем к каждой вакансии uid, для обратно связи
-			_vacancy.uid = vacancy.key;
+	firebase
+		.database()
+		.ref(`/events/${projectUid}/vacancies`)
+		.orderByChild('employedBy')
+		.equalTo('')
+		.once('value', snapshot => {
+			// Для каждой вакансии
+			snapshot.forEach(vacancy => {
+				const _vacancy = vacancy.val();
+				// Добавляем к каждой вакансии uid, для обратной связи
+				_vacancy.uid = vacancy.key;
+				const _candidates = _.map(vacancy.val().candidates, (value, key) => ({key, value}));
 
-			// Бежим по кандидатам
-			const _candidates = _.map(vacancy.val().candidates, (value, key) => ({key, value}));
-
-			// Если на вакансию есть хотя бы 1 заявка
-			if (_candidates.length > 0) {
-				_candidates.forEach(candidate => {
-					candidates.push({
-						vacancy: _vacancy,
-						candidate
+				// Если на вакансию есть хотя бы 1 заявка
+				if (_candidates.length > 0) {
+					_candidates.forEach(candidate => {
+						candidates.push({
+							vacancy: _vacancy,
+							candidate
+						});
 					});
-				});
-			}
+				}
+			});
+			resolve(candidates);
 		});
-		resolve(candidates);
-	});
 });
 
+// Хелпер для проверки возможности оставления заявки в проект
 const _isUserCanApplyToProject = (uid, projectUid) => new Promise((resolve, reject) => {
 
-	// Check for user status
-	firebase.database().ref(`/users/${uid}`).once('value', snapshot => {
-		if (snapshot.val().isCurator) {
-			reject(new Error('Curators dont have persimmisions to apply'));
-		}
-	});
+	// Проверяем на куратора
+	firebase
+		.database()
+		.ref(`/users/${uid}`)
+		.once('value', snapshot => {
+			if (snapshot.val().isCurator) {
+				reject(new Error('Curators dont have persimmisions to apply'));
+			}
+		});
 
-	// Check for student status
-	firebase.database().ref(`/users/${uid}/myProjects`).once('value', snapshot => {
-		const userApplies = _.map(snapshot.val(), (value, key) => ({key, value}));
-		debugger;
-		if (userApplies.filter(project => project.value === true && project.key !== projectUid).length > 0) {
-			reject(new Error('User already in project.'));
-		}
-		if (userApplies.length === 3 && userApplies.filter(project => project.key === projectUid).length === 0) {
-			reject(new Error('Max applies count reached.'));
-		}
-		resolve(userApplies);
-	});
+	// Если не куратор, поехали дальше
+	firebase
+		.database()
+		.ref(`/users/${uid}/myProjects`)
+		.once('value', snapshot => {
+			const userApplies = _.map(snapshot.val(), (value, key) => ({key, value}));
+
+			// У пользователя есть другие активные проекты
+			if (userApplies.filter(
+					project => project.value === true && project.key !== projectUid
+				).length > 0) {
+				reject(new Error('User already in project.'));
+			}
+
+			// У пользователя болье 3 проектов с заявками не включая текущий
+			if (userApplies.length === 3 &&
+				userApplies.filter(
+						project => project.key === projectUid
+				).length === 0) {
+				reject(new Error('Max applies count reached.'));
+			}
+			resolve(userApplies);
+		});
 });
 
+// Хелпер для добавления uid к проекту. Временно не используется.
+// Зачем он написан тоже загадка.
 export const _updateProject = projectUid => new Promise(resolve => {
-	firebase.database().ref(`/events/${projectUid}`).once('value', snapshot => {
-		const project = snapshot.val();
-		project.uid = projectUid;
-		resolve(project);
-	});
+	firebase
+		.database()
+		.ref(`/events/${projectUid}`)
+		.once('value', snapshot => {
+			const project = snapshot.val();
+			project.uid = projectUid;
+			resolve(project);
+		});
 });
 
-// Return true if active project !== projectUid
+// Хелпер для асинхронной проверки активных проектов студента
 const _isUserActiveProjectIsThis = (uid, projectUid) => new Promise(resolve => {
-	firebase.database().ref(`/users/${uid}/myProjects`).once('value', async snapshot => {
-		const userApplies = await _.map(snapshot.val(), (value, key) => ({key, value}));
-		resolve(userApplies.filter(item => item.value === true && item.key !== projectUid).length === 0);
-	});
+	firebase
+		.database()
+		.ref(`/users/${uid}/myProjects`)
+		.once('value', async snapshot => {
+			const userApplies = await _.map(snapshot.val(), (value, key) => ({key, value}));
+
+			// Пользовательский активный проект не является тем, который был передан в качестве параметра
+			resolve(userApplies.filter(item => item.value === true && item.key !== projectUid).length === 0);
+		});
 });

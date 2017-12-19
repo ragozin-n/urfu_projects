@@ -10,16 +10,17 @@ import {
 	FETCH_USER_BIO
 } from './types';
 
-// Main login thread
+// Коллбек успешного логина
 const loginUserSuccess = (dispatch, user) => {
 	dispatch({
 		type: LOGIN_USER_SUCCESS,
 		payload: user
 	});
-	fetchUserBio(dispatch).then(() => Actions.main());
+	fetchUserBio(dispatch)
+		.then(() => Actions.main());
 };
 
-// Helper for alert error on device
+// Хелпер для алерта ошибки на устройство
 const alertOnDevice = error => {
 	Alert.alert(
 		'Oops!',
@@ -32,7 +33,7 @@ const alertOnDevice = error => {
 	);
 };
 
-// Callback for error
+// Коллбек ошибки логина
 const loginUserFail = (dispatch, err) => {
 	dispatch({
 		type: LOGIN_USER_FAIL,
@@ -54,11 +55,13 @@ export const passwordChanged = text => {
 	};
 };
 
-// Main login thread
+// Главный поток авторизации
 export const loginUser = ({email, password}) => {
 	return dispatch => {
 		dispatch({type: LOGIN_USER});
-		firebase.auth().signInWithEmailAndPassword(email, password)
+		firebase
+			.auth()
+			.signInWithEmailAndPassword(email, password)
 			.then(user => loginUserSuccess(dispatch, user))
 			.catch(err => {
 				alertOnDevice(err);
@@ -67,15 +70,18 @@ export const loginUser = ({email, password}) => {
 	};
 };
 
-// Listen to user information updates
+// Подписчик изменения личной информации пользователя
 const fetchUserBio = dispatch => new Promise(resolve => {
 	const {uid} = firebase.auth().currentUser;
-	firebase.database().ref(`/users/${uid}`)
-	.on('value', snapshot => {
-		dispatch({
-			type: FETCH_USER_BIO,
-			payload: snapshot.val()
+
+	firebase
+		.database()
+		.ref(`/users/${uid}`)
+		.on('value', snapshot => {
+			dispatch({
+				type: FETCH_USER_BIO,
+				payload: snapshot.val()
+			});
+			resolve(snapshot.val());
 		});
-		resolve(snapshot.val());
-	});
 });
