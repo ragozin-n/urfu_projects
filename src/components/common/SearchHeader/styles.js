@@ -5,7 +5,7 @@ import {
 import {
 	TITLE_COLOR,
 	BUTTON_COLOR
-} from './colors';
+} from '../../styles';
 
 export default StyleSheet.create({
 	titleStyle: {

@@ -6,7 +6,7 @@ import {
 	PROJECTS_LIST_BACKGROUND_COLOR,
 	PROJECTS_LIST_ITEM_BACKGROUND_COLOR,
 	ICON_ACTIVE_COLOR
-} from './colors';
+} from '../../styles';
 
 export default StyleSheet.create({
 	headerStyle: {

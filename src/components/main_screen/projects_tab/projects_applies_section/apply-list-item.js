@@ -1,12 +1,20 @@
 import React, {Component} from 'react';
-import Divider from '../common/divider';
-import {ListItem, Right, Left, Button, Icon, Text, Thumbnail, Body, Toast} from 'native-base';
-import {hireStudentToProject, _updateProject} from '../../actions/projects-actions';
+import {
+	ListItem,
+	Right,
+	Left,
+	Button,
+	Text,
+	Thumbnail,
+	Body
+} from 'native-base';
 import {Actions} from 'react-native-router-flux';
 import {View} from 'react-native';
 import {connect} from 'react-redux';
 import firebase from 'firebase';
-import {THUMBNAIL_BORDER_COLOR} from '../styles/colors';
+import {hireStudentToProject} from '../../../../actions/projects-actions';
+import Divider from '../../../common/divider';
+import {THUMBNAIL_BORDER_COLOR} from '../../../styles/colors';
 
 class ApplyListItem extends Component {
 	state = {
@@ -15,18 +23,24 @@ class ApplyListItem extends Component {
 	}
 
 	componentWillMount() {
+		// Подгрузим студента, который отправил заявку в проект
 		if (_.isEmpty(this.state.user)) {
-			firebase.database().ref(`/users/${this.props.item.candidate.key}`).once('value', bio => {
-				this.setState({user: bio.val()});
-			});
+			firebase
+				.database()
+				.ref(`/users/${this.props.item.candidate.key}`)
+				.once('value', bio => {
+					this.setState({user: bio.val()});
+				});
 		}
 	}
 
 	handleApplyToVacancy = ({vacancy}) => {
-		this.props.hireStudentToProject({
-			projectUid: this.props.currentProject.uid,
+		const {hireStudentToProject, currentProject, item} = this.props;
+
+		hireStudentToProject({
+			projectUid: currentProject.uid,
 			vacancyUid: vacancy.uid,
-			studentUid: this.props.item.candidate.key
+			studentUid: item.candidate.key
 		});
 		Actions.main();
 	}
@@ -34,6 +48,8 @@ class ApplyListItem extends Component {
 	render() {
 		const {photoBase64, name, skills} = this.state.user;
 		const {vacancy} = this.props.item;
+		const {currentProject} = this.props;
+
 		return (
 			<ListItem noBorder avatar style={{marginLeft: 0, paddingLeft: 15}} onPress={() => this.setState({isFullView: !this.state.isFullView})}>
 				<Left style={{position: 'absolute', top: 15, left: 10}}>
@@ -49,10 +65,10 @@ class ApplyListItem extends Component {
 				</Left>
 				<Body style={{borderBottomWidth: 0, marginLeft: 45}}>
 					<Text>{name}</Text>
-					<Text note>{`${vacancy.name} в ${this.props.currentProject.name}`}</Text>
+					<Text note>{`${vacancy.name} в ${currentProject.name}`}</Text>
 					{this.state.isFullView &&
 						<View style={{marginTop: 10}}>
-							<Text note>{`Требования проекта: ${this.props.currentProject.keywords}`}</Text>
+							<Text note>{`Требования проекта: ${currentProject.keywords}`}</Text>
 							<Text note>{`Требования вакансии: ${vacancy.skills}`}</Text>
 							<Text note>{`Умения ${name}: ${skills}`}</Text>
 							<Button success full onPress={() => this.handleApplyToVacancy({vacancy})}>

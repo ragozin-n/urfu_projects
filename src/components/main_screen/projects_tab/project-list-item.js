@@ -8,13 +8,12 @@ import {
 	Right,
 	Text,
 	Thumbnail,
-	Button,
-	Icon
+	Button
 } from 'native-base';
 import _ from 'lodash';
-import Counter from './common/counter';
-import {THUMBNAIL_BORDER_COLOR} from './styles/colors';
-import styles from './styles/projects-list-styles';
+import Counter from '../../common/counter';
+import {THUMBNAIL_BORDER_COLOR} from '../../styles';
+import styles from './styles';
 
 class ProjectListItem extends Component {
 	state = {
@@ -22,8 +21,9 @@ class ProjectListItem extends Component {
 	}
 
 	handleRowPress = () => {
-		const {isCurator, uid} = this.props;
-		Actions.projectInfo({currentProject: this.props.project, isCurator, uid});
+		const {isCurator, uid, project} = this.props;
+
+		Actions.projectInfo({currentProject: project, isCurator, uid});
 	}
 
 	componentDidMount() {
@@ -39,9 +39,8 @@ class ProjectListItem extends Component {
 	}
 
 	render() {
-		const {name, description, photoBase64, keywords, maxMembers, uid} = this.props.project;
+		const {name, description, photoBase64} = this.props.project;
 		const vacancies = _.map(this.props.project.vacancies, (value, key) => ({key, value}));
-		//const members = _.map(this.props.project.members, (value, key) => ({key, value}));
 		const {projectListItem} = styles;
 
 		return (

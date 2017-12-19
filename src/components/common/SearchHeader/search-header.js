@@ -5,7 +5,6 @@ import {
 	Icon,
 	Input,
 	Button,
-	Left,
 	Title,
 	Right,
 	Item
@@ -13,9 +12,9 @@ import {
 import _ from 'lodash';
 import {Animated, Easing} from 'react-native';
 import {connect} from 'react-redux';
-import styles from '../styles/search-header-styles';
-import {SEARCH_INPUT_COLOR, ICON_ACTIVE_COLOR} from '../styles/colors';
-import {projectsFilter} from '../../actions';
+import {SEARCH_INPUT_COLOR, ICON_ACTIVE_COLOR} from '../../styles';
+import {projectsFilter} from '../../../actions/projects-actions';
+import styles from './styles';
 
 class SearchHeader extends Component {
 	state = {
@@ -25,13 +24,17 @@ class SearchHeader extends Component {
 	};
 
 	handleSearch = text => {
-		this.props.projectsFilter(text, this.props._projects);
+		const {projectsFilter} = this.props;
+
+		projectsFilter(text, this.props._projects);
 	};
 
 	handleSearchIcon = () => {
+		const {slideAnimation, opacityAnimation, isHeaderSearch} = this.state;
+
 		Animated.parallel([
 			Animated.timing(
-				this.state.slideAnimation,
+				slideAnimation,
 				{
 					toValue: 0,
 					duration: 450,
@@ -40,7 +43,7 @@ class SearchHeader extends Component {
 				}
 			),
 			Animated.timing(
-				this.state.opacityAnimation,
+				opacityAnimation,
 				{
 					toValue: 1,
 					duration: 550,
@@ -49,33 +52,36 @@ class SearchHeader extends Component {
 				}
 			)
 		]).start();
-		this.setState({isHeaderSearch: !this.state.isHeaderSearch});
+		this.setState({isHeaderSearch: !isHeaderSearch});
 	};
 
 	handleCloseIcon = () => {
+		const {projectsFilter} = this.props;
+
 		this.setState(
 			{
 				slideAnimation: new Animated.Value(-10),
 				isHeaderSearch: !this.state.isHeaderSearch,
 				opacityAnimation: new Animated.Value(0)
 			});
-		// Display all projects
-		this.props.projectsFilter('', this.props._projects);
+
+		projectsFilter('', this.props._projects);
 	};
 
 	render() {
 		const {titleStyle, iconStyle, headerStyle} = styles;
+		const {slideAnimation, opacityAnimation, isHeaderSearch} = this.state;
 
-		if (this.state.isHeaderSearch) {
+		if (isHeaderSearch) {
 			return (
 				<Header noShadow hasTabs searchBar style={headerStyle}>
 					<Animated.View
 						style={{
 							flex: 1,
 							transform: [{
-								translateX: this.state.slideAnimation
+								translateX: slideAnimation
 							}],
-							opacity: this.state.opacityAnimation
+							opacity: opacityAnimation
 						}}
 					>
 						<Item style={{backgroundColor: 'transparent', flex: 1}}>
@@ -96,9 +102,9 @@ class SearchHeader extends Component {
 
 		return (
 			<Header hasTabs style={headerStyle}>
-				<Left>
+				<Body style={{flex: 3, alignItems: 'flex-start'}}>
 					<Title style={titleStyle}>Все проекты</Title>
-				</Left>
+				</Body>
 				<Right>
 					<Button transparent small onPress={this.handleSearchIcon}>
 						<Icon style={iconStyle} name="md-search"/>

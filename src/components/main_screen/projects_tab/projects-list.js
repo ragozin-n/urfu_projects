@@ -10,15 +10,14 @@ import {
 // eslint-disable-next-line import/named
 import {LinearGradient} from 'expo';
 import {connect} from 'react-redux';
-import _ from 'lodash';
-import {projectsFetch, applyToProject} from '../actions';
-import SearchHeader from './common/search-header';
-import TabIcon from './common/tab-icon';
-import {PROJECTS_LIST_GRADIENT_COLORS} from './styles/colors';
+import {projectsFetch, applyToProject} from '../../../actions';
+import SearchHeader from '../../common/SearchHeader/search-header';
+import TabIcon from '../../common/TabIcon/tab-icon';
+import {PROJECTS_LIST_GRADIENT_COLORS} from '../../styles';
+import ProfileForm from '../profile_tab/profile-form';
+import ProjectCreateForm from '../settings_tab/project-create-form';
 import ProjectListItem from './project-list-item';
-import ProjectCreateForm from './project-create-form';
-import styles from './styles/projects-list-styles';
-import ProfileForm from './profile-form';
+import styles from './styles';
 
 class ProjectsList extends Component {
 	state = {
@@ -32,12 +31,20 @@ class ProjectsList extends Component {
 
 	renderRow(project) {
 		const {isCurator, uid} = this.props;
-		return <ProjectListItem project={project} applyToProject={this.props.applyToProject} isCurator={isCurator} uid={uid}/>;
+
+		return (
+			<ProjectListItem
+				project={project}
+				applyToProject={this.props.applyToProject}
+				isCurator={isCurator}
+				uid={uid}
+			/>);
 	}
 
 	componentDidMount() {
-		const {isCurator, uid} = this.props;
-		this.props.projectsFetch({isCurator, uid});
+		const {isCurator, uid, projectsFetch} = this.props;
+
+		projectsFetch({isCurator, uid});
 	}
 
 	render() {

@@ -10,23 +10,22 @@ import {
 	Button,
 	Left,
 	Icon,
-	Title,
 	Right,
 	Thumbnail,
 	H2,
-	H3,
 	Fab
 } from 'native-base';
 import {connect} from 'react-redux';
 import _ from 'lodash';
 import {Actions} from 'react-native-router-flux';
-import {getCandidates} from '../actions/projects-actions';
-import {LinearGradient, Audio, Constants} from 'expo';
-import {THUMBNAIL_BORDER_COLOR} from './styles/colors';
-import VacancyListItem from './common/vacancy-list-item';
-import MemberListItem from './common/member-list-item';
-import Counter from './common/counter';
-import Divider from './common/divider';
+// eslint-disable-next-line import/named
+import {LinearGradient, Audio} from 'expo';
+import {getCandidates} from '../../../../actions/projects-actions';
+import {THUMBNAIL_BORDER_COLOR} from '../../../styles';
+import Counter from '../../../common/counter';
+import Divider from '../../../common/divider';
+import VacancyListItem from './vacancy-list-item';
+import MemberListItem from './member-list-item';
 
 class ProjectInfo extends Component {
 	state = {
@@ -47,9 +46,9 @@ class ProjectInfo extends Component {
 			});
 			const sound = new Audio.Sound();
 			if (this.state.isMembersVisible) {
-				await sound.loadAsync(require('../sounds/sha.mp3'));
+				await sound.loadAsync(require('../../../../sounds/sha.mp3'));
 			} else {
-				await sound.loadAsync(require('../sounds/ta.mp3'));
+				await sound.loadAsync(require('../../../../sounds/ta.mp3'));
 			}
 			await sound.setVolumeAsync(0.5);
 			await sound.playAsync();
@@ -60,9 +59,9 @@ class ProjectInfo extends Component {
 	}
 
 	handleFabButton = () => {
-		const {isCurator, uid, currentProject} = this.props;
+		const {isCurator, uid, currentProject, getCandidates} = this.props;
 
-		this.props.getCandidates({uid, isCurator, currentProject});
+		getCandidates({uid, isCurator, currentProject});
 	}
 
 	renderVacancy = (vacancy, uid) => {
@@ -78,22 +77,33 @@ class ProjectInfo extends Component {
 			);
 		}
 
-		// Run throw candidates array and search current user id in it
+		// Если вакансия находится на рассмотрении куратора,
+		// мы должны написать другой текст в компоненте
 		const isAlreadyApplied = _candidates.filter(item =>
 			item.key === currentUserUid
 		).length > 0;
 
 		return (
-			<VacancyListItem name={name} description={description} skills={skills} vacancyUid={key} projectUid={uid} isAlreadyApplied={isAlreadyApplied}/>
+			<VacancyListItem
+				name={name}
+				description={description}
+				skills={skills}
+				vacancyUid={key}
+				projectUid={uid}
+				isAlreadyApplied={isAlreadyApplied}
+			/>
 		);
 	}
 
 	componentWillMount() {
-		// Download curator info
+		// Подгружаем куратора проекта
 		if (_.isEmpty(this.state.curator)) {
-			firebase.database().ref(`/users/${this.props.currentProject.createdBy}`).once('value', bio => {
-				this.setState({curator: bio.val()});
-			});
+			firebase
+				.database()
+				.ref(`/users/${this.props.currentProject.createdBy}`)
+				.once('value', bio => {
+					this.setState({curator: bio.val()});
+				});
 		}
 	}
 
@@ -128,7 +138,7 @@ class ProjectInfo extends Component {
 						<H2>{name}</H2>
 					</View>
 					<Divider/>
-					<Button style={{marginTop: 5, marginBottom: 5}} small full transparent onPress={() => this.handleDropDown()}>
+					<Button style={{marginTop: 5, marginBottom: 5}} small full transparent onPress={this.handleDropDown}>
 						<View style={{flex: 1, flexDirection: 'row', alignContent: 'space-between'}}>
 							<View style={{flex: 1, flexDirection: 'row', alignSelf: 'baseline'}}>
 								<Counter
@@ -178,20 +188,23 @@ class ProjectInfo extends Component {
 						}
 					</View>
 				</Content>
+
+				{/* Кураторская кнопка */}
 				{this.props.uid === this.props.currentProject.createdBy &&
-				<Fab
-					active={this.state.active}
-					direction="down"
-					containerStyle={{flex: 1, top: 145}}
-					style={{ backgroundColor: 'red'}}
-					position="topRight"
-					onPress={() => this.setState({active: !this.state.active})}
-				>
-					<Icon name="md-more"/>
-					<Button style={{backgroundColor: '#34A34F'}} onPress={() => this.handleFabButton()}>
-						<Icon name="mail"/>
-					</Button>
-				</Fab>}
+					<Fab
+						active={this.state.active}
+						direction="down"
+						containerStyle={{flex: 1, top: 145}}
+						style={{ backgroundColor: 'red'}}
+						position="topRight"
+						onPress={() => this.setState({active: !this.state.active})}
+					>
+						<Icon name="md-more"/>
+						<Button style={{backgroundColor: '#34A34F'}} onPress={() => this.handleFabButton()}>
+							<Icon name="mail"/>
+						</Button>
+					</Fab>
+				}
 			</Container>);
 	}
 }

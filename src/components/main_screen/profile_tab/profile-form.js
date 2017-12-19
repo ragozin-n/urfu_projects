@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {View, FlatList} from 'react-native';
-import {Container, Content, H2, Thumbnail, Text, ListItem} from 'native-base';
-import {THUMBNAIL_BORDER_COLOR} from './styles/colors';
+import {View} from 'react-native';
+import {Container, Content, H2, Thumbnail, Text} from 'native-base';
+import {THUMBNAIL_BORDER_COLOR} from '../../styles';
 
 class ProfileForm extends Component {
 	render() {
@@ -33,7 +33,11 @@ class ProfileForm extends Component {
 							const projectUid = project.key;
 							const vacanciesUids = _.map(project.value, (value, key) => ({key, value}));
 							return vacanciesUids.map(vacancy => {
-								return (<Text key={vacancy.key}>{`\nProject:${projectUid}\nVacancy:${vacancy.key}`}</Text>);
+								return (
+									<Text key={vacancy.key}>
+										{`\nProject:${projectUid}\nVacancy:${vacancy.key}`}
+									</Text>
+								);
 							});
 						})
 					}
@@ -45,6 +49,7 @@ class ProfileForm extends Component {
 
 const mapStateToProps = ({auth}) => {
 	const {user, _token} = auth;
+
 	return {user, _token};
 };
 

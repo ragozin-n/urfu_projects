@@ -8,15 +8,12 @@ import {
 	Item,
 	Icon,
 	Input,
-	Content,
-	Container
+	Content
 } from 'native-base';
 import {
 	Image,
 	Animated,
-	Easing,
-	KeyboardAvoidingView,
-	ScrollView
+	Easing
 } from 'react-native';
 // eslint-disable-next-line import/named
 import {LinearGradient, Audio} from 'expo';
@@ -24,13 +21,13 @@ import {
 	emailChanged,
 	passwordChanged,
 	loginUser
-} from '../actions';
-import styles from './styles/login-form-styles';
+} from '../../actions';
 import {
 	LOGIN_GRADIENT_COLORS,
 	INPUT_PLACEHOLDER_TEXT_COLOR,
 	SPINNER_COLOR
-} from './styles/';
+} from '../styles/';
+import styles from './styles';
 
 class LoginForm extends Component {
 	state = {
@@ -47,8 +44,9 @@ class LoginForm extends Component {
 	}
 
 	handleLogin = () => {
-		const {email, password} = this.props;
-		this.props.loginUser({email, password});
+		const {email, password, loginUser} = this.props;
+
+		loginUser({email, password});
 	}
 
 	handlePasswordVisibility = () => {
@@ -56,13 +54,24 @@ class LoginForm extends Component {
 	}
 
 	renderButton = () => {
-		if (this.props.loading) {
-			return <Spinner style={styles.spinnerStyle} color={SPINNER_COLOR}/>;
+		const {loading} = this.props;
+		const {spinnerStyle, loginButtonStyle, loginButtonTextStyle} = styles;
+
+		if (loading) {
+			return <Spinner style={spinnerStyle} color={SPINNER_COLOR}/>;
 		}
 
 		return (
-			<Button full bordered light onPress={this.handleLogin} style={styles.loginButtonStyle}>
-				<Text uppercase={false} style={styles.loginButtonTextStyle}>Войти</Text>
+			<Button
+				full
+				bordered
+				light
+				onPress={this.handleLogin}
+				style={loginButtonStyle}
+			>
+				<Text uppercase={false} style={loginButtonTextStyle}>
+					Войти
+				</Text>
 			</Button>
 		);
 	}
@@ -124,7 +133,7 @@ class LoginForm extends Component {
 					>
 						<Form style={formStyle}>
 							<Image
-								source={require('../images/logo.png')}
+								source={require('../../images/logo.png')}
 								style={logoStyle}
 							/>
 							<Item style={itemFixStyle}>

@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {View, Platform, FlatList, Image} from 'react-native';
-import firebase from 'firebase';
 import {
 	Container,
 	Content,
@@ -11,19 +10,13 @@ import {
 	Left,
 	Icon,
 	Title,
-	Right,
-	Thumbnail,
-	H2,
-	H3,
-	Fab,
-	ListItem
+	Right
 } from 'native-base';
-import {connect} from 'react-redux';
-import ApplyListItem from './common/apply-list-item';
-import _ from 'lodash';
-import {Actions} from 'react-native-router-flux';
+// eslint-disable-next-line import/named
 import {LinearGradient} from 'expo';
-import {PROJECTS_LIST_GRADIENT_COLORS} from './styles/colors';
+import {Actions} from 'react-native-router-flux';
+import {PROJECTS_LIST_GRADIENT_COLORS} from '../../../styles';
+import ApplyListItem from './apply-list-item';
 
 class AppliesForm extends Component {
 	renderApply = (apply, currentProject) => {
@@ -34,11 +27,14 @@ class AppliesForm extends Component {
 
 	handleBackAction = () => {
 		const {currentProject, uid} = this.props;
-		// Здесь почему-то теряестя поле isCurator.
+		// Здесь почему-то теряется поле isCurator.
+		// Если мы в этой форме, то мы куратор. поэтому вернем true руками.
 		Actions.projectInfo({currentProject, isCurator: true, uid});
 	}
 
 	render() {
+		const {applies, currentProject} = this.props;
+
 		return (
 			<Container style={{flex: 1}}>
 				<LinearGradient
@@ -61,16 +57,16 @@ class AppliesForm extends Component {
 				<Content>
 					<FlatList
 						style={{flex: 1}}
-						data={this.props.applies}
-						renderItem={({item}) => this.renderApply(item, this.props.currentProject)}
+						data={applies}
+						renderItem={({item}) => this.renderApply(item, currentProject)}
 						keyExtractor={(item, index) => index}
 					/>
-					{!this.props.applies.length > 0 &&
+					{!applies.length > 0 &&
 						<View style={{flex: 1, alignItems: 'center', paddingTop: 50}}>
-							<Text style={{textAlign: 'center', marginBottom: 30}}>{`На текущий момент заявок в проект \n${this.props.currentProject.name}\nнет.\n\nЗагляните сюда чуть позже.`}</Text>
+							<Text style={{textAlign: 'center', marginBottom: 30}}>{`На текущий момент заявок в проект \n${currentProject.name}\nнет.\n\nЗагляните сюда чуть позже.`}</Text>
 							<Image
 								style={{height: 400}}
-								source={require('../images/jdun.png')}
+								source={require('../../../../images/jdun.png')}
 								resizeMode="contain"
 							/>
 						</View>
@@ -80,4 +76,4 @@ class AppliesForm extends Component {
 	}
 }
 
-export default connect(null, {})(AppliesForm);
+export default AppliesForm;

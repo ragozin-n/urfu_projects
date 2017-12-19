@@ -1,4 +1,5 @@
 import {Toast} from 'native-base';
+// eslint-disable-next-line import/named
 import {Audio} from 'expo';
 import {ERROR} from '../actions/types';
 
