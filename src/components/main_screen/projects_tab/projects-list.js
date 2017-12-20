@@ -5,7 +5,10 @@ import {
 	Container,
 	Tabs,
 	Tab,
-	TabHeading
+	TabHeading,
+	Fab,
+	Icon,
+	Button
 } from 'native-base';
 // eslint-disable-next-line import/named
 import {LinearGradient} from 'expo';
@@ -15,7 +18,7 @@ import SearchHeader from '../../common/SearchHeader/search-header';
 import TabIcon from '../../common/TabIcon/tab-icon';
 import {PROJECTS_LIST_GRADIENT_COLORS} from '../../styles';
 import ProfileForm from '../profile_tab/profile-form';
-import ProjectCreateForm from '../settings_tab/project-create-form';
+// import ProjectCreateForm from '../settings_tab/project-create-form';
 import ProjectListItem from './project-list-item';
 import styles from './styles';
 
@@ -47,11 +50,16 @@ class ProjectsList extends Component {
 		projectsFetch({isCurator, uid});
 	}
 
+	handleCuratorFab = () => {
+		Actions.createProject();
+	}
+
 	render() {
 		const {
 			containerStyle,
 			tabBarUnderlineStyle
 		} = styles;
+		const {isCurator} = this.props;
 
 		return (
 			<Container style={containerStyle}>
@@ -96,10 +104,21 @@ class ProjectsList extends Component {
 									<TabIcon name="md-settings" position={2} activeTab={this.state.activeTab}/>
 								</TabHeading>}
 						>
-							<ProjectCreateForm/>
+							{/* <ProjectCreateForm/> */}
 						</Tab>
 					</Tabs>
 				</LinearGradient>
+				{/* Кураторская кнопка */}
+				{isCurator &&
+					<Fab
+						containerStyle={{flex: 1}}
+						style={{backgroundColor: 'red'}}
+						position="bottomRight"
+						onPress={this.handleCuratorFab}
+					>
+						<Icon name="md-add"/>
+					</Fab>
+				}
 			</Container>
 		);
 	}

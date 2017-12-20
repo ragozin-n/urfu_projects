@@ -12,34 +12,49 @@ import {
 } from './types';
 
 // Событие создания проекта куратором
-export const projectCreate = ({name, description, photoBase64, maxMembers, keywords, vacancies}) => {
+export const projectCreate = ({name, description, photoBase64, keywords}) => {
 	return dispatch => {
+		if (!name) {
+			dispatch({type: ERROR, payload: new Error('Trying to create project with emply name')});
+			return;
+		}
+		if (!description) {
+			dispatch({type: ERROR, payload: new Error('Trying to create project with emply description')});
+			return;
+		}
+		if (!photoBase64) {
+			dispatch({type: ERROR, payload: new Error('Trying to create project with blank photo')});
+			return;
+		}
+		if (!keywords) {
+			dispatch({type: ERROR, payload: new Error('Trying to create project with emply keywords array')});
+			return;
+		}
+
 		const currentEventKey = firebase.database().ref(`/events`).push().key;
 		const currentEventRef = firebase.database().ref(`/events/${currentEventKey}`);
 		const {uid} = firebase.auth().currentUser;
-		const currentVacanciesRef = firebase.database().ref(`/events/${currentEventKey}/vacancies`);
+		//const currentVacanciesRef = firebase.database().ref(`/events/${currentEventKey}/vacancies`);
 
 		currentEventRef.set(
 			{
 				name,
 				description,
 				photoBase64,
-				maxMembers,
 				keywords,
-				createdBy: uid,
-				members: {}
+				createdBy: uid
 			}
 		);
 
-		vacancies.forEach(element => {
-			currentVacanciesRef.push(
-				{
-					name: element.name,
-					description: element.description,
-					skills: element.skills
-				}
-			);
-		});
+		// vacancies.forEach(element => {
+		// 	currentVacanciesRef.push(
+		// 		{
+		// 			name: element.name,
+		// 			description: element.description,
+		// 			skills: element.skills
+		// 		}
+		// 	);
+		// });
 
 		dispatch({type: PROJECT_CREATE});
 		Actions.main();

@@ -2,9 +2,10 @@ import React from 'react';
 import {Scene, Router} from 'react-native-router-flux';
 import LoginForm from './components/login_screen/login-form';
 import ProjectsList from './components/main_screen/projects_tab/projects-list';
-import ProjectCreateForm from './components/main_screen/settings_tab/project-create-form';
+import SettingsForm from './components/main_screen/settings_tab/settings-form';
 import ProjectInfo from './components/main_screen/projects_tab/projects_info_section/project-info';
 import AppliesForm from './components/main_screen/projects_tab/projects_applies_section/applies-form';
+import ProjectCreateForm from './components/create_project_screen/project-create-form';
 
 const RouterComponent = () => {
 	return (
@@ -28,8 +29,8 @@ const RouterComponent = () => {
 					/>
 
 					<Scene
-						key="createProject"
-						component={ProjectCreateForm}
+						key="settings"
+						component={SettingsForm}
 						panHandlers={null}
 						hideNavBar
 					/>
@@ -48,6 +49,13 @@ const RouterComponent = () => {
 						hideNavBar
 					/>
 				</Scene>
+
+				<Scene
+					key="createProject"
+					component={ProjectCreateForm}
+					panHandlers={null}
+					hideNavBar
+				/>
 			</Scene>
 		</Router>
 	);
