@@ -1,46 +1,66 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {View} from 'react-native';
-import {Container, Content, H2, Thumbnail, Text} from 'native-base';
+import {
+	Container,
+	Content,
+	H2,
+	Thumbnail,
+	Text,
+	Card,
+	CardItem,
+	Icon,
+	Button
+} from 'native-base';
 import {THUMBNAIL_BORDER_COLOR} from '../../styles';
 
 class ProfileForm extends Component {
 	render() {
-		const {isCurator, name, photoBase64} = this.props.user;
-		const {uid, email} = this.props._token;
-		const myProjects = _.map(this.props.user.myProjects, (value, key) => ({key, value}));
+		const {isCurator, name, photoBase64, skills} = this.props.user;
+		const phoneNumber = '+7 952 132 45 96';
+		const {email} = this.props._token;
 
 		return (
 			<Container>
 				<Content style={{backgroundColor: 'white', padding: 15}}>
-					<View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+					<View style={{flex: 1, flexDirection: 'column', alignItems: 'center'}}>
 						<Thumbnail
 							style={{
 								borderColor: THUMBNAIL_BORDER_COLOR,
 								borderWidth: 2,
-								marginRight: 35,
-								overlayColor: 'white'
+								overlayColor: 'white',
+								marginBottom: 15
 							}}
 							large
 							source={{uri: photoBase64}}
 						/>
 						<H2>{name}</H2>
+						<Text note>{isCurator ? 'Куратор' : 'Студент'}</Text>
 					</View>
-					<Text>Я {isCurator ? 'куратор' : 'обычный студент'}</Text>
-					<Text>Мой email: {email}, уникальный идентификатор {uid}</Text>
-					{
-						myProjects.map(project => {
-							const projectUid = project.key;
-							const vacanciesUids = _.map(project.value, (value, key) => ({key, value}));
-							return vacanciesUids.map(vacancy => {
+					<Card>
+						<CardItem header>
+							<Text>Контакты:</Text>
+						</CardItem>
+						<CardItem>
+							<Icon active name="call"/>
+							<Text note>{phoneNumber}</Text>
+						</CardItem>
+						<CardItem>
+							<Icon active name="mail"/>
+							<Text note>{email}</Text>
+						</CardItem>
+					</Card>
+					<View style={{flex: 1, flexDirection: 'row', alignContent: 'space-between', flexWrap: 'wrap', paddingLeft: 15}}>
+						{
+							skills.split(', ').map((skill, index) => {
 								return (
-									<Text key={vacancy.key}>
-										{`\nProject:${projectUid}\nVacancy:${vacancy.key}`}
-									</Text>
+									<Button key={index} style={{margin: 3}} small danger>
+										<Text style={{color: 'white'}}>{skill}</Text>
+									</Button>
 								);
-							});
-						})
-					}
+							})
+						}
+					</View>
 				</Content>
 			</Container>
 		);
