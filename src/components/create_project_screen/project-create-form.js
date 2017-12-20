@@ -48,18 +48,17 @@ class ProjectCreateForm extends Component {
 			allowsEditing: true,
 			aspect: [4, 3],
 			base64: true,
-			exif: false
+			exif: false,
+			mediaTypes: 'images'
 		});
 
 		if (!result.cancelled) {
-			this.setState({photoBase64: result.base64});
+			console.log(result);
+			this.setState({photoBase64: `data:image/jpeg;base64,${result.base64}`});
 		}
 	};
 
 	render() {
-		const {isCurator} = this.props;
-		const {photoBase64} = this.state;
-
 		return (
 			<Container style={{flex: 1}}>
 				<LinearGradient
@@ -84,11 +83,11 @@ class ProjectCreateForm extends Component {
 					</Header>
 					<TouchableOpacity activeOpacity={0.5} onPress={this._pickImage}>
 						{
-							photoBase64 ?
+							this.state.photoBase64 ?
 								<Image
 									style={{height: 250}}
 									resizeMode="center"
-									source={{uri: photoBase64}}
+									source={{uri: this.state.photoBase64}}
 								/> :
 								<Image
 									style={{height: 250}}
