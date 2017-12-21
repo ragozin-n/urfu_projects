@@ -6,6 +6,7 @@ import SettingsForm from './components/main_screen/settings_tab/settings-form';
 import ProjectInfo from './components/main_screen/projects_tab/projects_info_section/project-info';
 import AppliesForm from './components/main_screen/projects_tab/projects_applies_section/applies-form';
 import ProjectCreateForm from './components/create_project_screen/project-create-form';
+import ProjectEditForm from './components/edit-project-screen/edit-project-form';
 
 const RouterComponent = () => {
 	return (
@@ -53,6 +54,13 @@ const RouterComponent = () => {
 				<Scene
 					key="createProject"
 					component={ProjectCreateForm}
+					panHandlers={null}
+					hideNavBar
+				/>
+
+				<Scene
+					key="editProject"
+					component={ProjectEditForm}
 					panHandlers={null}
 					hideNavBar
 				/>

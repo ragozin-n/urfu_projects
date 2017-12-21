@@ -58,10 +58,16 @@ class ProjectInfo extends Component {
 		this.setState({isMembersVisible: !this.state.isMembersVisible});
 	}
 
-	handleFabButton = () => {
+	handleGetCandidate = () => {
 		const {isCurator, uid, currentProject, getCandidates} = this.props;
 
 		getCandidates({uid, isCurator, currentProject});
+	}
+
+	handleProjectEdit = () => {
+		const {currentProject} = this.props;
+
+		Actions.editProject({project: currentProject});
 	}
 
 	renderVacancy = (vacancy, uid) => {
@@ -200,8 +206,11 @@ class ProjectInfo extends Component {
 						onPress={() => this.setState({active: !this.state.active})}
 					>
 						<Icon name="md-more"/>
-						<Button style={{backgroundColor: '#34A34F'}} onPress={() => this.handleFabButton()}>
+						<Button style={{backgroundColor: '#34A34F'}} onPress={() => this.handleGetCandidate()}>
 							<Icon name="mail"/>
+						</Button>
+						<Button style={{backgroundColor: '#34A34F'}} onPress={() => this.handleProjectEdit()}>
+							<Icon name="md-create"/>
 						</Button>
 					</Fab>
 				}

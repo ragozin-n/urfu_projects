@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Image, TouchableOpacity} from 'react-native';
+import {Image, TouchableOpacity, View} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import {
 	Container,
@@ -21,14 +21,20 @@ import {connect} from 'react-redux';
 import {PROJECTS_LIST_GRADIENT_COLORS} from '../styles';
 import Divider from '../common/Divider/divider';
 import {projectCreate} from '../../actions';
+import VacancyAddForm from './vacancy-add-form';
 import styles from './styles';
 
-class ProjectCreateForm extends Component {
+class ProjectEditForm extends Component {
 	state = {
 		name: '',
 		description: '',
 		keywords: '',
-		photoBase64: ''
+		photoBase64: '',
+		isVacancyFormVisible: false
+	}
+
+	handleAddVacancy = () => {
+		this.setState({isVacancyFormVisible: true});
 	}
 
 	handleCloseButton = () => {
@@ -57,6 +63,10 @@ class ProjectCreateForm extends Component {
 	};
 
 	render() {
+		const {project} = this.props;
+		const {name, description, photoBase64, keywords} = project;
+		const {isVacancyFormVisible} = this.state;
+
 		return (
 			<Container style={{flex: 1}}>
 				<LinearGradient
@@ -71,7 +81,7 @@ class ProjectCreateForm extends Component {
 							</Button>
 						</Left>
 						<Body style={{flex: 3, alignItems: 'flex-start'}}>
-							<Title style={{color: 'white'}}>Новый проект</Title>
+							<Title style={{color: 'white'}}>Редактирование проекта</Title>
 						</Body>
 						<Right>
 							<Button transparent small onPress={this.handleSaveButton}>
@@ -81,17 +91,11 @@ class ProjectCreateForm extends Component {
 					</Header>
 					<TouchableOpacity activeOpacity={0.5} onPress={this.handleImageSelect}>
 						{
-							this.state.photoBase64 ?
-								<Image
-									style={{height: 250}}
-									resizeMode="cover"
-									source={{uri: this.state.photoBase64}}
-								/> :
-								<Image
-									style={{height: 250}}
-									resizeMode="center"
-									source={require('../../images/add_icon.png')}
-								/>
+							<Image
+								style={{height: 250}}
+								resizeMode="cover"
+								source={{uri: this.state.photoBase64 || photoBase64}}
+							/>
 						}
 					</TouchableOpacity>
 				</LinearGradient>
@@ -99,7 +103,7 @@ class ProjectCreateForm extends Component {
 					<Item style={{borderColor: 'transparent', paddingHorizontal: 15}}>
 						<Icon active name="md-clipboard"/>
 						<Input
-							value={this.state.name}
+							value={this.state.name || name}
 							onChangeText={text => this.setState({name: text})}
 							placeholder="Название проекта"
 							placeholderTextColor="grey"
@@ -108,7 +112,7 @@ class ProjectCreateForm extends Component {
 					<Item style={{borderColor: 'transparent', paddingHorizontal: 15}}>
 						<Icon active name="md-list-box"/>
 						<Input
-							value={this.state.description}
+							value={this.state.description || description}
 							onChangeText={text => this.setState({description: text})}
 							placeholder="Описание"
 							placeholderTextColor="grey"
@@ -118,14 +122,20 @@ class ProjectCreateForm extends Component {
 					<Item style={{borderColor: 'transparent', paddingHorizontal: 15}}>
 						<Icon active name="md-pricetags"/>
 						<Input
-							value={this.state.keywords}
+							value={this.state.keywords || keywords}
 							onChangeText={text => this.setState({keywords: text})}
 							placeholder="Ключевые слова через запятую"
 							placeholderTextColor="grey"
 						/>
 					</Item>
 					<Divider/>
-					<Text note style={{textAlign: 'center', marginTop: 15, paddingHorizontal: 15}}>Вакансии можно добавить только после создания в меню проекта</Text>
+					{
+						isVacancyFormVisible ?
+							<VacancyAddForm/> :
+							<Button full danger style={{marginTop: 15}} onPress={this.handleAddVacancy}>
+								<Text>Добавить вакансию</Text>
+							</Button>
+					}
 				</Content>
 			</Container>
 		);
@@ -139,4 +149,4 @@ const mapStateToProps = state => {
 	return {isCurator, photoBase64, uid};
 };
 
-export default connect(mapStateToProps, {projectCreate})(ProjectCreateForm);
+export default connect(mapStateToProps, {projectCreate})(ProjectEditForm);
