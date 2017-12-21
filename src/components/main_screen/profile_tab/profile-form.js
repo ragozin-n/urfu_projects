@@ -16,8 +16,7 @@ import {THUMBNAIL_BORDER_COLOR} from '../../styles';
 
 class ProfileForm extends Component {
 	render() {
-		const {isCurator, name, photoBase64, skills} = this.props.user;
-		const phoneNumber = '+7 952 132 45 96';
+		const {isCurator, name, photoBase64, skills, phoneNumber} = this.props.user;
 		const {email} = this.props._token;
 
 		return (

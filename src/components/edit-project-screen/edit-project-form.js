@@ -20,7 +20,7 @@ import {LinearGradient, ImagePicker} from 'expo';
 import {connect} from 'react-redux';
 import {PROJECTS_LIST_GRADIENT_COLORS} from '../styles';
 import Divider from '../common/Divider/divider';
-import {projectCreate} from '../../actions';
+import {projectUpdate} from '../../actions';
 import VacancyAddForm from './vacancy-add-form';
 import styles from './styles';
 
@@ -37,15 +37,29 @@ class ProjectEditForm extends Component {
 		this.setState({isVacancyFormVisible: true});
 	}
 
+	handleHideForm = () => {
+		this.setState({isVacancyFormVisible: false});
+	}
+
 	handleCloseButton = () => {
-		Actions.main();
+		const {project, isCurator, uid} = this.props;
+		Actions.projectInfo({currentProject: project, isCurator, uid});
 	}
 
 	handleSaveButton = () => {
-		const {projectCreate} = this.props;
+		const {projectUpdate} = this.props;
+		const {project} = this.props;
 		const {name, description, photoBase64, keywords} = this.state;
 
-		projectCreate({name, description, photoBase64, keywords});
+		projectUpdate(
+			{
+				project,
+				name: name || project.name,
+				description: description || project.description,
+				photoBase64: photoBase64 || project.photoBase64,
+				keywords: keywords || project.keywords
+			}
+		);
 	}
 
 	handleImageSelect = async () => {
@@ -131,7 +145,7 @@ class ProjectEditForm extends Component {
 					<Divider/>
 					{
 						isVacancyFormVisible ?
-							<VacancyAddForm/> :
+							<VacancyAddForm onHideForm={this.handleHideForm} project={project}/> :
 							<Button full danger style={{marginTop: 15}} onPress={this.handleAddVacancy}>
 								<Text>Добавить вакансию</Text>
 							</Button>
@@ -149,4 +163,4 @@ const mapStateToProps = state => {
 	return {isCurator, photoBase64, uid};
 };
 
-export default connect(mapStateToProps, {projectCreate})(ProjectEditForm);
+export default connect(mapStateToProps, {projectUpdate})(ProjectEditForm);

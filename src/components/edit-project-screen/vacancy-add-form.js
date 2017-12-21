@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-import {Card, Item, Icon, Input} from 'native-base';
+import {connect} from 'react-redux';
+import {Item, Icon, Input, Button, Text} from 'native-base';
+import {projectUpdate} from '../../actions';
 import {View} from 'react-native';
 
 class VacancyAddForm extends Component {
@@ -8,11 +10,26 @@ class VacancyAddForm extends Component {
 		description: '',
 		skills: ''
 	}
+
+	handleSaveVacancy = () => {
+		const {name, description, skills} = this.state;
+		const {project} = this.props;
+		this.props.projectUpdate({
+			project,
+			vacancy: {
+				name,
+				description,
+				skills
+			}
+		});
+		this.props.onHideForm();
+	}
+
 	render() {
 		return (
-			<Card>
+			<View>
 				<Item style={{borderColor: 'transparent', paddingHorizontal: 15}}>
-					<Icon active name="md-clipboard"/>
+					<Icon active name="md-document"/>
 					<Input
 						value={this.state.name}
 						onChangeText={text => this.setState({name: text})}
@@ -21,7 +38,7 @@ class VacancyAddForm extends Component {
 					/>
 				</Item>
 				<Item style={{borderColor: 'transparent', paddingHorizontal: 15}}>
-					<Icon active name="md-list-box"/>
+					<Icon active name="md-list"/>
 					<Input
 						value={this.state.description}
 						onChangeText={text => this.setState({description: text})}
@@ -30,7 +47,7 @@ class VacancyAddForm extends Component {
 					/>
 				</Item>
 				<Item style={{borderColor: 'transparent', paddingHorizontal: 15}}>
-					<Icon active name="md-pricetags"/>
+					<Icon active name="hammer"/>
 					<Input
 						value={this.state.skills}
 						onChangeText={text => this.setState({skills: text})}
@@ -38,8 +55,11 @@ class VacancyAddForm extends Component {
 						placeholderTextColor="grey"
 					/>
 				</Item>
-			</Card>);
+				<Button full danger style={{marginTop: 15}} onPress={this.handleSaveVacancy}>
+					<Text>Сохранить вакансию</Text>
+				</Button>
+			</View>);
 	}
 }
 
-export default VacancyAddForm;
+export default connect(null, {projectUpdate})(VacancyAddForm);

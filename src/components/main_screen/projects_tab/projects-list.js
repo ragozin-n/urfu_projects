@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {FlatList} from 'react-native';
+import {FlatList, View, Image} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import {
 	Container,
@@ -8,7 +8,8 @@ import {
 	TabHeading,
 	Fab,
 	Icon,
-	Button
+	Button,
+	Text
 } from 'native-base';
 // eslint-disable-next-line import/named
 import {LinearGradient} from 'expo';
@@ -83,12 +84,20 @@ class ProjectsList extends Component {
 									<TabIcon name="md-list" position={0} activeTab={this.state.activeTab}/>
 								</TabHeading>}
 						>
-							<FlatList
-								style={{flex: 1}}
-								data={this.props.projects}
-								renderItem={({item}) => this.renderRow(item)}
-								keyExtractor={item => item.uid}
-							/>
+							{
+								this.props.projects.length > 0 ?
+									<FlatList
+										style={{flex: 1}}
+										data={this.props.projects}
+										renderItem={({item}) => this.renderRow(item)}
+										keyExtractor={item => item.uid}
+									/> :
+									<Image
+										style={{position: 'absolute', top: -255, left: -100}}
+										source={require('../../../images/empty.png')}
+										resizeMode="center"
+									/>
+							}
 							{/* Кураторская кнопка */}
 							{isCurator &&
 								<Fab

@@ -54,8 +54,5 @@ export default StyleSheet.create({
 	},
 	animatedViewStyle: {
 		flex: 1
-	},
-	spinnerStyle: {
-		marginTop: 20
 	}
 });

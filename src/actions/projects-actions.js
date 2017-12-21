@@ -13,54 +13,97 @@ import {
 } from './types';
 
 // Событие создания проекта куратором
-export const projectCreate = ({name, description, photoBase64, keywords}) => {
-	return dispatch => {
+export const projectCreate = ({name, description, photoBase64, keywords}) => dispatch => {
+	if (!name) {
+		dispatch({type: ERROR_TOAST, payload: new Error('Trying to create project with empty name')});
+		return;
+	}
+	if (!description) {
+		dispatch({type: ERROR_TOAST, payload: new Error('Trying to create project with empty description')});
+		return;
+	}
+	if (!photoBase64) {
+		dispatch({type: ERROR_TOAST, payload: new Error('Trying to create project with blank photo')});
+		return;
+	}
+	if (!keywords) {
+		dispatch({type: ERROR_TOAST, payload: new Error('Trying to create project with empty keywords array')});
+		return;
+	}
+
+	const currentEventKey = firebase.database().ref(`/events`).push().key;
+	const currentEventRef = firebase.database().ref(`/events/${currentEventKey}`);
+	const {uid} = firebase.auth().currentUser;
+	//const currentVacanciesRef = firebase.database().ref(`/events/${currentEventKey}/vacancies`);
+
+	currentEventRef.set(
+		{
+			name,
+			description,
+			photoBase64,
+			keywords,
+			createdBy: uid
+		}
+	);
+
+	// vacancies.forEach(element => {
+	// 	currentVacanciesRef.push(
+	// 		{
+	// 			name: element.name,
+	// 			description: element.description,
+	// 			skills: element.skills
+	// 		}
+	// 	);
+	// });
+
+	dispatch({type: PROJECT_CREATE});
+	dispatch({type: SUCCESS_TOAST, payload: `Проект "${name}" успешно создан!`});
+	Actions.main();
+};
+
+export const projectUpdate = ({project, name, description, photoBase64, keywords, vacancy}) => dispatch => {
+	const currentEventRef = firebase.database().ref(`/events/${project.uid}`);
+	const {uid} = firebase.auth().currentUser;
+	const currentVacanciesRef = firebase.database().ref(`/events/${project.uid}/vacancies`);
+
+	currentEventRef.update(
+		{
+			name: name || project.name,
+			description: description || project.description,
+			photoBase64: photoBase64 || project.photoBase64,
+			keywords: keywords || project.keywords,
+			createdBy: uid
+		}
+	);
+
+	dispatch({type: SUCCESS_TOAST, payload: `Проект "${name}" успешно обновлен!`});
+
+	if (!_.isEmpty(vacancy)) {
+		const {name, description, skills} = vacancy;
+
 		if (!name) {
-			dispatch({type: ERROR_TOAST, payload: new Error('Trying to create project with emply name')});
+			dispatch({type: ERROR_TOAST, payload: new Error('Trying to create vacancy with empty name')});
 			return;
 		}
 		if (!description) {
-			dispatch({type: ERROR_TOAST, payload: new Error('Trying to create project with emply description')});
+			dispatch({type: ERROR_TOAST, payload: new Error('Trying to create vacancy with empty description')});
 			return;
 		}
-		if (!photoBase64) {
-			dispatch({type: ERROR_TOAST, payload: new Error('Trying to create project with blank photo')});
+		if (!skills) {
+			dispatch({type: ERROR_TOAST, payload: new Error('Trying to create vacancy with empty keywords array')});
 			return;
 		}
-		if (!keywords) {
-			dispatch({type: ERROR_TOAST, payload: new Error('Trying to create project with emply keywords array')});
-			return;
-		}
-
-		const currentEventKey = firebase.database().ref(`/events`).push().key;
-		const currentEventRef = firebase.database().ref(`/events/${currentEventKey}`);
-		const {uid} = firebase.auth().currentUser;
-		//const currentVacanciesRef = firebase.database().ref(`/events/${currentEventKey}/vacancies`);
-
-		currentEventRef.set(
+		currentVacanciesRef.push(
 			{
 				name,
 				description,
-				photoBase64,
-				keywords,
-				createdBy: uid
+				skills
+
 			}
 		);
 
-		// vacancies.forEach(element => {
-		// 	currentVacanciesRef.push(
-		// 		{
-		// 			name: element.name,
-		// 			description: element.description,
-		// 			skills: element.skills
-		// 		}
-		// 	);
-		// });
-
-		dispatch({type: PROJECT_CREATE});
-		dispatch({type: SUCCESS_TOAST, payload: `Проект "${name}" успешно создан!`});
-		Actions.main();
-	};
+		dispatch({type: SUCCESS_TOAST, payload: `Вакансия "${name}" успешно создана!`});
+	}
 };
 
 // Событие оставления заявки студента на вакансию в проекте

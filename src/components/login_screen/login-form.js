@@ -55,10 +55,17 @@ class LoginForm extends Component {
 
 	renderButton = () => {
 		const {loading} = this.props;
-		const {spinnerStyle, loginButtonStyle, loginButtonTextStyle} = styles;
+		const {loginButtonStyle, loginButtonTextStyle} = styles;
 
 		if (loading) {
-			return <Spinner style={spinnerStyle} color={SPINNER_COLOR}/>;
+			return (
+				<Button
+					full
+					transparent
+					style={loginButtonStyle}
+				>
+					<Spinner color={SPINNER_COLOR}/>
+				</Button>);
 		}
 
 		return (
