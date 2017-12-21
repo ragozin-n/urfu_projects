@@ -38,7 +38,7 @@ class ProjectCreateForm extends Component {
 	handleSaveButton = () => {
 		const {projectCreate} = this.props;
 		const {name, description, photoBase64, keywords} = this.state;
-
+		Actions.main();
 		projectCreate({name, description, photoBase64, keywords});
 	}
 

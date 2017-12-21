@@ -42,8 +42,7 @@ class ProjectEditForm extends Component {
 	}
 
 	handleCloseButton = () => {
-		const {project, isCurator, uid} = this.props;
-		Actions.projectInfo({currentProject: project, isCurator, uid});
+		Actions.main();
 	}
 
 	handleSaveButton = () => {
@@ -106,7 +105,7 @@ class ProjectEditForm extends Component {
 					<TouchableOpacity activeOpacity={0.5} onPress={this.handleImageSelect}>
 						{
 							<Image
-								style={{height: 250}}
+								style={{height: 200}}
 								resizeMode="cover"
 								source={{uri: this.state.photoBase64 || photoBase64}}
 							/>

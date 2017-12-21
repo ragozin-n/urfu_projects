@@ -58,7 +58,6 @@ export const projectCreate = ({name, description, photoBase64, keywords}) => dis
 
 	dispatch({type: PROJECT_CREATE});
 	dispatch({type: SUCCESS_TOAST, payload: `Проект "${name}" успешно создан!`});
-	Actions.main();
 };
 
 export const projectUpdate = ({project, name, description, photoBase64, keywords, vacancy}) => dispatch => {
