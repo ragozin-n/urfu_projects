@@ -8,7 +8,8 @@ import {
 	APPLY_TO_PROJECT_SUCCESS,
 	CURATOR_PROJECT_FETCH,
 	USER_HIRED,
-	ERROR_TOAST
+	ERROR_TOAST,
+	SUCCESS_TOAST
 } from './types';
 
 // Событие создания проекта куратором
@@ -57,6 +58,7 @@ export const projectCreate = ({name, description, photoBase64, keywords}) => {
 		// });
 
 		dispatch({type: PROJECT_CREATE});
+		dispatch({type: SUCCESS_TOAST, payload: `Проект "${name}" успешно создан!`});
 		Actions.main();
 	};
 };
@@ -89,6 +91,7 @@ export const applyToProject = ({projectUid, vacancyUid}) => {
 				);
 
 				dispatch({type: APPLY_TO_PROJECT_SUCCESS});
+				dispatch({type: SUCCESS_TOAST, payload: `Заявка успешно отправлена куратору!`});
 			},
 				err => dispatch({type: ERROR_TOAST, payload: err})
 			);
@@ -120,6 +123,7 @@ export const hireStudentToProject = ({projectUid, vacancyUid, studentUid}) => {
 					});
 				vacancy.child('candidates').remove();
 				dispatch({type: USER_HIRED});
+				dispatch({type: SUCCESS_TOAST, payload: `Студент принят в проект! Успешной работы!`});
 			}, err => dispatch({type: ERROR_TOAST, payload: err}));
 	};
 };
