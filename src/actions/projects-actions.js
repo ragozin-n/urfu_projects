@@ -8,26 +8,26 @@ import {
 	APPLY_TO_PROJECT_SUCCESS,
 	CURATOR_PROJECT_FETCH,
 	USER_HIRED,
-	ERROR
+	ERROR_TOAST
 } from './types';
 
 // Событие создания проекта куратором
 export const projectCreate = ({name, description, photoBase64, keywords}) => {
 	return dispatch => {
 		if (!name) {
-			dispatch({type: ERROR, payload: new Error('Trying to create project with emply name')});
+			dispatch({type: ERROR_TOAST, payload: new Error('Trying to create project with emply name')});
 			return;
 		}
 		if (!description) {
-			dispatch({type: ERROR, payload: new Error('Trying to create project with emply description')});
+			dispatch({type: ERROR_TOAST, payload: new Error('Trying to create project with emply description')});
 			return;
 		}
 		if (!photoBase64) {
-			dispatch({type: ERROR, payload: new Error('Trying to create project with blank photo')});
+			dispatch({type: ERROR_TOAST, payload: new Error('Trying to create project with blank photo')});
 			return;
 		}
 		if (!keywords) {
-			dispatch({type: ERROR, payload: new Error('Trying to create project with emply keywords array')});
+			dispatch({type: ERROR_TOAST, payload: new Error('Trying to create project with emply keywords array')});
 			return;
 		}
 
@@ -90,7 +90,7 @@ export const applyToProject = ({projectUid, vacancyUid}) => {
 
 				dispatch({type: APPLY_TO_PROJECT_SUCCESS});
 			},
-				err => dispatch({type: ERROR, payload: err})
+				err => dispatch({type: ERROR_TOAST, payload: err})
 			);
 	};
 };
@@ -120,7 +120,7 @@ export const hireStudentToProject = ({projectUid, vacancyUid, studentUid}) => {
 					});
 				vacancy.child('candidates').remove();
 				dispatch({type: USER_HIRED});
-			}, err => dispatch({type: ERROR, payload: err}));
+			}, err => dispatch({type: ERROR_TOAST, payload: err}));
 	};
 };
 
@@ -188,7 +188,7 @@ export const getCandidates = ({uid, isCurator, currentProject}) => {
 			dispatch({type: CURATOR_PROJECT_FETCH, payload: result});
 			Actions.appliesForm({applies: result, currentProject, uid});
 		} catch (err) {
-			dispatch({type: ERROR, payload: err});
+			dispatch({type: ERROR_TOAST, payload: err});
 		}
 	};
 };

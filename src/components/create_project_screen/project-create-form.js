@@ -32,8 +32,7 @@ class ProjectCreateForm extends Component {
 	}
 
 	handleCloseButton = () => {
-		console.log('close');
-		//Actions.main();
+		Actions.main();
 	}
 
 	handleSaveButton = () => {
@@ -43,7 +42,7 @@ class ProjectCreateForm extends Component {
 		projectCreate({name, description, photoBase64, keywords});
 	}
 
-	_pickImage = async () => {
+	handleImageSelect = async () => {
 		const result = await ImagePicker.launchImageLibraryAsync({
 			allowsEditing: true,
 			aspect: [4, 3],
@@ -53,7 +52,6 @@ class ProjectCreateForm extends Component {
 		});
 
 		if (!result.cancelled) {
-			console.log(result);
 			this.setState({photoBase64: `data:image/jpeg;base64,${result.base64}`});
 		}
 	};
@@ -81,7 +79,7 @@ class ProjectCreateForm extends Component {
 							</Button>
 						</Right>
 					</Header>
-					<TouchableOpacity activeOpacity={0.5} onPress={this._pickImage}>
+					<TouchableOpacity activeOpacity={0.5} onPress={this.handleImageSelect}>
 						{
 							this.state.photoBase64 ?
 								<Image

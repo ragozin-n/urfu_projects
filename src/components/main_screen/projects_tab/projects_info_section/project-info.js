@@ -46,11 +46,11 @@ class ProjectInfo extends Component {
 			});
 			const sound = new Audio.Sound();
 			if (this.state.isMembersVisible) {
-				await sound.loadAsync(require('../../../../sounds/sha.mp3'));
+				await sound.loadAsync(require('../../../../sounds/list-close.mp3'));
 			} else {
-				await sound.loadAsync(require('../../../../sounds/ta.mp3'));
+				await sound.loadAsync(require('../../../../sounds/list-open.mp3'));
 			}
-			await sound.setVolumeAsync(0.5);
+			await sound.setVolumeAsync(0.8);
 			await sound.playAsync();
 		} catch (err) {
 			console.log(err);

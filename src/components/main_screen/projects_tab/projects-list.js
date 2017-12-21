@@ -89,6 +89,17 @@ class ProjectsList extends Component {
 								renderItem={({item}) => this.renderRow(item)}
 								keyExtractor={item => item.uid}
 							/>
+							{/* Кураторская кнопка */}
+							{isCurator &&
+								<Fab
+									containerStyle={{flex: 1}}
+									style={{backgroundColor: 'red'}}
+									position="bottomRight"
+									onPress={this.handleCuratorFab}
+								>
+									<Icon name="md-add"/>
+								</Fab>
+							}
 						</Tab>
 						<Tab
 							heading={
@@ -108,17 +119,6 @@ class ProjectsList extends Component {
 						</Tab>
 					</Tabs>
 				</LinearGradient>
-				{/* Кураторская кнопка */}
-				{isCurator &&
-					<Fab
-						containerStyle={{flex: 1}}
-						style={{backgroundColor: 'red'}}
-						position="bottomRight"
-						onPress={this.handleCuratorFab}
-					>
-						<Icon name="md-add"/>
-					</Fab>
-				}
 			</Container>
 		);
 	}

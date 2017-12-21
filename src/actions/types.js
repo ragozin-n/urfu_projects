@@ -27,4 +27,5 @@ export const USER_ACHIEVEMENTS_UPDATE = 'user_achievement_update';
 export const USER_HISTORY_UPDATE = 'user_history_update';
 export const USER_HIRED = 'user_hired';
 
-export const ERROR = 'error';
+export const ERROR_TOAST = 'error_toast';
+export const SUCCESS_TOAST = 'success_toast';

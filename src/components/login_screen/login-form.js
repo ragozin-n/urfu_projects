@@ -87,9 +87,8 @@ class LoginForm extends Component {
 				interruptionModeAndroid: Audio.INTERRUPTION_MODE_IOS_DUCK_OTHERS
 			});
 			const sound = new Audio.Sound();
-			await sound.loadAsync(require('../../sounds/background-music.mp3'));
-			await sound.setIsLoopingAsync(true);
-			await sound.setVolumeAsync(0.25);
+			await sound.loadAsync(require('../../sounds/login.mp3'));
+			await sound.setVolumeAsync(0.8);
 			await sound.playAsync();
 		} catch (err) {
 			console.log(err);
