@@ -50,6 +50,7 @@ class ProjectEditForm extends Component {
 		const {project} = this.props;
 		const {name, description, photoBase64, keywords} = this.state;
 
+		Actions.main();
 		projectUpdate(
 			{
 				project,

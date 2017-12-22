@@ -28,7 +28,7 @@ class MemberListItem extends Component {
 	}
 
 	render() {
-		const {photoBase64, name} = this.state.user;
+		const {photoBase64, name, phoneNumber} = this.state.user;
 
 		return (
 			<ListItem noBorder avatar>
@@ -45,7 +45,7 @@ class MemberListItem extends Component {
 				</Left>
 				<Body style={{borderBottomWidth: 0}}>
 					<Text>{name}</Text>
-					<Text note>Тут телефон?</Text>
+					<Text note>{phoneNumber}</Text>
 				</Body>
 				<Right style={{borderBottomWidth: 0}}/>
 			</ListItem>

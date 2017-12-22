@@ -92,11 +92,13 @@ export const projectUpdate = ({project, name, description, photoBase64, keywords
 			dispatch({type: ERROR_TOAST, payload: new Error('Trying to create vacancy with empty keywords array')});
 			return;
 		}
+		// By default employedBy must be empty string, but Firebase doesn't allow to do it
 		currentVacanciesRef.push(
 			{
 				name,
 				description,
-				skills
+				skills,
+				employedBy: ''
 
 			}
 		);
