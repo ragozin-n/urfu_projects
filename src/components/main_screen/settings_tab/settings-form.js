@@ -1,107 +1,43 @@
 import React, {Component} from 'react';
-import {View} from 'react-native';
-import {connect} from 'react-redux';
+import {Linking, TouchableOpacity} from 'react-native';
+import {WebBrowser} from 'expo';
 import {
-	Text,
 	Container,
-	Content
+	Content,
+	H3,
+	H1
 } from 'native-base';
-import {Actions} from 'react-native-router-flux';
-import faker from 'faker';
-import {
-	_updateUserBio,
-	updateUserBio,
-	updateUserAchievements,
-	updateUserHistory,
-	projectCreate,
-	getCandidates
-} from '../../../actions';
 
 class SettingsForm extends Component {
-	componentDidMount() {
-		faker.locale = 'ru';
+	handleGoToRepo = () => {
+		WebBrowser.openBrowserAsync('https://github.com/ragozin-n/urfu_projects');
 	}
 
-	handleBackButton = () => {
-		Actions.main();
+	handleGoToExpo = () => {
+		WebBrowser.openBrowserAsync('https://expo.io/@ragozin-n/urfu_projects');
 	}
 
-	handleGenerateUser = ({isCurator, name, photoBase64}) => {
-		const {_updateUserBio} = this.props;
-
-		_updateUserBio({
-			name,
-			photoBase64,
-			isCurator
-		});
-	}
-
-	handleGenerateSkill = () => {
-		//
-	}
-
-	handleGenerateAchievement = () => {
-		const randomAchievementName = faker.lorem.words(2);
-		const randomImage = faker.image.dataUri(200, 200);
-		const {updateUserAchievements} = this.props;
-
-		updateUserAchievements({
-			name: randomAchievementName,
-			photoBase64: randomImage
-		});
-	}
-
-	handleGenerateHistory = () => {
-		console.log('Not implemented yet');
-	}
-
-	handleGenerateEvent = () => {
-		const randomEventName = '';
-		const randomDescription = '';
-		const randomImage = faker.image.dataUri(200, 200);
-		const maxMembers = faker.random.number(20);
-		const keywords = '';
-		const vacancies = [];
-
-		this.props.projectCreate({
-			name: randomEventName,
-			description: randomDescription,
-			photoBase64: randomImage,
-			maxMembers,
-			keywords,
-			vacancies
-		});
+	handleSendEmail = () => {
+		Linking.openURL('mailto:somethingemail@gmail.com?subject=abcdefg&body=body');
 	}
 
 	render() {
-		const {isCurator} = this.props.user;
-
 		return (
 			<Container>
-				<Content>
-					{isCurator &&
-						<View>
-							<Text>Тут ничего нет.</Text>
-						</View>
-					}
+				<Content style={{paddingHorizontal: 30, paddingTop: 150}}>
+					<H1>Урфу.Проекты</H1>
+					<TouchableOpacity activeOpacity={0.5} onPress={this.handleGoToRepo}>
+						<H3>- Репозиторий</H3>
+					</TouchableOpacity>
+					<TouchableOpacity activeOpacity={0.5} onPress={this.handleGoToExpo}>
+						<H3>- Expo</H3>
+					</TouchableOpacity>
+					<TouchableOpacity activeOpacity={0.5} onPress={this.handleSendEmail}>
+						<H3>- Email</H3>
+					</TouchableOpacity>
 				</Content>
 			</Container>
 		);
 	}
 }
-
-const mapStateToProps = ({auth, projects}) => {
-	const {user, _token} = auth;
-	const {_curatorProjects} = projects;
-
-	return {user, _token, _curatorProjects};
-};
-
-export default connect(mapStateToProps, {
-	_updateUserBio,
-	updateUserBio,
-	updateUserAchievements,
-	updateUserHistory,
-	projectCreate,
-	getCandidates
-})(SettingsForm);
+export default SettingsForm;

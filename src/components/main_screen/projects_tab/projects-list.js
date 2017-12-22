@@ -19,7 +19,7 @@ import SearchHeader from '../../common/SearchHeader/search-header';
 import TabIcon from '../../common/TabIcon/tab-icon';
 import {PROJECTS_LIST_GRADIENT_COLORS} from '../../styles';
 import ProfileForm from '../profile_tab/profile-form';
-// import ProjectCreateForm from '../settings_tab/project-create-form';
+import SettingsForm from '../settings_tab/settings-form';
 import ProjectListItem from './project-list-item';
 import styles from './styles';
 
@@ -124,7 +124,7 @@ class ProjectsList extends Component {
 									<TabIcon name="md-settings" position={2} activeTab={this.state.activeTab}/>
 								</TabHeading>}
 						>
-							{/* <ProjectCreateForm/> */}
+							<SettingsForm/>
 						</Tab>
 					</Tabs>
 				</LinearGradient>
