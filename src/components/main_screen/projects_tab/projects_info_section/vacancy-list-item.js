@@ -28,7 +28,7 @@ class VacancyListItem extends Component {
 	handleVacancyPress = ({description, skills, projectUid, vacancyUid}) => {
 		Alert.alert(
 			`${description}`,
-			`SKILLS:${skills}\n\nApply for this vacancy?`,
+			`Skills: ${skills}\n\nApply for this vacancy?`,
 			[
 				{text: 'Apply', onPress: () => this.handleApplyAction({projectUid, vacancyUid})},
 				{text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'}
@@ -37,8 +37,35 @@ class VacancyListItem extends Component {
 		);
 	}
 
+	showVacancyInfo = ({description, skills}) => {
+		Alert.alert(
+			`${description}`,
+			`Skills: ${skills}\n\n`,
+			[
+				{text: 'ОК', onPress: () => console.log('Cancel Pressed'), style: 'cancel'}
+			],
+			{cancelable: false}
+		);
+	}
+
 	render() {
-		const {description, skills, name, projectUid, vacancyUid} = this.props;
+		const {description, skills, name, projectUid, vacancyUid, isCurator} = this.props;
+
+		if (isCurator) {
+			return (
+				<ListItem noBorder avatar onPress={() => this.showVacancyInfo({description, skills})}>
+					<Left>
+						<Thumbnail
+							small
+							source={require('../../../../images/circle.png')}
+						/>
+					</Left>
+					<Body style={{borderBottomWidth: 0}}>
+						<Text style={{color: '#D34537'}}>{name}</Text>
+					</Body>
+					<Right style={{borderBottomWidth: 0}}/>
+				</ListItem>);
+		}
 
 		return (
 			<ListItem noBorder avatar onPress={() => this.handleVacancyPress({description, skills, projectUid, vacancyUid})}>
@@ -58,4 +85,10 @@ class VacancyListItem extends Component {
 	}
 }
 
-export default connect(null, {applyToProject})(VacancyListItem);
+const mapStateToProps = ({auth}) => {
+	const {isCurator} = auth.user;
+
+	return {isCurator};
+};
+
+export default connect(mapStateToProps, {applyToProject})(VacancyListItem);
