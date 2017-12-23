@@ -55,14 +55,14 @@ class LoginForm extends Component {
 
 	renderButton = () => {
 		const {loading} = this.props;
-		const {loginButtonStyle, loginButtonTextStyle} = styles;
+		const {loginButtonStyle, loginButtonTextStyle, loginButtonSpinnerStyle} = styles;
 
 		if (loading) {
 			return (
 				<Button
 					full
 					transparent
-					style={loginButtonStyle}
+					style={loginButtonSpinnerStyle}
 				>
 					<Spinner color={SPINNER_COLOR}/>
 				</Button>);
@@ -95,7 +95,7 @@ class LoginForm extends Component {
 			});
 			const sound = new Audio.Sound();
 			await sound.loadAsync(require('../../sounds/login.mp3'));
-			await sound.setVolumeAsync(0.8);
+			await sound.setVolumeAsync(0.5);
 			await sound.playAsync();
 		} catch (err) {
 			console.log(err);

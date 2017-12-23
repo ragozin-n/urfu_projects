@@ -210,8 +210,7 @@ export const projectsFilter = (searchString, arr) => {
 	const filteredProjects = fastFilter(arr,
 		project =>
 			project.keywords.toLowerCase().includes(searchString.toLowerCase()) ||
-			project.name.toLowerCase().includes(searchString.toLowerCase()) ||
-			project.keywords.includes(searchString.toLowerCase())
+			project.name.toLowerCase().includes(searchString.toLowerCase())
 	);
 
 	return {

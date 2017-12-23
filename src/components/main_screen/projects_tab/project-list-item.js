@@ -12,7 +12,7 @@ import {
 } from 'native-base';
 import _ from 'lodash';
 import Counter from '../../common/Counter/counter';
-import {THUMBNAIL_BORDER_COLOR} from '../../styles';
+import {THUMBNAIL_BORDER_COLOR, PROJECTS_LIST_ITEM_BACKGROUND_COLOR} from '../../styles';
 import styles from './styles';
 
 class ProjectListItem extends Component {
@@ -39,7 +39,8 @@ class ProjectListItem extends Component {
 	}
 
 	render() {
-		const {name, description, photoBase64} = this.props.project;
+		const {name, description, photoBase64, createdBy} = this.props.project;
+		const {uid} = this.props;
 		const vacancies = _.map(this.props.project.vacancies, (value, key) => ({key, value}));
 		const {projectListItem} = styles;
 
@@ -47,7 +48,7 @@ class ProjectListItem extends Component {
 			<Animated.View
 				style={{opacity: this.state.opacityAnimation}}
 			>
-				<ListItem noBorder avatar style={projectListItem} onPress={this.handleRowPress}>
+				<ListItem noBorder avatar style={[projectListItem, {backgroundColor: createdBy === uid ? '#f5f0ec' : PROJECTS_LIST_ITEM_BACKGROUND_COLOR}]} onPress={this.handleRowPress}>
 					<Left>
 						<Thumbnail
 							source={{uri: photoBase64}}
@@ -61,6 +62,10 @@ class ProjectListItem extends Component {
 					<Body style={{borderBottomWidth: 0}}>
 						<Text>{name}</Text>
 						<Text note>{description}</Text>
+						{
+							createdBy === uid &&
+							<Text note style={{color: 'red'}}>{`Ваш проект`}</Text>
+						}
 					</Body>
 					<Right style={{borderBottomWidth: 0}}>
 						<Button small transparent>

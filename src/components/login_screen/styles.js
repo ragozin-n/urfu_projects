@@ -54,5 +54,10 @@ export default StyleSheet.create({
 	},
 	animatedViewStyle: {
 		flex: 1
+	},
+	loginButtonSpinnerStyle: {
+		marginTop: 100,
+		backgroundColor: 'transparent',
+		borderRadius: (Platform.OS === 'ios') ? 6 : 0
 	}
 });
