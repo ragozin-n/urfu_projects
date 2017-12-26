@@ -17,7 +17,9 @@ import styles from './styles';
 
 class ProjectListItem extends Component {
 	state = {
-		opacityAnimation: new Animated.Value(0)
+		opacityAnimation: new Animated.Value(0),
+		isCandidate: false,
+		isCurator: false
 	}
 
 	handleRowPress = () => {
@@ -27,6 +29,8 @@ class ProjectListItem extends Component {
 	}
 
 	componentDidMount() {
+		this.isCurator();
+		this.isCandidate();
 		Animated.timing(
 			this.state.opacityAnimation,
 			{
@@ -38,17 +42,42 @@ class ProjectListItem extends Component {
 		).start();
 	}
 
+	isCandidate = () => {
+		const {uid} = this.props;
+		const vacancies = _.map(this.props.project.vacancies, (value, key) => ({key, value}));
+		vacancies.forEach(vacancy => {
+			if (uid === vacancy.value.employedBy) {
+				this.setState({isAlreadyInProject: true});
+			}
+			const candidates = _.map(vacancy.value.candidates, (value, key) => ({key, value}));
+			candidates.forEach(candidate => {
+				if (uid === candidate.key) {
+					this.setState({isCandidate: true});
+				}
+			});
+		});
+	}
+
+	isCurator = () => {
+		const {uid} = this.props;
+		const {createdBy} = this.props.project;
+		if (uid === createdBy) {
+			this.setState({isCurator: true});
+		}
+	}
+
 	render() {
 		const {name, description, photoBase64, createdBy} = this.props.project;
 		const {uid} = this.props;
 		const vacancies = _.map(this.props.project.vacancies, (value, key) => ({key, value}));
 		const {projectListItem} = styles;
+		const {isCurator, isCandidate, isAlreadyInProject} = this.state;
 
 		return (
 			<Animated.View
 				style={{opacity: this.state.opacityAnimation}}
 			>
-				<ListItem noBorder avatar style={[projectListItem, {backgroundColor: createdBy === uid ? '#f5f0ec' : PROJECTS_LIST_ITEM_BACKGROUND_COLOR}]} onPress={this.handleRowPress}>
+				<ListItem noBorder avatar style={[projectListItem, {backgroundColor: isCurator || isCandidate || isAlreadyInProject ? '#f5f0ec' : PROJECTS_LIST_ITEM_BACKGROUND_COLOR}]} onPress={this.handleRowPress}>
 					<Left>
 						<Thumbnail
 							source={{uri: photoBase64}}
@@ -63,8 +92,8 @@ class ProjectListItem extends Component {
 						<Text>{name}</Text>
 						<Text note>{description}</Text>
 						{
-							createdBy === uid &&
-							<Text note style={{color: 'red'}}>{`Ваш проект`}</Text>
+							(isCurator || isAlreadyInProject) &&
+							<Text note style={{color: 'red'}}>Ваш проект</Text>
 						}
 					</Body>
 					<Right style={{borderBottomWidth: 0}}>
