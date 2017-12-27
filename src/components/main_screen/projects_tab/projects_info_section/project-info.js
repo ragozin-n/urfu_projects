@@ -26,6 +26,7 @@ import Counter from '../../../common/Counter/counter';
 import Divider from '../../../common/Divider/divider';
 import VacancyListItem from './vacancy-list-item';
 import MemberListItem from './member-list-item';
+import styles from './styles';
 
 class ProjectInfo extends Component {
 	state = {
@@ -116,9 +117,20 @@ class ProjectInfo extends Component {
 	render() {
 		const {name, description, photoBase64, keywords, uid} = this.props.currentProject;
 		const vacancies = _.map(this.props.currentProject.vacancies, (value, key) => ({key, value}));
+		const {
+			headerStyle,
+			headerBackIcon,
+			contentStyle,
+			projectInfoNameView,
+			projectInfoFabButton,
+			projectInfoCounterContainer,
+			projectInfoDropDownIcon,
+			projectInfoVacanciesList,
+			projectInfpDescription
+		} = styles;
 
 		return (
-			<Container style={{flex: 1}}>
+			<Container>
 				<Image
 					resizeMode="cover"
 					source={{uri: photoBase64}}
@@ -128,10 +140,10 @@ class ProjectInfo extends Component {
 						start={[0, 0]}
 						end={[0, 1]}
 					>
-						<Header noShadow style={{marginTop: (Platform.OS === 'android') ? 15 : 0, backgroundColor: 'transparent', marginBottom: 100, elevation: 0, shadowOpacity: 0, shadowColor: 'transparent', borderBottomWidth: 0}}>
+						<Header noShadow style={[headerStyle, {marginTop: (Platform.OS === 'android') ? 15 : 0}]}>
 							<Left>
 								<Button small transparent onPress={() => Actions.main()}>
-									<Icon style={{color: 'white'}} name="arrow-back"/>
+									<Icon style={headerBackIcon} name="arrow-back"/>
 								</Button>
 							</Left>
 							<Body/>
@@ -139,32 +151,32 @@ class ProjectInfo extends Component {
 						</Header>
 					</LinearGradient>
 				</Image>
-				<Content style={{backgroundColor: 'white', borderTopColor: 'red', borderTopWidth: 2}}>
-					<View style={{flex: 1, flexDirection: 'row', alignSelf: 'flex-start', padding: 15}}>
+				<Content style={contentStyle}>
+					<View style={projectInfoNameView}>
 						<H2>{name}</H2>
 					</View>
 					<Divider/>
-					<Button style={{marginTop: 5, marginBottom: 5}} small full transparent onPress={this.handleDropDown}>
-						<View style={{flex: 1, flexDirection: 'row', alignContent: 'space-between'}}>
-							<View style={{flex: 1, flexDirection: 'row', alignSelf: 'baseline'}}>
+					<Button style={projectInfoFabButton} small full transparent onPress={this.handleDropDown}>
+						<View style={projectInfoCounterContainer}>
+							<View style={projectInfoCounterView}>
 								<Counter
 									many={vacancies.filter(vacancy => vacancy.value.employedBy !== '').length}
 									of={vacancies.length}
 								/>
 							</View>
-							<Icon style={{fontSize: 21, color: 'black'}} name={this.state.isMembersVisible ? 'md-arrow-dropup' : 'md-arrow-dropdown'}/>
+							<Icon style={projectInfoDropDownIcon} name={this.state.isMembersVisible ? 'md-arrow-dropup' : 'md-arrow-dropdown'}/>
 						</View>
 					</Button>
 					{this.state.isMembersVisible &&
 						<FlatList
-							style={{flex: 1}}
+							style={projectInfoVacanciesList}
 							data={vacancies}
 							renderItem={({item}) => this.renderVacancy(item, uid)}
 							keyExtractor={item => item.key}
 						/>
 					}
 					<Divider/>
-					<View style={{padding: 15}}>
+					<View style={projectInfpDescription}>
 						<Text>{description}</Text>
 					</View>
 					<View style={{flex: 1, flexDirection: 'row', margin: 15, alignItems: 'center'}}>

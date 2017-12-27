@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Linking, TouchableOpacity} from 'react-native';
+// eslint-disable-next-line import/named
 import {WebBrowser} from 'expo';
 import {
 	Container,
@@ -7,6 +8,7 @@ import {
 	H3,
 	H1
 } from 'native-base';
+import styles from './styles';
 
 class SettingsForm extends Component {
 	handleGoToRepo = () => {
@@ -22,9 +24,11 @@ class SettingsForm extends Component {
 	}
 
 	render() {
+		const {contentStyle} = styles;
+
 		return (
 			<Container>
-				<Content style={{paddingHorizontal: 30, paddingTop: 150}}>
+				<Content style={contentStyle}>
 					<H1>Урфу.Проекты</H1>
 					<TouchableOpacity activeOpacity={0.5} onPress={this.handleGoToRepo}>
 						<H3>- Репозиторий</H3>

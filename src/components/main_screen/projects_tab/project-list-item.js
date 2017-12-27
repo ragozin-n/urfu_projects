@@ -12,7 +12,7 @@ import {
 } from 'native-base';
 import _ from 'lodash';
 import Counter from '../../common/Counter/counter';
-import {THUMBNAIL_BORDER_COLOR, PROJECTS_LIST_ITEM_BACKGROUND_COLOR} from '../../styles';
+import {PROJECTS_LIST_ITEM_BACKGROUND_COLOR} from '../../styles';
 import styles from './styles';
 
 class ProjectListItem extends Component {
@@ -31,6 +31,7 @@ class ProjectListItem extends Component {
 	componentDidMount() {
 		this.isCurator();
 		this.isCandidate();
+
 		Animated.timing(
 			this.state.opacityAnimation,
 			{
@@ -45,11 +46,13 @@ class ProjectListItem extends Component {
 	isCandidate = () => {
 		const {uid} = this.props;
 		const vacancies = _.map(this.props.project.vacancies, (value, key) => ({key, value}));
+
 		vacancies.forEach(vacancy => {
 			if (uid === vacancy.value.employedBy) {
 				this.setState({isAlreadyInProject: true});
 			}
 			const candidates = _.map(vacancy.value.candidates, (value, key) => ({key, value}));
+
 			candidates.forEach(candidate => {
 				if (uid === candidate.key) {
 					this.setState({isCandidate: true});
@@ -61,16 +64,21 @@ class ProjectListItem extends Component {
 	isCurator = () => {
 		const {uid} = this.props;
 		const {createdBy} = this.props.project;
+
 		if (uid === createdBy) {
 			this.setState({isCurator: true});
 		}
 	}
 
 	render() {
-		const {name, description, photoBase64, createdBy} = this.props.project;
-		const {uid} = this.props;
+		const {name, description, photoBase64} = this.props.project;
 		const vacancies = _.map(this.props.project.vacancies, (value, key) => ({key, value}));
-		const {projectListItem} = styles;
+		const {
+			projectListItem,
+			listItemImageStyle,
+			listItemBorderFix,
+			listItemAnnotationTextStyle
+		} = styles;
 		const {isCurator, isCandidate, isAlreadyInProject} = this.state;
 
 		return (
@@ -81,22 +89,18 @@ class ProjectListItem extends Component {
 					<Left>
 						<Thumbnail
 							source={{uri: photoBase64}}
-							style={{
-								borderColor: THUMBNAIL_BORDER_COLOR,
-								borderWidth: 2,
-								overlayColor: 'white'
-							}}
+							style={listItemImageStyle}
 						/>
 					</Left>
-					<Body style={{borderBottomWidth: 0}}>
+					<Body style={listItemBorderFix}>
 						<Text>{name}</Text>
 						<Text note>{description}</Text>
 						{
 							(isCurator || isAlreadyInProject) &&
-							<Text note style={{color: 'red'}}>Ваш проект</Text>
+							<Text note style={listItemAnnotationTextStyle}>Ваш проект</Text>
 						}
 					</Body>
-					<Right style={{borderBottomWidth: 0}}>
+					<Right style={listItemBorderFix}>
 						<Button small transparent>
 							<Counter
 								light

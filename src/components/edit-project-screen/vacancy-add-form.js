@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Item, Icon, Input, Button, Text} from 'native-base';
-import {projectUpdate} from '../../actions';
 import {View} from 'react-native';
+import {projectUpdate} from '../../actions';
 
 class VacancyAddForm extends Component {
 	state = {
@@ -14,6 +14,7 @@ class VacancyAddForm extends Component {
 	handleSaveVacancy = () => {
 		const {name, description, skills} = this.state;
 		const {project} = this.props;
+
 		this.props.projectUpdate({
 			project,
 			vacancy: {
@@ -26,9 +27,13 @@ class VacancyAddForm extends Component {
 	}
 
 	render() {
+		const {
+			itemStyle,
+			addVacancyButtonStyle
+		} = styles;
 		return (
 			<View>
-				<Item style={{borderColor: 'transparent', paddingHorizontal: 15}}>
+				<Item style={itemStyle}>
 					<Icon active name="md-document"/>
 					<Input
 						value={this.state.name}
@@ -37,7 +42,7 @@ class VacancyAddForm extends Component {
 						placeholderTextColor="grey"
 					/>
 				</Item>
-				<Item style={{borderColor: 'transparent', paddingHorizontal: 15}}>
+				<Item style={itemStyle}>
 					<Icon active name="md-list"/>
 					<Input
 						value={this.state.description}
@@ -46,7 +51,7 @@ class VacancyAddForm extends Component {
 						placeholderTextColor="grey"
 					/>
 				</Item>
-				<Item style={{borderColor: 'transparent', paddingHorizontal: 15}}>
+				<Item style={itemStyle}>
 					<Icon active name="hammer"/>
 					<Input
 						value={this.state.skills}
@@ -55,7 +60,7 @@ class VacancyAddForm extends Component {
 						placeholderTextColor="grey"
 					/>
 				</Item>
-				<Button full danger style={{marginTop: 15}} onPress={this.handleSaveVacancy}>
+				<Button full danger style={addVacancyButtonStyle} onPress={this.handleSaveVacancy}>
 					<Text>Сохранить вакансию</Text>
 				</Button>
 			</View>);

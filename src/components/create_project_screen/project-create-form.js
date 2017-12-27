@@ -57,25 +57,33 @@ class ProjectCreateForm extends Component {
 	};
 
 	render() {
+		const {
+			headerStyle,
+			iconStyle,
+			projectImageStyle,
+			contentStyle,
+			itemStyle,
+			annotationTextStyle
+		} = styles;
 		return (
-			<Container style={{flex: 1}}>
+			<Container>
 				<LinearGradient
 					colors={PROJECTS_LIST_GRADIENT_COLORS}
 					start={[0, 0]}
 					end={[1, 0]}
 				>
-					<Header hasTabs style={{backgroundColor: 'transparent'}}>
+					<Header hasTabs style={headerStyle}>
 						<Left>
 							<Button transparent small onPress={this.handleCloseButton}>
-								<Icon style={{color: 'white'}} name="md-close"/>
+								<Icon style={iconStyle} name="md-close"/>
 							</Button>
 						</Left>
 						<Body style={{flex: 3, alignItems: 'flex-start'}}>
-							<Title style={{color: 'white'}}>Новый проект</Title>
+							<Title style={iconStyle}>Новый проект</Title>
 						</Body>
 						<Right>
 							<Button transparent small onPress={this.handleSaveButton}>
-								<Icon style={{color: 'white'}} name="md-checkmark"/>
+								<Icon style={iconStyle} name="md-checkmark"/>
 							</Button>
 						</Right>
 					</Header>
@@ -83,20 +91,20 @@ class ProjectCreateForm extends Component {
 						{
 							this.state.photoBase64 ?
 								<Image
-									style={{height: 250}}
+									style={projectImageStyle}
 									resizeMode="cover"
 									source={{uri: this.state.photoBase64}}
 								/> :
 								<Image
-									style={{height: 250}}
+									style={projectImageStyle}
 									resizeMode="center"
 									source={require('../../images/add_icon.png')}
 								/>
 						}
 					</TouchableOpacity>
 				</LinearGradient>
-				<Content style={{backgroundColor: 'white'}}>
-					<Item style={{borderColor: 'transparent', paddingHorizontal: 15}}>
+				<Content style={contentStyle}>
+					<Item style={itemStyle}>
 						<Icon active name="md-clipboard"/>
 						<Input
 							value={this.state.name}
@@ -105,7 +113,7 @@ class ProjectCreateForm extends Component {
 							placeholderTextColor="grey"
 						/>
 					</Item>
-					<Item style={{borderColor: 'transparent', paddingHorizontal: 15}}>
+					<Item style={itemStyle}>
 						<Icon active name="md-list-box"/>
 						<Input
 							value={this.state.description}
@@ -115,7 +123,7 @@ class ProjectCreateForm extends Component {
 						/>
 					</Item>
 					<Divider/>
-					<Item style={{borderColor: 'transparent', paddingHorizontal: 15}}>
+					<Item style={itemStyle}>
 						<Icon active name="md-pricetags"/>
 						<Input
 							value={this.state.keywords}
@@ -125,7 +133,7 @@ class ProjectCreateForm extends Component {
 						/>
 					</Item>
 					<Divider/>
-					<Text note style={{textAlign: 'center', marginTop: 15, paddingHorizontal: 15}}>Вакансии можно добавить только после создания в меню проекта</Text>
+					<Text note style={annotationTextStyle}>Вакансии можно добавить только после создания в меню проекта</Text>
 				</Content>
 			</Container>
 		);

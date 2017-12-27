@@ -58,14 +58,19 @@ class ProjectsList extends Component {
 	render() {
 		const {
 			containerStyle,
-			tabBarUnderlineStyle
+			tabBarUnderlineStyle,
+			gradientStyle,
+			tabContainerStyle,
+			tabHeadingStyle,
+			backgroundImageStyle,
+			fabStyle
 		} = styles;
 		const {isCurator} = this.props;
 
 		return (
 			<Container style={containerStyle}>
 				<LinearGradient
-					style={{flex: 1}}
+					style={gradientStyle}
 					colors={PROJECTS_LIST_GRADIENT_COLORS}
 					start={[0, 0]}
 					end={[1, 0]}
@@ -76,11 +81,11 @@ class ProjectsList extends Component {
 						tabBarUnderlineStyle={tabBarUnderlineStyle}
 						initialPage={this.state.initTab}
 						onChangeTab={({i}) => this.setState({activeTab: i})}
-						style={{shadowOpacity: 0, elevation: 0, shadowColor: 'transparent'}}
+						style={tabContainerStyle}
 					>
 						<Tab
 							heading={
-								<TabHeading style={{backgroundColor: 'transparent'}}>
+								<TabHeading style={tabHeadingStyle}>
 									<TabIcon name="md-list" position={0} activeTab={this.state.activeTab}/>
 								</TabHeading>}
 						>
@@ -93,7 +98,7 @@ class ProjectsList extends Component {
 										keyExtractor={item => item.uid}
 									/> :
 									<Image
-										style={{position: 'absolute', top: -255, left: -100}}
+										style={backgroundImageStyle}
 										source={require('../../../images/empty.png')}
 										resizeMode="center"
 									/>
@@ -102,7 +107,7 @@ class ProjectsList extends Component {
 							{isCurator &&
 								<Fab
 									containerStyle={{flex: 1}}
-									style={{backgroundColor: 'red'}}
+									style={fabStyle}
 									position="bottomRight"
 									onPress={this.handleCuratorFab}
 								>
@@ -112,7 +117,7 @@ class ProjectsList extends Component {
 						</Tab>
 						<Tab
 							heading={
-								<TabHeading style={{backgroundColor: 'transparent'}}>
+								<TabHeading style={tabHeadingStyle}>
 									<TabIcon name="md-person" position={1} activeTab={this.state.activeTab}/>
 								</TabHeading>}
 						>
@@ -120,7 +125,7 @@ class ProjectsList extends Component {
 						</Tab>
 						<Tab
 							heading={
-								<TabHeading style={{backgroundColor: 'transparent'}}>
+								<TabHeading style={tabHeadingStyle}>
 									<TabIcon name="md-settings" position={2} activeTab={this.state.activeTab}/>
 								</TabHeading>}
 						>

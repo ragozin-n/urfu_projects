@@ -14,7 +14,7 @@ import {connect} from 'react-redux';
 import firebase from 'firebase';
 import {hireStudentToProject} from '../../../../actions/projects-actions';
 import Divider from '../../../common/Divider/divider';
-import {THUMBNAIL_BORDER_COLOR} from '../../../styles/colors';
+import styles from './styles';
 
 class ApplyListItem extends Component {
 	state = {
@@ -49,36 +49,41 @@ class ApplyListItem extends Component {
 		const {photoBase64, name, skills} = this.state.user;
 		const {vacancy} = this.props.item;
 		const {currentProject} = this.props;
+		const {
+			appliesListItemStyle,
+			appliesListItemImageStyle,
+			appliesListItemLeftStyle,
+			appliesListItemBodyStyle,
+			appliestListItemFullViewStyle,
+			appliesListItemDividerStyle,
+			appliesListItemBorderFix
+		} = styles;
 
 		return (
-			<ListItem noBorder avatar style={{marginLeft: 0, paddingLeft: 15}} onPress={() => this.setState({isFullView: !this.state.isFullView})}>
-				<Left style={{position: 'absolute', top: 15, left: 10}}>
+			<ListItem noBorder avatar style={appliesListItemStyle} onPress={() => this.setState({isFullView: !this.state.isFullView})}>
+				<Left style={appliesListItemLeftStyle}>
 					<Thumbnail
 						small
 						source={{uri: photoBase64}}
-						style={{
-							borderColor: THUMBNAIL_BORDER_COLOR,
-							borderWidth: 2,
-							overlayColor: 'white'
-						}}
+						style={appliesListItemImageStyle}
 					/>
 				</Left>
-				<Body style={{borderBottomWidth: 0, marginLeft: 45}}>
+				<Body style={appliesListItemBodyStyle}>
 					<Text>{name}</Text>
 					<Text note>{`${vacancy.name} в ${currentProject.name}`}</Text>
 					{this.state.isFullView &&
-						<View style={{marginTop: 10}}>
+						<View style={appliestListItemFullViewStyle}>
 							<Text note>{`Требования проекта: ${currentProject.keywords}`}</Text>
 							<Text note>{`Требования вакансии: ${vacancy.skills}`}</Text>
 							<Text note>{`Умения ${name}: ${skills}`}</Text>
 							<Button success full onPress={() => this.handleApplyToVacancy({vacancy})}>
 								<Text>Принять</Text>
 							</Button>
-							<Divider style={{marginTop: 10}}/>
+							<Divider style={appliesListItemDividerStyle}/>
 						</View>
 					}
 				</Body>
-				<Right style={{borderBottomWidth: 0}}/>
+				<Right style={appliesListItemBorderFix}/>
 			</ListItem>
 		);
 	}

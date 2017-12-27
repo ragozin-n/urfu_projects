@@ -1,7 +1,4 @@
-import {
-	StyleSheet,
-	Platform
-} from 'react-native';
+import {StyleSheet, Platform} from 'react-native';
 import {
 	TITLE_COLOR,
 	BUTTON_COLOR

@@ -80,41 +80,51 @@ class ProjectEditForm extends Component {
 		const {project} = this.props;
 		const {name, description, photoBase64, keywords} = project;
 		const {isVacancyFormVisible} = this.state;
+		const {
+			headerStyle,
+			iconStyle,
+			headerTitleStyle,
+			headerBodyStyle,
+			projectImageStyle,
+			contentStyle,
+			itemStyle,
+			addVacancyButtonStyle
+		} = styles;
 
 		return (
-			<Container style={{flex: 1}}>
+			<Container>
 				<LinearGradient
 					colors={PROJECTS_LIST_GRADIENT_COLORS}
 					start={[0, 0]}
 					end={[1, 0]}
 				>
-					<Header hasTabs style={{backgroundColor: 'transparent'}}>
+					<Header hasTabs style={headerStyle}>
 						<Left>
 							<Button transparent small onPress={this.handleCloseButton}>
-								<Icon style={{color: 'white'}} name="md-close"/>
+								<Icon style={iconStyle} name="md-close"/>
 							</Button>
 						</Left>
-						<Body style={{flex: 3, alignItems: 'flex-start'}}>
-							<Title style={{color: 'white'}}>Редактирование проекта</Title>
+						<Body style={headerBodyStyle}>
+							<Title style={headerTitleStyle}>Редактирование проекта</Title>
 						</Body>
 						<Right>
 							<Button transparent small onPress={this.handleSaveButton}>
-								<Icon style={{color: 'white'}} name="md-checkmark"/>
+								<Icon style={iconStyle} name="md-checkmark"/>
 							</Button>
 						</Right>
 					</Header>
 					<TouchableOpacity activeOpacity={0.5} onPress={this.handleImageSelect}>
 						{
 							<Image
-								style={{height: 200}}
+								style={projectImageStyle}
 								resizeMode="cover"
 								source={{uri: this.state.photoBase64 || photoBase64}}
 							/>
 						}
 					</TouchableOpacity>
 				</LinearGradient>
-				<Content style={{backgroundColor: 'white'}}>
-					<Item style={{borderColor: 'transparent', paddingHorizontal: 15}}>
+				<Content style={contentStyle}>
+					<Item style={itemStyle}>
 						<Icon active name="md-clipboard"/>
 						<Input
 							value={this.state.name || name}
@@ -123,7 +133,7 @@ class ProjectEditForm extends Component {
 							placeholderTextColor="grey"
 						/>
 					</Item>
-					<Item style={{borderColor: 'transparent', paddingHorizontal: 15}}>
+					<Item style={itemStyle}>
 						<Icon active name="md-list-box"/>
 						<Input
 							value={this.state.description || description}
@@ -133,7 +143,7 @@ class ProjectEditForm extends Component {
 						/>
 					</Item>
 					<Divider/>
-					<Item style={{borderColor: 'transparent', paddingHorizontal: 15}}>
+					<Item style={itemStyle}>
 						<Icon active name="md-pricetags"/>
 						<Input
 							value={this.state.keywords || keywords}
@@ -146,7 +156,7 @@ class ProjectEditForm extends Component {
 					{
 						isVacancyFormVisible ?
 							<VacancyAddForm onHideForm={this.handleHideForm} project={project}/> :
-							<Button full danger style={{marginTop: 15}} onPress={this.handleAddVacancy}>
+							<Button full danger style={addVacancyButtonStyle} onPress={this.handleAddVacancy}>
 								<Text>Добавить вакансию</Text>
 							</Button>
 					}

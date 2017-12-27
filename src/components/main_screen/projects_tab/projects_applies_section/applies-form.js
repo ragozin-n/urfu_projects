@@ -17,6 +17,7 @@ import {LinearGradient} from 'expo';
 import {Actions} from 'react-native-router-flux';
 import {PROJECTS_LIST_GRADIENT_COLORS} from '../../../styles';
 import ApplyListItem from './apply-list-item';
+import styles from './styles';
 
 class AppliesForm extends Component {
 	renderApply = (apply, currentProject) => {
@@ -27,45 +28,55 @@ class AppliesForm extends Component {
 
 	handleBackAction = () => {
 		const {currentProject, uid} = this.props;
-		// Здесь почему-то теряется поле isCurator.
+
 		// Если мы в этой форме, то мы куратор. поэтому вернем true руками.
 		Actions.projectInfo({currentProject, isCurator: true, uid});
 	}
 
 	render() {
 		const {applies, currentProject} = this.props;
+		const {
+			headerStyle,
+			iconStyle,
+			titleStyle,
+			headerBodyStyle,
+			appliesListStyle,
+			appliesEmptyView,
+			appliesEmplyViewTextStyle,
+			appliesEmplyViewImageStyle
+		} = styles;
 
 		return (
-			<Container style={{flex: 1}}>
+			<Container>
 				<LinearGradient
 					colors={PROJECTS_LIST_GRADIENT_COLORS}
 					start={[0, 0]}
 					end={[1, 0]}
 				>
-					<Header noShadow style={{marginTop: (Platform.OS === 'android') ? 15 : 0, backgroundColor: 'transparent', elevation: 0, shadowOpacity: 0, shadowColor: 'transparent', borderBottomWidth: 0}}>
+					<Header noShadow style={[headerStyle, {marginTop: (Platform.OS === 'android') ? 15 : 0}]}>
 						<Left>
 							<Button small transparent onPress={this.handleBackAction}>
-								<Icon style={{color: 'white'}} name="arrow-back"/>
+								<Icon style={iconStyle} name="arrow-back"/>
 							</Button>
 						</Left>
-						<Body style={{flex: 3}}>
-							<Title style={{color: 'white'}}>Заявки на участие</Title>
+						<Body style={headerBodyStyle}>
+							<Title style={titleStyle}>Заявки на участие</Title>
 						</Body>
 						<Right/>
 					</Header>
 				</LinearGradient>
 				<Content>
 					<FlatList
-						style={{flex: 1}}
+						style={appliesListStyle}
 						data={applies}
 						renderItem={({item}) => this.renderApply(item, currentProject)}
 						keyExtractor={(item, index) => index}
 					/>
 					{!applies.length > 0 &&
-						<View style={{flex: 1, alignItems: 'center', paddingTop: 50}}>
-							<Text style={{textAlign: 'center', marginBottom: 30}}>{`На текущий момент заявок в проект \n${currentProject.name}\nнет.\n\nЗагляните сюда чуть позже.`}</Text>
+						<View style={appliesEmptyView}>
+							<Text style={appliesEmplyViewTextStyle}>{`На текущий момент заявок в проект \n${currentProject.name}\nнет.\n\nЗагляните сюда чуть позже.`}</Text>
 							<Image
-								style={{height: 400}}
+								style={appliesEmplyViewImageStyle}
 								source={require('../../../../images/jdun.png')}
 								resizeMode="contain"
 							/>

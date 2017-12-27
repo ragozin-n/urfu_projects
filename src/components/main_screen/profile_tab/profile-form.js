@@ -12,24 +12,26 @@ import {
 	Icon,
 	Button
 } from 'native-base';
-import {THUMBNAIL_BORDER_COLOR} from '../../styles';
 
 class ProfileForm extends Component {
 	render() {
 		const {isCurator, name, photoBase64, skills, phoneNumber} = this.props.user;
 		const {email} = this.props._token;
+		const {
+			contentStyle,
+			profileViewStyle,
+			profileViewImageStyle,
+			skillsViewStyle,
+			skillsItemStyle,
+			skillsItemTextStyle
+		} = styles;
 
 		return (
 			<Container>
-				<Content style={{backgroundColor: 'white', padding: 15}}>
-					<View style={{flex: 1, flexDirection: 'column', alignItems: 'center'}}>
+				<Content style={contentStyle}>
+					<View style={profileViewStyle}>
 						<Thumbnail
-							style={{
-								borderColor: THUMBNAIL_BORDER_COLOR,
-								borderWidth: 2,
-								overlayColor: 'white',
-								marginBottom: 15
-							}}
+							style={profileViewImageStyle}
 							large
 							source={{uri: photoBase64}}
 						/>
@@ -49,12 +51,12 @@ class ProfileForm extends Component {
 							<Text note>{email}</Text>
 						</CardItem>
 					</Card>
-					<View style={{flex: 1, flexDirection: 'row', alignContent: 'space-between', flexWrap: 'wrap', paddingLeft: 15}}>
+					<View style={skillsViewStyle}>
 						{
 							skills.split(', ').map((skill, index) => {
 								return (
-									<Button key={index} style={{margin: 3}} small danger>
-										<Text style={{color: 'white'}}>{skill}</Text>
+									<Button key={index} style={skillsItemStyle} small danger>
+										<Text style={skillsItemTextStyle}>{skill}</Text>
 									</Button>
 								);
 							})
