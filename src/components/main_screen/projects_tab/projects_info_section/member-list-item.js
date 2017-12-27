@@ -5,14 +5,27 @@ import {
 	Left,
 	Text,
 	Thumbnail,
-	Body
+	Body,
+	Button,
+	Card,
+	CardItem,
+	Icon,
+	H2
 } from 'native-base';
 import firebase from 'firebase';
+import _ from 'lodash';
+import {Modal, View} from 'react-native';
 import {THUMBNAIL_BORDER_COLOR} from '../../../styles';
+import styles from './styles';
 
 class MemberListItem extends Component {
 	state = {
-		user: {}
+		user: {},
+		modalVisible: false
+	}
+
+	handleShowUserProfile = () => {
+		this.setState({modalVisible: true});
 	}
 
 	componentWillMount() {
@@ -28,10 +41,11 @@ class MemberListItem extends Component {
 	}
 
 	render() {
-		const {photoBase64, name, phoneNumber} = this.state.user;
+		const {photoBase64, name, phoneNumber, isCurator, skills} = this.state.user;
+		const {profileViewStyle, profileViewImageStyle, skillsViewStyle, skillsItemStyle, skillsItemTextStyle} = styles;
 
 		return (
-			<ListItem noBorder avatar>
+			<ListItem noBorder avatar onPress={this.handleShowUserProfile}>
 				<Left>
 					<Thumbnail
 						small
@@ -48,6 +62,60 @@ class MemberListItem extends Component {
 					<Text note>{phoneNumber}</Text>
 				</Body>
 				<Right style={{borderBottomWidth: 0}}/>
+
+				{/* Modal section */}
+				{ !_.isEmpty(this.state.user) &&
+				<Modal
+					animationType="slide"
+					transparent
+					visible={this.state.modalVisible}
+					hardwareAccelerated
+				>
+					<View style={{flex: 1, backgroundColor: 'rgba(255, 255, 255, 0.9)'}}>
+						<View style={{marginTop: 100, flex: 1}}>
+							<View style={profileViewStyle}>
+								<Thumbnail
+									style={profileViewImageStyle}
+									large
+									source={{uri: photoBase64}}
+								/>
+								<H2>{name}</H2>
+								<Text note>{isCurator ? 'Куратор' : 'Студент'}</Text>
+							</View>
+							<Card>
+								<CardItem header>
+									<Text>Контакты:</Text>
+								</CardItem>
+								<CardItem>
+									<Icon active name="call"/>
+									<Text note>{phoneNumber}</Text>
+								</CardItem>
+							</Card>
+							<View style={skillsViewStyle}>
+								{
+									skills.split(', ').map((skill, index) => {
+										return (
+											<Button key={index} style={skillsItemStyle} small danger>
+												<Text style={skillsItemTextStyle}>{skill}</Text>
+											</Button>
+										);
+									})
+								}
+							</View>
+
+							<Button
+								full
+								onPress={() => {
+									this.setState({modalVisible: false});
+								}}
+							>
+								<Text>Скрыть</Text>
+							</Button>
+
+						</View>
+					</View>
+				</Modal>
+				}
 			</ListItem>
 		);
 	}

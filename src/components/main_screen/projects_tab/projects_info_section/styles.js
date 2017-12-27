@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {THUMBNAIL_BORDER_COLOR} from '../../../styles';
 
 export default StyleSheet.create({
 	headerStyle: {
@@ -46,5 +47,29 @@ export default StyleSheet.create({
 	},
 	projectInfpDescription: {
 		padding: 15
+	},
+	profileViewStyle: {
+		flex: 1,
+		flexDirection: 'column',
+		alignItems: 'center'
+	},
+	profileViewImageStyle: {
+		borderColor: THUMBNAIL_BORDER_COLOR,
+		borderWidth: 2,
+		overlayColor: 'white',
+		marginBottom: 15
+	},
+	skillsViewStyle: {
+		flex: 1,
+		flexDirection: 'row',
+		alignContent: 'flex-start',
+		flexWrap: 'wrap',
+		paddingLeft: 15
+	},
+	skillsItemStyle: {
+		margin: 3
+	},
+	skillsItemTextStyle: {
+		color: 'white'
 	}
 });

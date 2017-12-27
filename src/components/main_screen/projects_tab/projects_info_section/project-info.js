@@ -126,7 +126,8 @@ class ProjectInfo extends Component {
 			projectInfoCounterContainer,
 			projectInfoDropDownIcon,
 			projectInfoVacanciesList,
-			projectInfpDescription
+			projectInfpDescription,
+			projectInfoCounterView
 		} = styles;
 
 		return (
