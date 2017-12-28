@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {Animated, Easing} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import {
@@ -15,7 +15,7 @@ import Counter from '../../common/Counter/counter';
 import {PROJECTS_LIST_ITEM_BACKGROUND_COLOR} from '../../styles';
 import styles from './styles';
 
-class ProjectListItem extends Component {
+class ProjectListItem extends PureComponent {
 	state = {
 		opacityAnimation: new Animated.Value(0),
 		isCandidate: false,
@@ -29,11 +29,13 @@ class ProjectListItem extends Component {
 	}
 
 	componentDidMount() {
+		const {opacityAnimation} = this.state;
+
 		this.isCurator();
 		this.isCandidate();
 
 		Animated.timing(
-			this.state.opacityAnimation,
+			opacityAnimation,
 			{
 				toValue: 1,
 				duration: 550,
@@ -44,8 +46,8 @@ class ProjectListItem extends Component {
 	}
 
 	isCandidate = () => {
-		const {uid} = this.props;
-		const vacancies = _.map(this.props.project.vacancies, (value, key) => ({key, value}));
+		const {uid, project} = this.props;
+		const vacancies = _.map(project.vacancies, (value, key) => ({key, value}));
 
 		vacancies.forEach(vacancy => {
 			if (uid === vacancy.value.employedBy) {
@@ -62,8 +64,8 @@ class ProjectListItem extends Component {
 	}
 
 	isCurator = () => {
-		const {uid} = this.props;
-		const {createdBy} = this.props.project;
+		const {uid, project} = this.props;
+		const {createdBy} = project;
 
 		if (uid === createdBy) {
 			this.setState({isCurator: true});
@@ -71,19 +73,20 @@ class ProjectListItem extends Component {
 	}
 
 	render() {
-		const {name, description, photoBase64} = this.props.project;
-		const vacancies = _.map(this.props.project.vacancies, (value, key) => ({key, value}));
+		const {project} = this.props;
+		const {name, description, photoBase64} = project;
+		const vacancies = _.map(project.vacancies, (value, key) => ({key, value}));
 		const {
 			projectListItem,
 			listItemImageStyle,
 			listItemBorderFix,
 			listItemAnnotationTextStyle
 		} = styles;
-		const {isCurator, isCandidate, isAlreadyInProject} = this.state;
+		const {isCurator, isCandidate, isAlreadyInProject, opacityAnimation} = this.state;
 
 		return (
 			<Animated.View
-				style={{opacity: this.state.opacityAnimation}}
+				style={{opacity: opacityAnimation}}
 			>
 				<ListItem noBorder avatar style={[projectListItem, {backgroundColor: isCurator || isCandidate || isAlreadyInProject ? '#f5f0ec' : PROJECTS_LIST_ITEM_BACKGROUND_COLOR}]} onPress={this.handleRowPress}>
 					<Left>
@@ -93,11 +96,17 @@ class ProjectListItem extends Component {
 						/>
 					</Left>
 					<Body style={listItemBorderFix}>
-						<Text>{name}</Text>
-						<Text note>{description}</Text>
+						<Text>
+							{name}
+						</Text>
+						<Text note>
+							{description}
+						</Text>
 						{
 							(isCurator || isAlreadyInProject) &&
-							<Text note style={listItemAnnotationTextStyle}>Ваш проект</Text>
+							<Text note style={listItemAnnotationTextStyle}>
+								{'Ваш проект'}
+							</Text>
 						}
 					</Body>
 					<Right style={listItemBorderFix}>

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {
 	Header,
 	Body,
@@ -16,17 +16,17 @@ import {SEARCH_INPUT_COLOR, ICON_ACTIVE_COLOR} from '../../styles';
 import {projectsFilter} from '../../../actions/projects-actions';
 import styles from './styles';
 
-class SearchHeader extends Component {
+class SearchHeader extends PureComponent {
 	state = {
 		isHeaderSearch: false,
-		slideAnimation: new Animated.Value(-10),
+		slideAnimation: new Animated.Value(50),
 		opacityAnimation: new Animated.Value(0)
 	};
 
 	handleSearch = text => {
-		const {projectsFilter} = this.props;
+		const {projectsFilter, _projects} = this.props;
 
-		projectsFilter(text, this.props._projects);
+		projectsFilter(text, _projects);
 	};
 
 	handleSearchIcon = () => {
@@ -56,16 +56,17 @@ class SearchHeader extends Component {
 	};
 
 	handleCloseIcon = () => {
-		const {projectsFilter} = this.props;
+		const {projectsFilter, _projects} = this.props;
+		const {isHeaderSearch} = this.state;
 
 		this.setState(
 			{
-				slideAnimation: new Animated.Value(-10),
-				isHeaderSearch: !this.state.isHeaderSearch,
+				slideAnimation: new Animated.Value(50),
+				isHeaderSearch: !isHeaderSearch,
 				opacityAnimation: new Animated.Value(0)
 			});
 
-		projectsFilter('', this.props._projects);
+		projectsFilter('', _projects);
 	};
 
 	render() {
@@ -103,7 +104,9 @@ class SearchHeader extends Component {
 		return (
 			<Header hasTabs style={headerStyle}>
 				<Body style={{flex: 3, alignItems: 'flex-start'}}>
-					<Title style={titleStyle}>Все проекты</Title>
+					<Title style={titleStyle}>
+						{'Все проекты'}
+					</Title>
 				</Body>
 				<Right>
 					<Button transparent small onPress={this.handleSearchIcon}>

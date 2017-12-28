@@ -65,6 +65,8 @@ class ProjectCreateForm extends Component {
 			itemStyle,
 			annotationTextStyle
 		} = styles;
+		const {photoBase64, name, description, keywords} = this.state;
+
 		return (
 			<Container>
 				<LinearGradient
@@ -79,7 +81,9 @@ class ProjectCreateForm extends Component {
 							</Button>
 						</Left>
 						<Body style={{flex: 3, alignItems: 'flex-start'}}>
-							<Title style={iconStyle}>Новый проект</Title>
+							<Title style={iconStyle}>
+								{'Новый проект'}
+							</Title>
 						</Body>
 						<Right>
 							<Button transparent small onPress={this.handleSaveButton}>
@@ -89,11 +93,11 @@ class ProjectCreateForm extends Component {
 					</Header>
 					<TouchableOpacity activeOpacity={0.5} onPress={this.handleImageSelect}>
 						{
-							this.state.photoBase64 ?
+							photoBase64 ?
 								<Image
 									style={projectImageStyle}
 									resizeMode="cover"
-									source={{uri: this.state.photoBase64}}
+									source={{uri: photoBase64}}
 								/> :
 								<Image
 									style={projectImageStyle}
@@ -107,7 +111,7 @@ class ProjectCreateForm extends Component {
 					<Item style={itemStyle}>
 						<Icon active name="md-clipboard"/>
 						<Input
-							value={this.state.name}
+							value={name}
 							onChangeText={text => this.setState({name: text})}
 							placeholder="Название проекта"
 							placeholderTextColor="grey"
@@ -116,7 +120,7 @@ class ProjectCreateForm extends Component {
 					<Item style={itemStyle}>
 						<Icon active name="md-list-box"/>
 						<Input
-							value={this.state.description}
+							value={description}
 							onChangeText={text => this.setState({description: text})}
 							placeholder="Описание"
 							placeholderTextColor="grey"
@@ -126,14 +130,16 @@ class ProjectCreateForm extends Component {
 					<Item style={itemStyle}>
 						<Icon active name="md-pricetags"/>
 						<Input
-							value={this.state.keywords}
+							value={keywords}
 							onChangeText={text => this.setState({keywords: text})}
 							placeholder="Ключевые слова через запятую"
 							placeholderTextColor="grey"
 						/>
 					</Item>
 					<Divider/>
-					<Text note style={annotationTextStyle}>Вакансии можно добавить только после создания в меню проекта</Text>
+					<Text note style={annotationTextStyle}>
+						{'Вакансии можно добавить только после создания в меню проекта'}
+					</Text>
 				</Content>
 			</Container>
 		);

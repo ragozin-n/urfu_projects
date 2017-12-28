@@ -14,6 +14,7 @@ import {applyToProject} from '../../../../actions';
 
 class VacancyListItem extends Component {
 	state = {
+		// eslint-disable-next-line react/destructuring-assignment
 		isSelected: this.props.isAlreadyApplied
 	}
 
@@ -50,6 +51,7 @@ class VacancyListItem extends Component {
 
 	render() {
 		const {description, skills, name, projectUid, vacancyUid, isCurator} = this.props;
+		const {isSelected} = this.state;
 
 		if (isCurator) {
 			return (
@@ -61,7 +63,9 @@ class VacancyListItem extends Component {
 						/>
 					</Left>
 					<Body style={{borderBottomWidth: 0}}>
-						<Text style={{color: '#D34537'}}>{name}</Text>
+						<Text style={{color: '#D34537'}}>
+							{name}
+						</Text>
 					</Body>
 					<Right style={{borderBottomWidth: 0}}/>
 				</ListItem>);
@@ -76,8 +80,12 @@ class VacancyListItem extends Component {
 					/>
 				</Left>
 				<Body style={{borderBottomWidth: 0}}>
-					<Text style={{color: '#CF3F33'}}>{this.state.isSelected ? 'Вы подали заявку на' : 'Занять'} специальность:</Text>
-					<Text note style={{color: '#D34537'}}>{name}</Text>
+					<Text style={{color: '#CF3F33'}}>
+						{`${isSelected ? 'Вы подали заявку на' : 'Занять'} специальность`}
+					</Text>
+					<Text note style={{color: '#D34537'}}>
+						{name}
+					</Text>
 				</Body>
 				<Right style={{borderBottomWidth: 0}}/>
 			</ListItem>

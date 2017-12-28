@@ -13,9 +13,9 @@ class VacancyAddForm extends Component {
 
 	handleSaveVacancy = () => {
 		const {name, description, skills} = this.state;
-		const {project} = this.props;
+		const {project, projectUpdate, onHideForm} = this.props;
 
-		this.props.projectUpdate({
+		projectUpdate({
 			project,
 			vacancy: {
 				name,
@@ -23,7 +23,7 @@ class VacancyAddForm extends Component {
 				skills
 			}
 		});
-		this.props.onHideForm();
+		onHideForm();
 	}
 
 	render() {
@@ -31,12 +31,14 @@ class VacancyAddForm extends Component {
 			itemStyle,
 			addVacancyButtonStyle
 		} = styles;
+		const {name, description, skills} = this.state;
+
 		return (
 			<View>
 				<Item style={itemStyle}>
 					<Icon active name="md-document"/>
 					<Input
-						value={this.state.name}
+						value={name}
 						onChangeText={text => this.setState({name: text})}
 						placeholder="Название вакансии"
 						placeholderTextColor="grey"
@@ -45,7 +47,7 @@ class VacancyAddForm extends Component {
 				<Item style={itemStyle}>
 					<Icon active name="md-list"/>
 					<Input
-						value={this.state.description}
+						value={description}
 						onChangeText={text => this.setState({description: text})}
 						placeholder="Описание вакансии"
 						placeholderTextColor="grey"
@@ -54,14 +56,16 @@ class VacancyAddForm extends Component {
 				<Item style={itemStyle}>
 					<Icon active name="hammer"/>
 					<Input
-						value={this.state.skills}
+						value={skills}
 						onChangeText={text => this.setState({skills: text})}
 						placeholder="Ключевые навыки вакансии через запятую"
 						placeholderTextColor="grey"
 					/>
 				</Item>
 				<Button full danger style={addVacancyButtonStyle} onPress={this.handleSaveVacancy}>
-					<Text>Сохранить вакансию</Text>
+					<Text>
+						{'Сохранить вакансию'}
+					</Text>
 				</Button>
 			</View>);
 	}

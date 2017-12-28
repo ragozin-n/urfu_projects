@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Image, TouchableOpacity, View} from 'react-native';
+import {Image, TouchableOpacity} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import {
 	Container,
@@ -78,7 +78,6 @@ class ProjectEditForm extends Component {
 
 	render() {
 		const {project} = this.props;
-		const {name, description, photoBase64, keywords} = project;
 		const {isVacancyFormVisible} = this.state;
 		const {
 			headerStyle,
@@ -90,6 +89,7 @@ class ProjectEditForm extends Component {
 			itemStyle,
 			addVacancyButtonStyle
 		} = styles;
+		const {photoBase64, name, description, keywords} = this.state;
 
 		return (
 			<Container>
@@ -105,7 +105,9 @@ class ProjectEditForm extends Component {
 							</Button>
 						</Left>
 						<Body style={headerBodyStyle}>
-							<Title style={headerTitleStyle}>Редактирование проекта</Title>
+							<Title style={headerTitleStyle}>
+								{'Редактирование проекта'}
+							</Title>
 						</Body>
 						<Right>
 							<Button transparent small onPress={this.handleSaveButton}>
@@ -118,7 +120,7 @@ class ProjectEditForm extends Component {
 							<Image
 								style={projectImageStyle}
 								resizeMode="cover"
-								source={{uri: this.state.photoBase64 || photoBase64}}
+								source={{uri: photoBase64 || project.photoBase64}}
 							/>
 						}
 					</TouchableOpacity>
@@ -127,7 +129,7 @@ class ProjectEditForm extends Component {
 					<Item style={itemStyle}>
 						<Icon active name="md-clipboard"/>
 						<Input
-							value={this.state.name || name}
+							value={name || project.name}
 							onChangeText={text => this.setState({name: text})}
 							placeholder="Название проекта"
 							placeholderTextColor="grey"
@@ -136,7 +138,7 @@ class ProjectEditForm extends Component {
 					<Item style={itemStyle}>
 						<Icon active name="md-list-box"/>
 						<Input
-							value={this.state.description || description}
+							value={description || project.description}
 							onChangeText={text => this.setState({description: text})}
 							placeholder="Описание"
 							placeholderTextColor="grey"
@@ -146,7 +148,7 @@ class ProjectEditForm extends Component {
 					<Item style={itemStyle}>
 						<Icon active name="md-pricetags"/>
 						<Input
-							value={this.state.keywords || keywords}
+							value={keywords || project.keywords}
 							onChangeText={text => this.setState({keywords: text})}
 							placeholder="Ключевые слова через запятую"
 							placeholderTextColor="grey"
@@ -157,7 +159,9 @@ class ProjectEditForm extends Component {
 						isVacancyFormVisible ?
 							<VacancyAddForm onHideForm={this.handleHideForm} project={project}/> :
 							<Button full danger style={addVacancyButtonStyle} onPress={this.handleAddVacancy}>
-								<Text>Добавить вакансию</Text>
+								<Text>
+									{'Добавить вакансию'}
+								</Text>
 							</Button>
 					}
 				</Content>

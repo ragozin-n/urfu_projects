@@ -21,8 +21,7 @@ export default StyleSheet.create({
 		flex: 1,
 		flexDirection: 'row',
 		alignContent: 'space-between',
-		flexWrap: 'wrap',
-		paddingLeft: 15
+		flexWrap: 'wrap'
 	},
 	skillsItemStyle: {
 		margin: 3

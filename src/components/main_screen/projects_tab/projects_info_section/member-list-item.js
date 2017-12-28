@@ -29,11 +29,14 @@ class MemberListItem extends Component {
 	}
 
 	componentWillMount() {
+		const {user} = this.state;
+		const {uid} = this.props;
+
 		// Подгружаем действующего члена проекта
-		if (_.isEmpty(this.state.user)) {
+		if (_.isEmpty(user)) {
 			firebase
 				.database()
-				.ref(`/users/${this.props.uid}`)
+				.ref(`/users/${uid}`)
 				.once('value', bio => {
 					this.setState({user: bio.val()});
 				});
@@ -41,7 +44,8 @@ class MemberListItem extends Component {
 	}
 
 	render() {
-		const {photoBase64, name, phoneNumber, isCurator, skills} = this.state.user;
+		const {user, modalVisible} = this.state;
+		const {photoBase64, name, phoneNumber, isCurator, skills} = user;
 		const {profileViewStyle, profileViewImageStyle, skillsViewStyle, skillsItemStyle, skillsItemTextStyle} = styles;
 
 		return (
@@ -58,17 +62,21 @@ class MemberListItem extends Component {
 					/>
 				</Left>
 				<Body style={{borderBottomWidth: 0}}>
-					<Text>{name}</Text>
-					<Text note>{phoneNumber}</Text>
+					<Text>
+						{name}
+					</Text>
+					<Text note>
+						{phoneNumber}
+					</Text>
 				</Body>
 				<Right style={{borderBottomWidth: 0}}/>
 
 				{/* Modal section */}
-				{ !_.isEmpty(this.state.user) &&
+				{ !_.isEmpty(user) &&
 				<Modal
 					animationType="slide"
 					transparent
-					visible={this.state.modalVisible}
+					visible={modalVisible}
 					hardwareAccelerated
 				>
 					<View style={{flex: 1, backgroundColor: 'rgba(255, 255, 255, 0.9)'}}>
@@ -79,16 +87,24 @@ class MemberListItem extends Component {
 									large
 									source={{uri: photoBase64}}
 								/>
-								<H2>{name}</H2>
-								<Text note>{isCurator ? 'Куратор' : 'Студент'}</Text>
+								<H2>
+									{name}
+								</H2>
+								<Text note>
+									{isCurator ? 'Куратор' : 'Студент'}
+								</Text>
 							</View>
 							<Card>
 								<CardItem header>
-									<Text>Контакты:</Text>
+									<Text>
+										{'Контакты:'}
+									</Text>
 								</CardItem>
 								<CardItem>
 									<Icon active name="call"/>
-									<Text note>{phoneNumber}</Text>
+									<Text note>
+										{phoneNumber}
+									</Text>
 								</CardItem>
 							</Card>
 							<View style={skillsViewStyle}>
@@ -96,7 +112,9 @@ class MemberListItem extends Component {
 									skills.split(', ').map((skill, index) => {
 										return (
 											<Button key={index} style={skillsItemStyle} small danger>
-												<Text style={skillsItemTextStyle}>{skill}</Text>
+												<Text style={skillsItemTextStyle}>
+													{skill}
+												</Text>
 											</Button>
 										);
 									})
@@ -109,7 +127,9 @@ class MemberListItem extends Component {
 									this.setState({modalVisible: false});
 								}}
 							>
-								<Text>Скрыть</Text>
+								<Text>
+									{'Скрыть'}
+								</Text>
 							</Button>
 
 						</View>

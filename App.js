@@ -30,8 +30,10 @@ export default class App extends Component {
 	}
 
 	render() {
+		const {appIsReady} = this.state;
 		const store = createStore(reducers, {}, composeWithDevTools(applyMiddleware(ReduxThunk, toast)));
-		if (!this.state.appIsReady) {
+
+		if (!appIsReady) {
 			return <AppLoading/>;
 		}
 		return (

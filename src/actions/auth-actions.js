@@ -56,18 +56,16 @@ export const passwordChanged = text => {
 };
 
 // Главный поток авторизации
-export const loginUser = ({email, password}) => {
-	return dispatch => {
-		dispatch({type: LOGIN_USER});
-		firebase
-			.auth()
-			.signInWithEmailAndPassword(email, password)
-			.then(user => loginUserSuccess(dispatch, user))
-			.catch(err => {
-				alertOnDevice(err);
-				loginUserFail(dispatch, err);
-			});
-	};
+export const loginUser = ({email, password}) => dispatch => {
+	dispatch({type: LOGIN_USER});
+	firebase
+		.auth()
+		.signInWithEmailAndPassword(email, password)
+		.then(user => loginUserSuccess(dispatch, user))
+		.catch(err => {
+			alertOnDevice(err);
+			loginUserFail(dispatch, err);
+		});
 };
 
 // Подписчик изменения личной информации пользователя

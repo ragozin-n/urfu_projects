@@ -60,7 +60,9 @@ class AppliesForm extends Component {
 							</Button>
 						</Left>
 						<Body style={headerBodyStyle}>
-							<Title style={titleStyle}>Заявки на участие</Title>
+							<Title style={titleStyle}>
+								{'Заявки на участие'}
+							</Title>
 						</Body>
 						<Right/>
 					</Header>
@@ -74,7 +76,9 @@ class AppliesForm extends Component {
 					/>
 					{!applies.length > 0 &&
 						<View style={appliesEmptyView}>
-							<Text style={appliesEmplyViewTextStyle}>{`На текущий момент заявок в проект \n${currentProject.name}\nнет.\n\nЗагляните сюда чуть позже.`}</Text>
+							<Text style={appliesEmplyViewTextStyle}>
+								{`На текущий момент заявок в проект \n${currentProject.name}\nнет.\n\nЗагляните сюда чуть позже.`}
+							</Text>
 							<Image
 								style={appliesEmplyViewImageStyle}
 								source={require('../../../../images/jdun.png')}

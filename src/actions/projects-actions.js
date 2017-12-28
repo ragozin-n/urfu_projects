@@ -34,7 +34,6 @@ export const projectCreate = ({name, description, photoBase64, keywords}) => dis
 	const currentEventKey = firebase.database().ref(`/events`).push().key;
 	const currentEventRef = firebase.database().ref(`/events/${currentEventKey}`);
 	const {uid} = firebase.auth().currentUser;
-	//const currentVacanciesRef = firebase.database().ref(`/events/${currentEventKey}/vacancies`);
 
 	currentEventRef.set(
 		{
@@ -45,16 +44,6 @@ export const projectCreate = ({name, description, photoBase64, keywords}) => dis
 			createdBy: uid
 		}
 	);
-
-	// vacancies.forEach(element => {
-	// 	currentVacanciesRef.push(
-	// 		{
-	// 			name: element.name,
-	// 			description: element.description,
-	// 			skills: element.skills
-	// 		}
-	// 	);
-	// });
 
 	dispatch({type: PROJECT_CREATE});
 	dispatch({type: SUCCESS_TOAST, payload: `Проект "${name}" успешно создан!`});
@@ -282,7 +271,6 @@ const _searchForCandidates = ({projectUid}) => new Promise(resolve => {
 
 // Хелпер для проверки возможности оставления заявки в проект
 const _isUserCanApplyToProject = (uid, projectUid) => new Promise((resolve, reject) => {
-
 	// Проверяем на куратора
 	firebase
 		.database()

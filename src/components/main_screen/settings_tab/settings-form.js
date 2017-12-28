@@ -29,15 +29,23 @@ class SettingsForm extends Component {
 		return (
 			<Container>
 				<Content style={contentStyle}>
-					<H1>Урфу.Проекты</H1>
+					<H1>
+						{'Урфу.Проекты'}
+					</H1>
 					<TouchableOpacity activeOpacity={0.5} onPress={this.handleGoToRepo}>
-						<H3>- Репозиторий</H3>
+						<H3>
+							{'- Репозиторий'}
+						</H3>
 					</TouchableOpacity>
 					<TouchableOpacity activeOpacity={0.5} onPress={this.handleGoToExpo}>
-						<H3>- Expo</H3>
+						<H3>
+							{'- Expo'}
+						</H3>
 					</TouchableOpacity>
 					<TouchableOpacity activeOpacity={0.5} onPress={this.handleSendEmail}>
-						<H3>- Email</H3>
+						<H3>
+							{'- Email'}
+						</H3>
 					</TouchableOpacity>
 				</Content>
 			</Container>

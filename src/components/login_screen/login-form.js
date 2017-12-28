@@ -36,11 +36,15 @@ class LoginForm extends Component {
 	}
 
 	handleEmailChange = text => {
-		this.props.emailChanged(text);
+		const {emailChanged} = this.props;
+
+		emailChanged(text);
 	}
 
 	handlePasswordChange = text => {
-		this.props.passwordChanged(text);
+		const {passwordChanged} = this.props;
+
+		passwordChanged(text);
 	}
 
 	handleLogin = () => {
@@ -50,7 +54,9 @@ class LoginForm extends Component {
 	}
 
 	handlePasswordVisibility = () => {
-		this.setState({isPasswordHidden: !this.state.isPasswordHidden});
+		const {isPasswordHidden} = this.state;
+
+		this.setState({isPasswordHidden: !isPasswordHidden});
 	}
 
 	renderButton = () => {
@@ -77,13 +83,15 @@ class LoginForm extends Component {
 				style={loginButtonStyle}
 			>
 				<Text uppercase={false} style={loginButtonTextStyle}>
-					Войти
+					{'Войти'}
 				</Text>
 			</Button>
 		);
 	}
 
 	async componentDidMount() {
+		const {fadeAnimation} = this.state;
+
 		try {
 			await Audio.setIsEnabledAsync(true);
 			await Expo.Audio.setAudioModeAsync({
@@ -101,7 +109,7 @@ class LoginForm extends Component {
 			console.log(err);
 		}
 		Animated.timing(
-			this.state.fadeAnimation,
+			fadeAnimation,
 			{
 				toValue: 1,
 				duration: 800,
@@ -121,6 +129,8 @@ class LoginForm extends Component {
 			inputStyle,
 			animatedViewStyle
 		} = styles;
+		const {fadeAnimation, isPasswordHidden} = this.state;
+		const {email, password} = this.props;
 
 		return (
 			<LinearGradient
@@ -134,7 +144,7 @@ class LoginForm extends Component {
 					<Animated.View
 						style={[
 							animatedViewStyle,
-							{opacity: this.state.fadeAnimation}
+							{opacity: fadeAnimation}
 						]}
 					>
 						<Form style={formStyle}>
@@ -149,7 +159,7 @@ class LoginForm extends Component {
 									placeholderTextColor={INPUT_PLACEHOLDER_TEXT_COLOR}
 									placeholder="Логин"
 									onChangeText={this.handleEmailChange}
-									value={this.props.email}
+									value={email}
 									returnKeyType="next"
 									keyboardType="email-address"
 									onSubmitEditing={() => this.passwordInput._root.focus()}
@@ -164,12 +174,12 @@ class LoginForm extends Component {
 									style={inputStyle}
 									placeholderTextColor={INPUT_PLACEHOLDER_TEXT_COLOR}
 									placeholder="Пароль"
-									secureTextEntry={this.state.isPasswordHidden}
+									secureTextEntry={isPasswordHidden}
 									onChangeText={this.handlePasswordChange}
-									value={this.props.password}
+									value={password}
 									onSubmitEditing={this.handleLogin}
 								/>
-								<Icon name={this.state.isPasswordHidden ? 'eye-off' : 'eye'} onPress={this.handlePasswordVisibility} style={inputIconStyle}/>
+								<Icon name={isPasswordHidden ? 'eye-off' : 'eye'} onPress={this.handlePasswordVisibility} style={inputIconStyle}/>
 							</Item>
 							{this.renderButton()}
 						</Form>

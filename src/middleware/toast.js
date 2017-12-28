@@ -33,6 +33,7 @@ const playSuccessSound = async () => {
 	await sound.playAsync();
 };
 
+// eslint-disable-next-line no-unused-vars
 export const toast = store => next => action => {
 	if (action.type === ERROR_TOAST) {
 		playErrorSound();

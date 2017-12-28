@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Platform, FlatList, Image} from 'react-native';
+import {View, Platform, FlatList, ImageBackground} from 'react-native';
 import firebase from 'firebase';
 import {
 	Container,
@@ -36,6 +36,8 @@ class ProjectInfo extends Component {
 	}
 
 	handleDropDown = async () => {
+		const {isMembersVisible} = this.state;
+
 		try {
 			await Audio.setIsEnabledAsync(true);
 			await Expo.Audio.setAudioModeAsync({
@@ -46,7 +48,7 @@ class ProjectInfo extends Component {
 				interruptionModeAndroid: Audio.INTERRUPTION_MODE_IOS_DUCK_OTHERS
 			});
 			const sound = new Audio.Sound();
-			if (this.state.isMembersVisible) {
+			if (isMembersVisible) {
 				await sound.loadAsync(require('../../../../sounds/list-close.mp3'));
 			} else {
 				await sound.loadAsync(require('../../../../sounds/list-open.mp3'));
@@ -56,7 +58,7 @@ class ProjectInfo extends Component {
 		} catch (err) {
 			console.log(err);
 		}
-		this.setState({isMembersVisible: !this.state.isMembersVisible});
+		this.setState({isMembersVisible: !isMembersVisible});
 	}
 
 	handleGetCandidate = () => {
@@ -103,11 +105,14 @@ class ProjectInfo extends Component {
 	}
 
 	componentWillMount() {
+		const {curator} = this.state;
+		const {currentProject} = this.props;
+
 		// Подгружаем куратора проекта
-		if (_.isEmpty(this.state.curator)) {
+		if (_.isEmpty(curator)) {
 			firebase
 				.database()
-				.ref(`/users/${this.props.currentProject.createdBy}`)
+				.ref(`/users/${currentProject.createdBy}`)
 				.once('value', bio => {
 					this.setState({curator: bio.val()});
 				});
@@ -115,8 +120,9 @@ class ProjectInfo extends Component {
 	}
 
 	render() {
-		const {name, description, photoBase64, keywords, uid} = this.props.currentProject;
-		const vacancies = _.map(this.props.currentProject.vacancies, (value, key) => ({key, value}));
+		const {currentProject, uid} = this.props;
+		const {name, description, photoBase64, keywords} = currentProject;
+		const vacancies = _.map(currentProject.vacancies, (value, key) => ({key, value}));
 		const {
 			headerStyle,
 			headerBackIcon,
@@ -129,10 +135,12 @@ class ProjectInfo extends Component {
 			projectInfpDescription,
 			projectInfoCounterView
 		} = styles;
+		const {isMembersVisible, curator, active} = this.state;
 
 		return (
 			<Container>
-				<Image
+				<ImageBackground
+					style={{height: 180}}
 					resizeMode="cover"
 					source={{uri: photoBase64}}
 				>
@@ -151,10 +159,12 @@ class ProjectInfo extends Component {
 							<Right/>
 						</Header>
 					</LinearGradient>
-				</Image>
+				</ImageBackground>
 				<Content style={contentStyle}>
 					<View style={projectInfoNameView}>
-						<H2>{name}</H2>
+						<H2>
+							{name}
+						</H2>
 					</View>
 					<Divider/>
 					<Button style={projectInfoFabButton} small full transparent onPress={this.handleDropDown}>
@@ -165,25 +175,28 @@ class ProjectInfo extends Component {
 									of={vacancies.length}
 								/>
 							</View>
-							<Icon style={projectInfoDropDownIcon} name={this.state.isMembersVisible ? 'md-arrow-dropup' : 'md-arrow-dropdown'}/>
+							<Icon style={projectInfoDropDownIcon} name={isMembersVisible ? 'md-arrow-dropup' : 'md-arrow-dropdown'}/>
 						</View>
 					</Button>
-					{this.state.isMembersVisible &&
+					{
+						isMembersVisible &&
 						<FlatList
 							style={projectInfoVacanciesList}
 							data={vacancies}
-							renderItem={({item}) => this.renderVacancy(item, uid)}
+							renderItem={({item}) => this.renderVacancy(item, currentProject.uid)}
 							keyExtractor={item => item.key}
 						/>
 					}
 					<Divider/>
 					<View style={projectInfpDescription}>
-						<Text>{description}</Text>
+						<Text>
+							{description}
+						</Text>
 					</View>
 					<View style={{flex: 1, flexDirection: 'row', margin: 15, alignItems: 'center'}}>
 						<Thumbnail
 							small
-							source={{uri: this.state.curator.photoBase64}}
+							source={{uri: curator.photoBase64}}
 							style={{
 								borderColor: THUMBNAIL_BORDER_COLOR,
 								borderWidth: 2,
@@ -191,8 +204,12 @@ class ProjectInfo extends Component {
 							}}
 						/>
 						<View style={{flex: 1, flexDirection: 'column', alignItems: 'flex-start', marginLeft: 10}}>
-							<Text>{this.state.curator.name}</Text>
-							<Text style={{color: 'grey'}}>Куратор</Text>
+							<Text>
+								{curator.name}
+							</Text>
+							<Text style={{color: 'grey'}}>
+								{'Куратор'}
+							</Text>
 						</View>
 					</View>
 					<View style={{flex: 1, flexDirection: 'row', alignContent: 'space-between', flexWrap: 'wrap', paddingLeft: 15}}>
@@ -200,7 +217,9 @@ class ProjectInfo extends Component {
 							keywords.split(', ').map((keyword, index) => {
 								return (
 									<Button key={index} style={{margin: 3}} small danger>
-										<Text style={{color: 'white'}}>{keyword}</Text>
+										<Text style={{color: 'white'}}>
+											{keyword}
+										</Text>
 									</Button>
 								);
 							})
@@ -209,14 +228,14 @@ class ProjectInfo extends Component {
 				</Content>
 
 				{/* Кураторская кнопка */}
-				{this.props.uid === this.props.currentProject.createdBy &&
+				{uid === currentProject.createdBy &&
 					<Fab
-						active={this.state.active}
+						active={active}
 						direction="down"
 						containerStyle={{flex: 1, top: 145}}
 						style={{backgroundColor: 'red'}}
 						position="topRight"
-						onPress={() => this.setState({active: !this.state.active})}
+						onPress={() => this.setState({active: !active})}
 					>
 						<Icon name="md-more"/>
 						<Button style={{backgroundColor: '#34A34F'}} onPress={() => this.handleGetCandidate()}>

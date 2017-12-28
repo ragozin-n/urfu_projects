@@ -23,11 +23,14 @@ class ApplyListItem extends Component {
 	}
 
 	componentWillMount() {
+		const {user} = this.state;
+		const {item} = this.props;
+
 		// Подгрузим студента, который отправил заявку в проект
-		if (_.isEmpty(this.state.user)) {
+		if (_.isEmpty(user)) {
 			firebase
 				.database()
-				.ref(`/users/${this.props.item.candidate.key}`)
+				.ref(`/users/${item.candidate.key}`)
 				.once('value', bio => {
 					this.setState({user: bio.val()});
 				});
@@ -46,8 +49,10 @@ class ApplyListItem extends Component {
 	}
 
 	render() {
-		const {photoBase64, name, skills} = this.state.user;
-		const {vacancy} = this.props.item;
+		const {user, isFullView} = this.state;
+		const {item} = this.props;
+		const {photoBase64, name, skills} = user;
+		const {vacancy} = item;
 		const {currentProject} = this.props;
 		const {
 			appliesListItemStyle,
@@ -60,7 +65,7 @@ class ApplyListItem extends Component {
 		} = styles;
 
 		return (
-			<ListItem noBorder avatar style={appliesListItemStyle} onPress={() => this.setState({isFullView: !this.state.isFullView})}>
+			<ListItem noBorder avatar style={appliesListItemStyle} onPress={() => this.setState({isFullView: !isFullView})}>
 				<Left style={appliesListItemLeftStyle}>
 					<Thumbnail
 						small
@@ -69,15 +74,27 @@ class ApplyListItem extends Component {
 					/>
 				</Left>
 				<Body style={appliesListItemBodyStyle}>
-					<Text>{name}</Text>
-					<Text note>{`${vacancy.name} в ${currentProject.name}`}</Text>
-					{this.state.isFullView &&
+					<Text>
+						{name}
+					</Text>
+					<Text note>
+						{`${vacancy.name} в ${currentProject.name}`}
+					</Text>
+					{isFullView &&
 						<View style={appliestListItemFullViewStyle}>
-							<Text note>{`Требования проекта: ${currentProject.keywords}`}</Text>
-							<Text note>{`Требования вакансии: ${vacancy.skills}`}</Text>
-							<Text note>{`Умения ${name}: ${skills}`}</Text>
+							<Text note>
+								{`Требования проекта: ${currentProject.keywords}`}
+							</Text>
+							<Text note>
+								{`Требования вакансии: ${vacancy.skills}`}
+							</Text>
+							<Text note>
+								{`Умения ${name}: ${skills}`}
+							</Text>
 							<Button success full onPress={() => this.handleApplyToVacancy({vacancy})}>
-								<Text>Принять</Text>
+								<Text>
+									{'Принять'}
+								</Text>
 							</Button>
 							<Divider style={appliesListItemDividerStyle}/>
 						</View>

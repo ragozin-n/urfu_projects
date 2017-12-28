@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {FlatList, View, Image} from 'react-native';
+import {FlatList, Image} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import {
 	Container,
@@ -7,9 +7,7 @@ import {
 	Tab,
 	TabHeading,
 	Fab,
-	Icon,
-	Button,
-	Text
+	Icon
 } from 'native-base';
 // eslint-disable-next-line import/named
 import {LinearGradient} from 'expo';
@@ -34,12 +32,12 @@ class ProjectsList extends Component {
 	}
 
 	renderRow(project) {
-		const {isCurator, uid} = this.props;
+		const {isCurator, uid, applyToProject} = this.props;
 
 		return (
 			<ProjectListItem
 				project={project}
-				applyToProject={this.props.applyToProject}
+				applyToProject={applyToProject}
 				isCurator={isCurator}
 				uid={uid}
 			/>);
@@ -65,7 +63,8 @@ class ProjectsList extends Component {
 			backgroundImageStyle,
 			fabStyle
 		} = styles;
-		const {isCurator} = this.props;
+		const {isCurator, projects} = this.props;
+		const {initTab, activeTab} = this.state;
 
 		return (
 			<Container style={containerStyle}>
@@ -79,21 +78,21 @@ class ProjectsList extends Component {
 					<Tabs
 						locked
 						tabBarUnderlineStyle={tabBarUnderlineStyle}
-						initialPage={this.state.initTab}
+						initialPage={initTab}
 						onChangeTab={({i}) => this.setState({activeTab: i})}
 						style={tabContainerStyle}
 					>
 						<Tab
 							heading={
 								<TabHeading style={tabHeadingStyle}>
-									<TabIcon name="md-list" position={0} activeTab={this.state.activeTab}/>
+									<TabIcon name="md-list" position={0} activeTab={activeTab}/>
 								</TabHeading>}
 						>
 							{
-								this.props.projects.length > 0 ?
+								projects.length > 0 ?
 									<FlatList
 										style={{flex: 1}}
-										data={this.props.projects}
+										data={projects}
 										renderItem={({item}) => this.renderRow(item)}
 										keyExtractor={item => item.uid}
 									/> :
@@ -118,7 +117,7 @@ class ProjectsList extends Component {
 						<Tab
 							heading={
 								<TabHeading style={tabHeadingStyle}>
-									<TabIcon name="md-person" position={1} activeTab={this.state.activeTab}/>
+									<TabIcon name="md-person" position={1} activeTab={activeTab}/>
 								</TabHeading>}
 						>
 							<ProfileForm/>
@@ -126,7 +125,7 @@ class ProjectsList extends Component {
 						<Tab
 							heading={
 								<TabHeading style={tabHeadingStyle}>
-									<TabIcon name="md-settings" position={2} activeTab={this.state.activeTab}/>
+									<TabIcon name="md-settings" position={2} activeTab={activeTab}/>
 								</TabHeading>}
 						>
 							<SettingsForm/>
