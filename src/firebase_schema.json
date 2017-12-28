@@ -9,21 +9,16 @@
 					"vacancy_hash": {
 						"name": "Vacancy name",
 						"description": "blah blah blah",
-						"skills": "skill skill skill",
+						"skills": {
+							"skill_hash": true
+						},
+						"employedBy": "",
 						"candidates": {
-							"candidate_hash": {
-								"uid": "user_hash"
-							}
+							"user_hash": true
 						}
 					}
 				},
 				"keywords": "blah blah blah",
-				"maxMembers": 10,
-				"members": {
-					"member_hash": {
-						"user_hash": "user_hash"
-					}
-				},
 				"createdBy": "user_hash"
 			}
 		},
@@ -33,10 +28,15 @@
 				"photoBase64": "data...",
 				"isCurator": "flag",
 				"skills": {
-					"skill_hash": "skill_hash"
+					"skill_hash": true
 				},
 				"achievements": {
-					"achievemen_hash": "achievement_hash"
+					"achievemen_hash": true
+				},
+				"myProjects": {
+					"project_hash": {
+						"vacancy_hash": true
+					}
 				}
 			}
 

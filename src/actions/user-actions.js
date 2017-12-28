@@ -6,8 +6,6 @@ import {
 	USER_HISTORY_UPDATE
 } from './types';
 
-// TODO: rewrite all code
-
 // User customization actions. May group in one method.
 export const updateUserBio = ({prop, value}) => {
 	return {
@@ -17,44 +15,38 @@ export const updateUserBio = ({prop, value}) => {
 };
 
 // Using for update users bio. ***DEBUG ONLY***
-export const _updateUserBio = ({name, photoBase64, isCurator}) => {
+export const _updateUserBio = ({name, photoBase64, isCurator}) => dispatch => {
 	const {currentUser} = firebase.auth();
 
-	return dispatch => {
-		firebase.database().ref(`/users/${currentUser.uid}/`)
-			.set({name, photoBase64, isCurator})
-			.then(() => {
-				dispatch({type: USER_BIO_UPDATE, payload: name});
-				dispatch({type: USER_BIO_UPDATE, payload: photoBase64});
-				Actions.main();
-			});
-	};
+	firebase.database().ref(`/users/${currentUser.uid}/`)
+		.update({name, photoBase64, isCurator})
+		.then(() => {
+			dispatch({type: USER_BIO_UPDATE, payload: name});
+			dispatch({type: USER_BIO_UPDATE, payload: photoBase64});
+			Actions.main();
+		});
 };
 
 // Using for set achievements.
-export const updateUserAchievements = ({name, photoBase64}) => {
+export const updateUserAchievements = ({name, photoBase64}) => dispatch => {
 	const {currentUser} = firebase.auth();
 
-	return dispatch => {
-		firebase.database().ref(`/users/${currentUser.uid}/achievements`)
-			.push({name, photoBase64})
-			.then(() => {
-				dispatch({type: USER_ACHIEVEMENTS_UPDATE});
-				Actions.main();
-			});
-	};
+	firebase.database().ref(`/users/${currentUser.uid}/achievements`)
+		.push({name, photoBase64})
+		.then(() => {
+			dispatch({type: USER_ACHIEVEMENTS_UPDATE});
+			Actions.main();
+		});
 };
 
 // Using for update user's history.
-export const updateUserHistory = ({activity}) => {
+export const updateUserHistory = ({activity}) => dispatch => {
 	const {currentUser} = firebase.auth();
 
-	return dispatch => {
-		firebase.database().ref(`/users/${currentUser.uid}/history`)
-			.push({activity})
-			.then(() => {
-				dispatch({type: USER_HISTORY_UPDATE});
-				Actions.main();
-			});
-	};
+	firebase.database().ref(`/users/${currentUser.uid}/history`)
+		.push({activity})
+		.then(() => {
+			dispatch({type: USER_HISTORY_UPDATE});
+			Actions.main();
+		});
 };

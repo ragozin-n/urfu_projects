@@ -8,29 +8,26 @@ import {
 	Item,
 	Icon,
 	Input,
-	Content,
-	Container
+	Content
 } from 'native-base';
 import {
 	Image,
 	Animated,
-	Easing,
-	KeyboardAvoidingView,
-	ScrollView
+	Easing
 } from 'react-native';
 // eslint-disable-next-line import/named
-import {LinearGradient} from 'expo';
+import {LinearGradient, Audio} from 'expo';
 import {
 	emailChanged,
 	passwordChanged,
 	loginUser
-} from '../actions';
-import styles from './styles/login-form-styles';
+} from '../../actions';
 import {
 	LOGIN_GRADIENT_COLORS,
 	INPUT_PLACEHOLDER_TEXT_COLOR,
 	SPINNER_COLOR
-} from './styles/';
+} from '../styles/';
+import styles from './styles';
 
 class LoginForm extends Component {
 	state = {
@@ -39,37 +36,80 @@ class LoginForm extends Component {
 	}
 
 	handleEmailChange = text => {
-		this.props.emailChanged(text);
+		const {emailChanged} = this.props;
+
+		emailChanged(text);
 	}
 
 	handlePasswordChange = text => {
-		this.props.passwordChanged(text);
+		const {passwordChanged} = this.props;
+
+		passwordChanged(text);
 	}
 
 	handleLogin = () => {
-		const {email, password} = this.props;
-		this.props.loginUser({email, password});
+		const {email, password, loginUser} = this.props;
+
+		loginUser({email, password});
 	}
 
 	handlePasswordVisibility = () => {
-		this.setState({isPasswordHidden: !this.state.isPasswordHidden});
+		const {isPasswordHidden} = this.state;
+
+		this.setState({isPasswordHidden: !isPasswordHidden});
 	}
 
 	renderButton = () => {
-		if (this.props.loading) {
-			return <Spinner style={styles.spinnerStyle} color={SPINNER_COLOR}/>;
+		const {loading} = this.props;
+		const {loginButtonStyle, loginButtonTextStyle, loginButtonSpinnerStyle} = styles;
+
+		if (loading) {
+			return (
+				<Button
+					full
+					transparent
+					style={loginButtonSpinnerStyle}
+				>
+					<Spinner color={SPINNER_COLOR}/>
+				</Button>);
 		}
 
 		return (
-			<Button full bordered light onPress={this.handleLogin} style={styles.loginButtonStyle}>
-				<Text uppercase={false} style={styles.loginButtonTextStyle}>Войти</Text>
+			<Button
+				full
+				bordered
+				light
+				onPress={this.handleLogin}
+				style={loginButtonStyle}
+			>
+				<Text uppercase={false} style={loginButtonTextStyle}>
+					{'Войти'}
+				</Text>
 			</Button>
 		);
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
+		const {fadeAnimation} = this.state;
+
+		try {
+			await Audio.setIsEnabledAsync(true);
+			await Expo.Audio.setAudioModeAsync({
+				playsInSilentModeIOS: true,
+				allowsRecordingIOS: false,
+				interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+				shouldDuckAndroid: false,
+				interruptionModeAndroid: Audio.INTERRUPTION_MODE_IOS_DUCK_OTHERS
+			});
+			const sound = new Audio.Sound();
+			await sound.loadAsync(require('../../sounds/login.mp3'));
+			await sound.setVolumeAsync(0.5);
+			await sound.playAsync();
+		} catch (err) {
+			console.log(err);
+		}
 		Animated.timing(
-			this.state.fadeAnimation,
+			fadeAnimation,
 			{
 				toValue: 1,
 				duration: 800,
@@ -89,6 +129,8 @@ class LoginForm extends Component {
 			inputStyle,
 			animatedViewStyle
 		} = styles;
+		const {fadeAnimation, isPasswordHidden} = this.state;
+		const {email, password} = this.props;
 
 		return (
 			<LinearGradient
@@ -102,12 +144,12 @@ class LoginForm extends Component {
 					<Animated.View
 						style={[
 							animatedViewStyle,
-							{opacity: this.state.fadeAnimation}
+							{opacity: fadeAnimation}
 						]}
 					>
 						<Form style={formStyle}>
 							<Image
-								source={require('../images/logo.png')}
+								source={require('../../images/logo.png')}
 								style={logoStyle}
 							/>
 							<Item style={itemFixStyle}>
@@ -117,7 +159,7 @@ class LoginForm extends Component {
 									placeholderTextColor={INPUT_PLACEHOLDER_TEXT_COLOR}
 									placeholder="Логин"
 									onChangeText={this.handleEmailChange}
-									value={this.props.email}
+									value={email}
 									returnKeyType="next"
 									keyboardType="email-address"
 									onSubmitEditing={() => this.passwordInput._root.focus()}
@@ -132,19 +174,19 @@ class LoginForm extends Component {
 									style={inputStyle}
 									placeholderTextColor={INPUT_PLACEHOLDER_TEXT_COLOR}
 									placeholder="Пароль"
-									secureTextEntry={this.state.isPasswordHidden}
+									secureTextEntry={isPasswordHidden}
 									onChangeText={this.handlePasswordChange}
-									value={this.props.password}
+									value={password}
 									onSubmitEditing={this.handleLogin}
 								/>
-								<Icon name={this.state.isPasswordHidden ? 'eye-off' : 'eye'} onPress={this.handlePasswordVisibility} style={inputIconStyle}/>
+								<Icon name={isPasswordHidden ? 'eye-off' : 'eye'} onPress={this.handlePasswordVisibility} style={inputIconStyle}/>
 							</Item>
 							{this.renderButton()}
 						</Form>
 					</Animated.View>
-				{/* <Button transparent light style={passwordRestoreStyle}>
-					<Text uppercase={false} style={passwordRestoreTextStyle}>Забыли пароль?</Text>
-				</Button>				 */}
+					{/* <Button transparent light style={passwordRestoreStyle}>
+						<Text uppercase={false} style={passwordRestoreTextStyle}>Забыли пароль?</Text>
+					</Button>				 */}
 				</Content>
 			</LinearGradient>
 		);

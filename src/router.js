@@ -1,9 +1,12 @@
 import React from 'react';
 import {Scene, Router} from 'react-native-router-flux';
-import LoginForm from './components/login-form';
-import ProjectsList from './components/projects-list';
-import ProjectCreateForm from './components/project-create-form';
-import ProjectInfo from './components/project-info';
+import LoginForm from './components/login_screen/login-form';
+import ProjectsList from './components/main_screen/projects_tab/projects-list';
+import SettingsForm from './components/main_screen/settings_tab/settings-form';
+import ProjectInfo from './components/main_screen/projects_tab/projects_info_section/project-info';
+import AppliesForm from './components/main_screen/projects_tab/projects_applies_section/applies-form';
+import ProjectCreateForm from './components/create_project_screen/project-create-form';
+import ProjectEditForm from './components/edit-project-screen/edit-project-form';
 
 const RouterComponent = () => {
 	return (
@@ -27,8 +30,8 @@ const RouterComponent = () => {
 					/>
 
 					<Scene
-						key="createProject"
-						component={ProjectCreateForm}
+						key="settings"
+						component={SettingsForm}
 						panHandlers={null}
 						hideNavBar
 					/>
@@ -39,7 +42,28 @@ const RouterComponent = () => {
 						panHandlers={null}
 						hideNavBar
 					/>
+
+					<Scene
+						key="appliesForm"
+						component={AppliesForm}
+						panHandlers={null}
+						hideNavBar
+					/>
 				</Scene>
+
+				<Scene
+					key="createProject"
+					component={ProjectCreateForm}
+					panHandlers={null}
+					hideNavBar
+				/>
+
+				<Scene
+					key="editProject"
+					component={ProjectEditForm}
+					panHandlers={null}
+					hideNavBar
+				/>
 			</Scene>
 		</Router>
 	);

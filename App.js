@@ -2,11 +2,13 @@
 import React, {Component} from 'react';
 // eslint-disable-next-line import/named
 import {AppLoading} from 'expo';
+import {Root} from 'native-base';
 import {Provider} from 'react-redux';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import {createStore, applyMiddleware} from 'redux';
 import firebase from 'firebase';
 import ReduxThunk from 'redux-thunk';
+import {toast} from './src/middleware/toast';
 import reducers from './src/reducers';
 import config from './src/config';
 import Router from './src/router';
@@ -28,14 +30,18 @@ export default class App extends Component {
 	}
 
 	render() {
-		const store = createStore(reducers, {}, composeWithDevTools(applyMiddleware(ReduxThunk)));
-		if (!this.state.appIsReady) {
+		const {appIsReady} = this.state;
+		const store = createStore(reducers, {}, composeWithDevTools(applyMiddleware(ReduxThunk, toast)));
+
+		if (!appIsReady) {
 			return <AppLoading/>;
 		}
 		return (
-			<Provider store={store}>
-				<Router/>
-			</Provider>
+			<Root>
+				<Provider store={store}>
+					<Router/>
+				</Provider>
+			</Root>
 		);
 	}
 }

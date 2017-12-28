@@ -1,11 +1,8 @@
-import {
-	StyleSheet,
-	Platform
-} from 'react-native';
+import {StyleSheet, Platform} from 'react-native';
 import {
 	TITLE_COLOR,
 	BUTTON_COLOR
-} from './colors';
+} from '../../styles';
 
 export default StyleSheet.create({
 	titleStyle: {
@@ -16,6 +13,9 @@ export default StyleSheet.create({
 	},
 	headerStyle: {
 		marginTop: (Platform.OS === 'android') ? 15 : 0,
-		backgroundColor: 'transparent'
+		backgroundColor: 'transparent',
+		elevation: 0,
+		shadowOpacity: 0,
+		shadowColor: 'transparent'
 	}
 });

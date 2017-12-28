@@ -11,7 +11,9 @@ export default StyleSheet.create({
 	loginButtonStyle: {
 		marginTop: 100,
 		backgroundColor: LOGIN_BUTTON_COLOR,
-		borderRadius: (Platform.OS === 'ios') ? 6 : 0
+		borderRadius: (Platform.OS === 'ios') ? 6 : 0,
+		justifyContent: 'center',
+		flex: 1
 	},
 	formStyle: {
 		marginLeft: 35,
@@ -55,7 +57,9 @@ export default StyleSheet.create({
 	animatedViewStyle: {
 		flex: 1
 	},
-	spinnerStyle: {
-		marginTop: 20
+	loginButtonSpinnerStyle: {
+		marginTop: 100,
+		backgroundColor: 'transparent',
+		borderRadius: (Platform.OS === 'ios') ? 6 : 0
 	}
 });

@@ -16,7 +16,6 @@ export default (state = INITIAL_STATE, action) => {
 		case USER_BIO_UPDATE:
 		case USER_ACHIEVEMENTS_UPDATE:
 		case USER_HISTORY_UPDATE:
-			console.log(action);
 			return {...state, [action.payload.prop]: action.payload.value};
 		default:
 			return state;

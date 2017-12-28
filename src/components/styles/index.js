@@ -1,3 +1,3 @@
-// Colors, fonts, resources etc
+// Просто так удобней
 export * from './colors';
 
