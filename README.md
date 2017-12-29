@@ -13,4 +13,4 @@ yarn install (or npm i)
 yarn start (or npm run start)
 ```
 
-### [Link](https://exp.host/@ragozin-n/urfu_projects) to Expo
+### [Link](https://exp.host/@ragozin-n/urfu-projects) to Expo
