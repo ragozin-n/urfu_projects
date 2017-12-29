@@ -209,24 +209,23 @@ export const projectsFilter = (searchString, arr) => {
 };
 
 // Событие запроса списка кандидатов на конкретный проект
-export const getCandidates = ({uid, isCurator, currentProject}) => {
+export const getCandidates = ({uid, isCurator, currentProject}) => async dispatch => {
 	if (!isCurator) {
 		throw new Error(`${uid} trying to fetch curator events, while isCurator field is false`);
 	}
-	return async dispatch => {
-		try {
-			const projects = await _searchForCandidates({uid, projectUid: currentProject.uid});
 
-			// Нельзя фильтровать массив асинхронно. Поэтому тут я написал хелпер для этой операции на промисах.
-			const result = await filter(projects, async item => {
-				return _isUserActiveProjectIsThis(item.candidate.key, currentProject.uid);
-			});
-			dispatch({type: CURATOR_PROJECT_FETCH, payload: result});
-			Actions.appliesForm({applies: result, currentProject, uid});
-		} catch (err) {
-			dispatch({type: ERROR_TOAST, payload: err});
-		}
-	};
+	try {
+		const projects = await _searchForCandidates({uid, projectUid: currentProject.uid});
+
+		// Нельзя фильтровать массив асинхронно. Поэтому тут я написал хелпер для этой операции на промисах.
+		const result = await filter(projects, async item => {
+			return _isUserActiveProjectIsThis(item.candidate.key, currentProject.uid);
+		});
+		dispatch({type: CURATOR_PROJECT_FETCH, payload: result});
+		Actions.appliesForm({applies: result, currentProject, uid});
+	} catch (err) {
+		dispatch({type: ERROR_TOAST, payload: err});
+	}
 };
 
 // Хелпер для асинхронной фильтрации массива

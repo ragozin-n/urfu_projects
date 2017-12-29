@@ -1,8 +1,8 @@
 {
   "expo": {
 	"name": "Urfu Projects",
-	"slug": "urfu_projects",
+	"slug": "urfu-projects",
 	"privacy": "public",
-	"sdkVersion": "24.0.0"
+	"sdkVersion": "23.0.0"
 	}
 }
