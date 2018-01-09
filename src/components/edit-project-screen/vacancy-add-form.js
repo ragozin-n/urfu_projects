@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {Item, Icon, Input, Button, Text} from 'native-base';
 import {View} from 'react-native';
 import {projectUpdate} from '../../actions';
+//import styles from './styles';
 
 class VacancyAddForm extends Component {
 	state = {
@@ -70,5 +71,34 @@ class VacancyAddForm extends Component {
 			</View>);
 	}
 }
+
+const styles = {
+	headerStyle: {
+		backgroundColor: 'transparent'
+	},
+	headerBodyStyle: {
+		flex: 3,
+		alignItems: 'flex-start'
+	},
+	headerTitleStyle: {
+		color: 'white'
+	},
+	iconStyle: {
+		color: 'white'
+	},
+	projectImageStyle: {
+		height: 200
+	},
+	contentStyle: {
+		backgroundColor: 'white'
+	},
+	itemStyle: {
+		borderColor: 'transparent',
+		paddingHorizontal: 15
+	},
+	addVacancyButtonStyle: {
+		marginTop: 15
+	}
+};
 
 export default connect(null, {projectUpdate})(VacancyAddForm);
