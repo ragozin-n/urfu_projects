@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import {
 	Header,
 	Body,
@@ -17,6 +18,11 @@ import {projectsFilter} from '../../../actions/projects-actions';
 import styles from './styles';
 
 class SearchHeader extends PureComponent {
+	static propTypes = {
+		projectsFilter: PropTypes.func.isRequired,
+		_projects: PropTypes.array.isRequired
+	}
+
 	state = {
 		isHeaderSearch: false,
 		slideAnimation: new Animated.Value(50),

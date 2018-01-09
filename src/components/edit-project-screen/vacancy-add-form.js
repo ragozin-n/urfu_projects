@@ -1,11 +1,27 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Item, Icon, Input, Button, Text} from 'native-base';
 import {View} from 'react-native';
 import {projectUpdate} from '../../actions';
-//import styles from './styles';
+import styles from './styles';
 
 class VacancyAddForm extends Component {
+	static propTypes = {
+		project: PropTypes.shape({
+			name: PropTypes.string.isRequired,
+			description: PropTypes.string.isRequired,
+			photoBase64: PropTypes.string.isRequired,
+			keywords: PropTypes.string.isRequired
+		}).isRequired,
+		projectUpdate: PropTypes.func.isRequired,
+		onHideForm: PropTypes.func
+	}
+
+	static defaultProps = {
+		onHideForm: () => {}
+	}
+
 	state = {
 		name: '',
 		description: '',
@@ -71,34 +87,5 @@ class VacancyAddForm extends Component {
 			</View>);
 	}
 }
-
-const styles = {
-	headerStyle: {
-		backgroundColor: 'transparent'
-	},
-	headerBodyStyle: {
-		flex: 3,
-		alignItems: 'flex-start'
-	},
-	headerTitleStyle: {
-		color: 'white'
-	},
-	iconStyle: {
-		color: 'white'
-	},
-	projectImageStyle: {
-		height: 200
-	},
-	contentStyle: {
-		backgroundColor: 'white'
-	},
-	itemStyle: {
-		borderColor: 'transparent',
-		paddingHorizontal: 15
-	},
-	addVacancyButtonStyle: {
-		marginTop: 15
-	}
-};
 
 export default connect(null, {projectUpdate})(VacancyAddForm);

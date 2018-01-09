@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {
 	ListItem,
 	Right,
@@ -19,6 +20,10 @@ import {THUMBNAIL_BORDER_COLOR} from '../../../styles';
 import styles from './styles';
 
 class MemberListItem extends Component {
+	static propTypes = {
+		uid: PropTypes.string.isRequired
+	}
+
 	state = {
 		user: {},
 		modalVisible: false

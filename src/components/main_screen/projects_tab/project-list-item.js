@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import {Animated, Easing} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import {
@@ -16,6 +17,17 @@ import {PROJECTS_LIST_ITEM_BACKGROUND_COLOR} from '../../styles';
 import styles from './styles';
 
 class ProjectListItem extends PureComponent {
+	static propTypes = {
+		project: PropTypes.shape({
+			name: PropTypes.string.isRequired,
+			description: PropTypes.string.isRequired,
+			photoBase64: PropTypes.string.isRequired,
+			keywords: PropTypes.string.isRequired
+		}).isRequired,
+		isCurator: PropTypes.bool.isRequired,
+		uid: PropTypes.string.isRequired
+	}
+
 	state = {
 		opacityAnimation: new Animated.Value(0),
 		isCandidate: false,

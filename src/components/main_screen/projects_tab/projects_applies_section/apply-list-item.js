@@ -10,6 +10,7 @@ import {
 } from 'native-base';
 import {Actions} from 'react-native-router-flux';
 import {View} from 'react-native';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import firebase from 'firebase';
 import {hireStudentToProject} from '../../../../actions/projects-actions';
@@ -17,6 +18,18 @@ import Divider from '../../../common/Divider/divider';
 import styles from './styles';
 
 class ApplyListItem extends Component {
+	static propTypes = {
+		// Потом распишу
+		item: PropTypes.object.isRequired,
+		currentProject: PropTypes.shape({
+			name: PropTypes.string.isRequired,
+			description: PropTypes.string.isRequired,
+			photoBase64: PropTypes.string.isRequired,
+			keywords: PropTypes.string.isRequired
+		}).isRequired,
+		hireStudentToProject: PropTypes.func.isRequired
+	}
+
 	state = {
 		user: {},
 		isFullView: false

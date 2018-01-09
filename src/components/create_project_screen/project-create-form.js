@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {Image, TouchableOpacity} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import {
@@ -24,6 +25,10 @@ import {projectCreate} from '../../actions';
 import styles from './styles';
 
 class ProjectCreateForm extends Component {
+	static propTypes = {
+		projectCreate: PropTypes.func.isRequired
+	}
+
 	state = {
 		name: '',
 		description: '',
@@ -146,11 +151,4 @@ class ProjectCreateForm extends Component {
 	}
 }
 
-const mapStateToProps = state => {
-	const {isCurator, photoBase64} = state.auth.user;
-	const {uid} = state.auth._token;
-
-	return {isCurator, photoBase64, uid};
-};
-
-export default connect(mapStateToProps, {projectCreate})(ProjectCreateForm);
+export default connect(null, {projectCreate})(ProjectCreateForm);

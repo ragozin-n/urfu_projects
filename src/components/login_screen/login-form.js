@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {
 	Text,
@@ -30,6 +31,15 @@ import {
 import styles from './styles';
 
 class LoginForm extends Component {
+	static propTypes = {
+		email: PropTypes.string.isRequired,
+		password: PropTypes.string.isRequired,
+		loading: PropTypes.bool.isRequired,
+		emailChanged: PropTypes.func.isRequired,
+		passwordChanged: PropTypes.func.isRequired,
+		loginUser: PropTypes.func.isRequired
+	}
+
 	state = {
 		isPasswordHidden: true,
 		fadeAnimation: new Animated.Value(0)
@@ -194,9 +204,9 @@ class LoginForm extends Component {
 }
 
 const mapStateToProps = ({auth}) => {
-	const {email, password, error, loading} = auth;
+	const {email, password, loading} = auth;
 
-	return {email, password, error, loading};
+	return {email, password, loading};
 };
 
 export default connect(mapStateToProps, {emailChanged, passwordChanged, loginUser})(LoginForm);

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {View} from 'react-native';
 import {
@@ -15,6 +16,20 @@ import {
 import styles from './styles';
 
 class ProfileForm extends Component {
+	static propTypes = {
+		user: PropTypes.shape({
+			isCurator: PropTypes.bool.isRequired,
+			name: PropTypes.string.isRequired,
+			photoBase64: PropTypes.string.isRequired,
+			skills: PropTypes.string.isRequired,
+			phoneNumber: PropTypes.string.isRequired
+		}).isRequired,
+		_token: PropTypes.shape({
+			email: PropTypes.string.isRequired,
+			uid: PropTypes.string.isRequired
+		}).isRequired
+	}
+
 	render() {
 		const {user, _token} = this.props;
 		const {isCurator, name, photoBase64, skills, phoneNumber} = user;

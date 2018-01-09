@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {FlatList, Image} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import {
@@ -22,6 +23,21 @@ import ProjectListItem from './project-list-item';
 import styles from './styles';
 
 class ProjectsList extends Component {
+	static propTypes = {
+		projects: PropTypes.arrayOf(
+			PropTypes.shape({
+				name: PropTypes.string.isRequired,
+				description: PropTypes.string.isRequired,
+				photoBase64: PropTypes.string.isRequired,
+				keywords: PropTypes.string.isRequired
+			})
+		).isRequired,
+		isCurator: PropTypes.bool.isRequired,
+		uid: PropTypes.string.isRequired,
+		applyToProject: PropTypes.func.isRequired,
+		projectsFetch: PropTypes.func.isRequired
+	}
+
 	state = {
 		activeTab: 0,
 		initTab: 0

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {
 	ListItem,
 	Right,
@@ -13,6 +14,17 @@ import {Actions} from 'react-native-router-flux';
 import {applyToProject} from '../../../../actions';
 
 class VacancyListItem extends Component {
+	static propTypes = {
+		isCurator: PropTypes.bool.isRequired,
+		applyToProject: PropTypes.func.isRequired,
+		name: PropTypes.string.isRequired,
+		description: PropTypes.string.isRequired,
+		skills: PropTypes.string.isRequired,
+		vacancyUid: PropTypes.string.isRequired,
+		projectUid: PropTypes.string.isRequired,
+		isAlreadyApplied: PropTypes.bool.isRequired
+	}
+
 	state = {
 		// eslint-disable-next-line react/destructuring-assignment
 		isSelected: this.props.isAlreadyApplied

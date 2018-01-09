@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {View, Platform, FlatList, ImageBackground} from 'react-native';
 import firebase from 'firebase';
 import {
@@ -29,6 +30,18 @@ import MemberListItem from './member-list-item';
 import styles from './styles';
 
 class ProjectInfo extends Component {
+	static propTypes = {
+		uid: PropTypes.string.isRequired,
+		isCurator: PropTypes.bool.isRequired,
+		currentProject: PropTypes.shape({
+			name: PropTypes.string.isRequired,
+			description: PropTypes.string.isRequired,
+			photoBase64: PropTypes.string.isRequired,
+			keywords: PropTypes.string.isRequired
+		}).isRequired,
+		getCandidates: PropTypes.func.isRequired
+	}
+
 	state = {
 		isMembersVisible: false,
 		curator: {},
@@ -92,14 +105,11 @@ class ProjectInfo extends Component {
 			item.key === currentUserUid
 		).length > 0;
 
+		const props = {name, description, skills, vacancyUid: key, projectUid: uid, isAlreadyApplied};
+
 		return (
 			<VacancyListItem
-				name={name}
-				description={description}
-				skills={skills}
-				vacancyUid={key}
-				projectUid={uid}
-				isAlreadyApplied={isAlreadyApplied}
+				{...props}
 			/>
 		);
 	}

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {View, Platform, FlatList, Image} from 'react-native';
 import {
 	Container,
@@ -20,6 +21,18 @@ import ApplyListItem from './apply-list-item';
 import styles from './styles';
 
 class AppliesForm extends Component {
+	static propTypes = {
+		currentProject: PropTypes.shape({
+			name: PropTypes.string.isRequired,
+			description: PropTypes.string.isRequired,
+			photoBase64: PropTypes.string.isRequired,
+			keywords: PropTypes.string.isRequired
+		}).isRequired,
+		uid: PropTypes.string.isRequired,
+		// Лень расписывать, как-нибудь потом
+		applies: PropTypes.arrayOf(PropTypes.object).isRequired
+	}
+
 	renderApply = (apply, currentProject) => {
 		return (
 			<ApplyListItem item={apply} currentProject={currentProject}/>
@@ -29,7 +42,7 @@ class AppliesForm extends Component {
 	handleBackAction = () => {
 		const {currentProject, uid} = this.props;
 
-		// Если мы в этой форме, то мы куратор. поэтому вернем true руками.
+		// Если мы в этой форме, то мы куратор. Вернем true руками.
 		Actions.projectInfo({currentProject, isCurator: true, uid});
 	}
 
