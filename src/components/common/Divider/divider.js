@@ -1,10 +1,10 @@
 import React, {PureComponent} from 'react';
-import {View} from 'react-native';
+import {View, ViewPropTypes} from 'react-native';
 import styles from './styles';
 
 export default class Divider extends PureComponent {
 	static propTypes = {
-		style: View.propTypes.style
+		style: ViewPropTypes.style
 	}
 
 	static defaultProps = {
